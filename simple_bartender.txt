@@ -1,0 +1,55 @@
+@@ MIT License
+@@ Copyright (c) 2019 Matt Westfall (@disloops)
+
+@@ Permission is hereby granted, free of charge, to any person obtaining a copy
+@@ of this software and associated documentation files (the "Software"), to deal
+@@ in the Software without restriction, including without limitation the rights
+@@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+@@ copies of the Software, and to permit persons to whom the Software is
+@@ furnished to do so, subject to the following conditions:
+
+@@ The above copyright notice and this permission notice shall be included in all
+@@ copies or substantial portions of the Software.
+
+@@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+@@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+@@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+@@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+@@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+@@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+@@ SOFTWARE.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+
+@@ Simple Bartender v1.0
+@@ This was partially adapted from "Dave the Bartender" found here:
+@@ http://www.mushcode.com/File/Dave-the-Bartender
+@@ ...with help from folks on pennmush.org (thnx!)
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Bartender
+@lock/basic Bartender=#1
+@lock/enter Bartender=#1
+@lset Bartender/basic=NO_INHERIT
+@lset Bartender/enter=NO_INHERIT
+@set Bartender=!NO_COMMAND
+@set Bartender=MONITOR
+@set Bartender=WIZARD
+
+&DESCRIBE Bartender=A non-descript man wearing an apron.%rTo see what drinks are available, type [ansi(h,menu)].
+
+@set Bartender/DESCRIBE=NO_COMMAND VISUAL PREFIXMATCH PUBLIC NEARBY
+
+&SHOW_MENU Bartender=align(1 77,,table(iter(%0,##,|,|),20,77,|,|))
+
+&BEERS Bartender=Asahi|Becks|John Courage|Heather Ale|Labatt's|Oktoberfest|Orion|Pilsner|Stella
+
+&CMD_MENU Bartender=$menu:@pemit %#=%r[ansi(h,Beers)]:%r%r[u(show_menu,v(beers))]%r%rTo order a drink, type [ansi(h,order <beer name>)].
+
+&MAKE_DRINK Bartender=[setq(7,[grab(v(beers),%0,|)])][setq(1,Pint of %q7)][setq(0,create(%q1))][setq(2,A %q1. To drink\, type [ansi(h,drink pint)] or [ansi(h,drink %q7)].)][setq(3,The world grows a little brighter.)][setq(4,tips a [name(%q0)].)][setq(5,@emit \%n finishes a [name(%q0)].;@teleport me=%!;@set me=DARK;@nuke me;@nuke me;)][setq(6,$drink *:@if strmatch(name(\%!),*\%0*)={{@pemit \%#=The world grows a little brighter.;@oemit loc(\%#)/\%#=\%n tips a [name(%q0)].;@if gt(v(charges),0)={@charges me=dec(v(charges))\;}\,{@pemit \%#=\%n finishes a [name(%q0)].\;@teleport me=%!\;@set me=DARK\;@nuke me\;@nuke me\;}}}\,{{@pemit \%#=You don't have that.}})][name(%q0,%q1)][attrib_set(%q0/describe,%q2)][attrib_set(%q0/charges,2)][attrib_set(%q0/use,%q3)][attrib_set(%q0/ouse,%q4)][attrib_set(%q0/runout,%q5)][attrib_set(%q0/cmd_drink,%q6)][set(%q0,DESTROY_OK)][set(%q0,CHOWN_OK)][set(%q0,MONITOR)][set(%q0,QUIET)][set(%q0,!NO_COMMAND)][tel(%q0,me)]%q0
+
+&CMD_ORDER Bartender=$order *:@assert match(v(beers),%0,|)=@pemit %#=Never heard of it. To see the menu, type [ansi(h,menu)]. To order a drink, type [ansi(h,order <beer name>)].;@if namegrab(lcon(%#),pint of)={say One per customer, %n.},{think setq(0,u(make_drink,%0));say Okay, %n, coming up.;@wait 4={give %q0 to %#;@lock/use %q0=+%q0;@chown/preserve %q0=%#;@oemit %#=[name(%!)] gives %n a [name(%q0)].};@wait 20=:starts wiping the bar.}
+
+&ON_CONNECT Bartender=^* has connected.:say Howdy;@pemit %#=Type [ansi(h,menu)] to see what's on tap.
