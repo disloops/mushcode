@@ -52,4 +52,4 @@
 
 &CMD_ORDER Bartender=$order *:@assert match(v(beers),%0,|)=@pemit %#=Never heard of it. To see the menu, type [ansi(h,menu)]. To order a drink, type [ansi(h,order <beer name>)].;@if namegrab(lcon(%#),pint of)={say One per customer, %n.},{think setq(0,u(make_drink,%0));say Okay, %n, coming up.;@wait 4={give %q0 to %#;@lock/use %q0=+%q0;@chown/preserve %q0=%#;@oemit %#=[name(%!)] gives %n a [name(%q0)].};@wait 20=:starts wiping the bar.}
 
-&ON_CONNECT Bartender=^* has connected.:say Howdy;@pemit %#=Type [ansi(h,menu)] to see what's on tap.
+&ON_CONNECT Bartender=^* has connected.:say Howdy.;@pemit %#=Type [ansi(h,menu)] to see what's on tap.
