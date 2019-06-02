@@ -31,7 +31,7 @@
 @set Bar of soap=QUIET
 @set Bar of soap=NO_COMMAND
 &TAKEN Bar of soap=t(namegrab(lcon(%#),soap))
-@lock/give=#1
+@lock/give Bar of soap=#1
 @lock/Basic Bar of soap=TAKEN/0
 &DESCRIBE Bar of soap=A thin bar of hard, pink soap that's wrapped in paper.
 &SUCCESS Bar of soap=You take the soap.
