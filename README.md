@@ -8,4 +8,5 @@ THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRA
 
 #### Contents
 
+* magic_soap.txt - A bar of soap that recurs when taken.
 * simple_bartender.txt - A bartender that takes orders and serves beers
