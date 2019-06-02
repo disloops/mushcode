@@ -40,3 +40,4 @@
 &DROP Bar of soap=You discard the soap.
 &ADROP Bar of soap=@nuke me;@nuke me
 &USE Bar of soap=The soap smells fresh and leaves your hands feeling crisp.
+&GIVE_LOCK`FAILURE soap=That could be misconstrued as an insult.
