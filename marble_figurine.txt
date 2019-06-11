@@ -1,0 +1,56 @@
+@@ MIT License
+@@ Copyright (c) 2019 Matt Westfall (@disloops)
+
+@@ Permission is hereby granted, free of charge, to any person obtaining a copy
+@@ of this software and associated documentation files (the "Software"), to deal
+@@ in the Software without restriction, including without limitation the rights
+@@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+@@ copies of the Software, and to permit persons to whom the Software is
+@@ furnished to do so, subject to the following conditions:
+
+@@ The above copyright notice and this permission notice shall be included in all
+@@ copies or substantial portions of the Software.
+
+@@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+@@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+@@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+@@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+@@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+@@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+@@ SOFTWARE.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+
+@@ Marble Figurine v1.0
+@@ A sample object that can be purchased. See "bank.txt" and "gold_satchel.txt"
+@@ for more information on the money system.
+
+@@ Note that this may use some custom flags created with @flag:
+@@ FOR_SALE: Just means it hasn't been picked up from the shop yet
+@@ @flag/add FOR_SALE=f,thing,wizard
+@@ CLONE: Tells the global "buy" command to create a replica of this item when
+@@ bought so that it stays in stock
+@@ @flag/add CLONE=c,thing,wizard
+@@ SINGLETON: Means that only one can be carried at a time
+@@ @flag/add SINGLETON=z,thing,wizard
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Marble figurine
+@set Marble figurine=QUIET
+@set Marble figurine=NO_COMMAND
+@set Marble figurine=FOR_SALE
+@set Marble figurine=CLONE
+@lock/basic Marble figurine=#1
+@lock/enter Marble figurine=#1
+@lock/use Marble figurine=+Marble figurine
+
+&DESCRIBE Marble figurine=A small totem statue of a racoon carved in marble.
+&ADESCRIBE Marble figurine=@if strmatch(lflags(me),*FOR_SALE*)=@pemit %#=It costs [v(price)] gold.
+&FAILURE Marble figurine=That cost [v(price)] gold. Try typing [ansi(h,buy [lcstr([name(me)])])] instead.
+&DROP Marble figurine=You drop the [lcstr([name(me)])].
+&USE Marble figurine=You set the little statue down at eye level and admire it.
+&UFAIL Marble figurine=Try to [ansi(h,take)] or [ansi(h,buy)] it first.
+&PRICE Marble figurine=2
+&EFAIL Marble figurine=An odd request.

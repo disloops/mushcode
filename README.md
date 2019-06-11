@@ -8,5 +8,9 @@ THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED WARRA
 
 #### Contents
 
-* magic_soap.txt - A bar of soap that recurs when taken
+* bank.txt - A global bank object that defines some economy functions
+* gold_satchel.txt - A wallet object that holds gold currency
+* magic_soap.txt - A bar of soap that reappears when taken
+* marble_figurine.txt - A basic object that can be purchased
+* shopkeeper.txt - A basic shopkeeper with items for sale
 * simple_bartender.txt - A bartender that takes orders and serves beers
