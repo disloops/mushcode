@@ -42,8 +42,8 @@
 @set Marble figurine=NO_COMMAND
 @set Marble figurine=FOR_SALE
 @set Marble figurine=CLONE
-@lock/basic Marble figurine=#1
-@lock/enter Marble figurine=#1
+@lock/basic Marble figurine==#1
+@lock/enter Marble figurine==#1
 @lock/use Marble figurine=+Marble figurine
 
 &DESCRIBE Marble figurine=A small totem statue of a racoon carved in marble.

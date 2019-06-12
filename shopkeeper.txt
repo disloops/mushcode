@@ -28,8 +28,8 @@
 @@ Created and tested under PennMUSH v1.8.7
 
 @create Shopkeeper
-@lock/basic Shopkeeper=#1
-@lock/enter Shopkeeper=#1
+@lock/basic Shopkeeper==#1
+@lock/enter Shopkeeper==#1
 @set Shopkeeper=!NO_COMMAND
 @set Shopkeeper=MONITOR
 @set Shopkeeper=WIZARD

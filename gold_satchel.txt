@@ -32,9 +32,9 @@
 @set Satchel of gold=QUIET
 @set Satchel of gold=MONITOR
 @set Satchel of gold=!NO_COMMAND
-@lock/give Satchel of gold=#1
-@lock/drop Satchel of gold=#1
-@lock/enter Satchel of gold=#1
+@lock/give Satchel of gold==#1
+@lock/drop Satchel of gold==#1
+@lock/enter Satchel of gold==#1
 
 &AMOUNT Satchel of gold=50
 &DESCRIBE Satchel of gold=A soft brown bag with a golden drawstring. Type [ansi(h,gold)] to see its contents.

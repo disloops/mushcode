@@ -35,8 +35,8 @@
 @create Bar of soap
 @set Bar of soap=QUIET
 @set Bar of soap=NO_COMMAND
-@lock/give Bar of soap=#1
-@lock/enter Bar of soap=#1
+@lock/give Bar of soap==#1
+@lock/enter Bar of soap==#1
 
 &TAKEN Bar of soap=t(namegrab(lcon(%#),soap))
 @lock/basic Bar of soap=TAKEN/0
