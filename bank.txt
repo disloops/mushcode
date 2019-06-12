@@ -44,7 +44,7 @@
 @set Bank=!NO_COMMAND
 @set Bank=WIZARD
 @lock/basic Bank==#1
-@lock/enter==#1
+@lock/enter Bank==#1
 &DESCRIBE Bank=A global banking object.
 &SATCHEL Bank=namegrab(lcon(%0), satchel of gold)
 &CHECK_GOLD Bank=gte(get(u(satchel,%0)/amount),%1)

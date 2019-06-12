@@ -35,9 +35,9 @@
 @@ other beers. Right now we have to disable that because if someone ends up with
 @@ two beers, the CMD_DRINK command doesn't work correctly. With a parent beer
 @@ object, we can walk through the children objects to see if the give recipient
-@@ owns any of them.
+@@ owns any of them. Then no one ends up with two or more beers.
 
-@@ TODO: Create an "order round" commands that gives a beer to everyone in the
+@@ TODO: Create an "order round" command that gives a beer to everyone in the
 @@ bar that doesn't already have one.
 
 @@ Created and tested under PennMUSH v1.8.7
