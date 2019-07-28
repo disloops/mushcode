@@ -1,6 +1,7 @@
 @@ The Operator
 @@ A reference object that exports global commands.
 @@ This object should be in the Master Room.
+@@ Requires the parent objects in "parent_drink.txt" and "parent_food.txt".
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
