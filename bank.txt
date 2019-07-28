@@ -1,30 +1,10 @@
-@@ MIT License
-@@ Copyright (c) 2019 Matt Westfall (@disloops)
-
-@@ Permission is hereby granted, free of charge, to any person obtaining a copy
-@@ of this software and associated documentation files (the "Software"), to deal
-@@ in the Software without restriction, including without limitation the rights
-@@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-@@ copies of the Software, and to permit persons to whom the Software is
-@@ furnished to do so, subject to the following conditions:
-
-@@ The above copyright notice and this permission notice shall be included in all
-@@ copies or substantial portions of the Software.
-
-@@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-@@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-@@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-@@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-@@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-@@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-@@ SOFTWARE.
+@@ The Bank
+@@ An object that provides some economy functions.
+@@ Requires the gold satchel object in "gold_satchel.txt".
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
-
-@@ Bank v1.0
-@@ A global object with economy commands. This bank object is used in conjunction
-@@ with the wallet object described in "gold_satchel.txt".
+@@ source = https://github.com/disloops/mushcode/blob/master/bank.txt
 
 @@ Note that this may use some custom flags created with @flag:
 @@ FOR_SALE: Just means it hasn't been picked up from the shop yet
@@ -37,21 +17,26 @@
 
 @@ Created and tested under PennMUSH v1.8.7
 
-@tel me=#2
 @create Bank
 @set Bank=QUIET
 @set Bank=MONITOR
 @set Bank=!NO_COMMAND
 @set Bank=WIZARD
+@set Bank=SAFE
 @lock/basic Bank==#1
 @lock/enter Bank==#1
+
 &DESCRIBE Bank=A global banking object.
 &SATCHEL Bank=namegrab(lcon(%0), satchel of gold)
+
 &CHECK_GOLD Bank=gte(get(u(satchel,%0)/amount),%1)
 @function check_gold=num(Bank), check_gold
+
 &CHARGE_GOLD Bank=attrib_set(u(satchel,%0)/amount,[sub(get(u(satchel,%0)/amount),%1)])
 @function charge_gold=num(Bank), charge_gold
+
 &CMD_BUY Bank=$buy *:think setq(0,locate(%#,%0,TX));@assert eq(0,comp(loc(%q0),loc(%#)))=@pemit %#=Unable to find that item here.;@assert strmatch(lflags(%q0),*FOR_SALE*)=@pemit %#=It's not for sale.;@break cand(strmatch(lflags(locate(%#,%0,TX)),*SINGLETON*),t(namegrab(lcon(%#),%0)))=@pemit %#=Those are out of stock now.;@assert check_gold(%#,get(%q0/price))=@pemit %#=You can't afford that.;@think [u(charge_gold(%#,get(%q0/price)))];@set %q0=!FOR_SALE;@lock %q0;@tel %q0=%#;@if strmatch(lflags(%q0),*CLONE*)={think setq(1,clone(%q0));@tel %q1=loc(%#);@set %q1=FOR_SALE;@lock %q1==#1;@lock/use %q1=+%q1};@remit loc(%#)=name(%#) has purchased the [name(%q0)].
 
 @@ Then we must hook the existing "buy" command:
 @hook/override/inline buy=num(Bank),cmd_buy
+@@ Note that @hook is not persistent, we have to run it on startup each time

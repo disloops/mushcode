@@ -1,0 +1,22 @@
+@@ Marble Figurine
+@@ Requires the parent object in "parent_item.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/items/marble_figurine.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Marble figurine
+@set Marble figurine=QUIET
+@set Marble figurine=NO_COMMAND
+@set Marble figurine=FOR_SALE
+@set Marble figurine=CLONE
+@lock/basic Marble figurine==#1
+@lock/enter Marble figurine==#1
+@lock/use Marble figurine=+Marble figurine
+@parent Marble figurine=get_parent_item()
+
+&DESCRIBE Marble figurine=A small totem statue of a racoon carved in marble.
+&USE Marble figurine=You set the little statue down at eye level and admire it.
+&PRICE Marble figurine=2

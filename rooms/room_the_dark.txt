@@ -1,0 +1,32 @@
+@@ [Room] The Dark
+@@ The starting room for new players.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/rooms/room_the_dark.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@dig/teleport The Dark
+@set here=UNFINDABLE
+@set here=NO_COMMAND
+
+&DESCRIBE here=Late at night, you awake with the sense that something outside requires your attention. A screened window carries the warm summer night to you and it feels alive with activity. As if in a dream, the mere thought of being outside seems to place you there. Something both strange and familiar beckons you onward.
+
+@open Outside (o)
+@link Outside (o)=#6
+@set Outside (o)=UNFINDABLE
+@set Outside (o)=WIZARD
+
+@lock/Basic Outside (o)=DESC:*&\(SEX:m*|SEX:M*|SEX:f*|SEX:F*\)&FLAG\^ENTER_OK&CHECK_BASIC_LOCK/1
+
+&ALIAS Outside (o)=outside;out;o
+
+&CHECK_BASIC_LOCK Outside (o)=strmatch(lock(%#),=%#)
+
+&FAILURE Outside (o)=Before leaving, take a moment to set a couple of your attributes:%r%r1) Description - This is what someone sees when they "look" at you.%rUse [ansi(h,@desc me=<description>)] to set it and [ansi(h,look me)] to see how it looks.%r%r2) Sex - Your sex \[Male/Female\]%rUse [ansi(h,@sex me=<Male/Female>)] to set
+it.%r%r3) Enter Flag - Setting "ENTER_OK" on yourself allows players to give you things.%rUse [ansi(h,@set me=ENTER_OK)] to set this flag.%r%r4) Basic lock - This prevents people from using "take" on you.%rUse [ansi(h,@lock me==me)] to set this. (Note: The double equal sign is necessary, it means that you have to "be you" to do
+it.)
+
+&ASUCCESS Outside (o)=@create Satchel of gold;@set Satchel of gold=QUIET;@set Satchel of gold=MONITOR;@set Satchel of gold=!NO_COMMAND;@lock/give Satchel of gold==#1;@lock/drop Satchel of gold==#1;@lock/enter Satchel of gold==#1;@parent Satchel of gold=get_parent_satchel();&AMOUNT Satchel of gold=50;@tel Satchel of
+gold=%#;@link %#=#12

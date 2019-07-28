@@ -1,0 +1,24 @@
+@@ [parent] Food
+@@ A parent food object.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_food.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_food
+@set parent_food=!NO_COMMAND
+@set parent_food=MONITOR
+@set parent_food=LINK_OK
+@lock/parent parent_food=power^WIZARD
+
+&ADROP parent_food=@set %!=DARK;@nuke %!;@nuke %!
+&DROP parent_food=You drop your food!
+
+&OUSE parent_food=%n eats [u(get_art,name(%!))] %!.
+&RUNOUT parent_food=@emit You finish your food.;@set %!=DARK;@nuke %!;@nuke %!
+
+&USE parent_food=randword(v(use_text),|)
+&GET_USE_TEXT parent_food=randword(v(use_text),|)
+&USE_TEXT parent_food=You take a reasonable bite of your food.|This tastes pretty good.|What a well-made item.|You take a quick glance around to see if anyone noticed your food.

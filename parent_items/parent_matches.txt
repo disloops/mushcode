@@ -1,0 +1,32 @@
+@@ [parent] Matches
+@@ A parent object for the collectible matchbook objects
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_matches.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@@ Note that for an item to @clone itself, restrictions on both @create and
+@@ @clone need to be set properly. Because I don't want non-WIZARD players
+@@ using @create, the restrictions I have look like this:
+@@ @command/restrict @create=FLAG^WIZARD|!TYPE^PLAYER
+
+@create parent_matches
+@set parent_matches=!NO_COMMAND
+@set parent_matches=MONITOR
+@set parent_matches=LINK_OK
+@lock/parent parent_matches=power^WIZARD
+
+&TAKEN parent_matches=t(namegrab(lcon(%#),name(%!))
+&ASUCCESS parent_matches=think setq(0,clone(%!));@lock/use %q0=+%q0;@teleport me=loc(%#)
+
+&ADROP parent_matches=@set %!=DARK;@nuke %!;@nuke %!
+&DROP parent_matches=You discard the matches.
+&EFAIL parent_matches=An odd request.
+&FAILURE parent_matches=You already have that.
+&GIVE_LOCK`FAILURE parent_matches=Better not... safety first.
+&OUSE parent_matches=%n strikes a match.
+&SUCCESS parent_matches=You take the matches.
+&UFAIL parent_matches=Try to [ansi(h,take)] or [ansi(h,buy)] it first.
+&USE parent_matches=You strike a match and watch it burn.

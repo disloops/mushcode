@@ -1,0 +1,28 @@
+@@ Ship's Compass
+@@ Requires the parent object in "parent_item.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/items/ships_compass.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Ship's compass
+@set Ship's compass=QUIET
+@set Ship's compass=NO_COMMAND
+@set Ship's compass=FOR_SALE
+@set Ship's compass=CLONE
+@set Ship's compass=SINGLETON
+@lock/give Ship's compass==#1
+@lock/basic Ship's compass==#1
+@lock/enter Ship's compass==#1
+@lock/drop Ship's compass==#1
+@lock/use Ship's compass=+Ship's compass
+@parent Ship's compass=get_parent_item()
+
+&DESCRIBE Ship's compass=A gleaming brass instrument that reads directions to a precise degree. 
+&USE Ship's compass=You hold the [name(%!)] before you and take a reading.
+&PRICE Ship's compass=84
+
+&GIVE_LOCK`FAILURE Ship's compass=Maybe they know where they're headed.
+&DROP_LOCK`FAILURE Ship's compass=That could be bad luck?

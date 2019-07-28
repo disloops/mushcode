@@ -1,0 +1,32 @@
+@@ The Library
+@@ A reference item that tracks DBREFs and other functions.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/library.txt
+
+@create Library
+@set Library=QUIET
+@set Library=MONITOR
+@set Library=!NO_COMMAND
+@set Library=WIZARD
+@set Library=SAFE
+@lock/basic Library==#1
+@lock/enter Library==#1
+&DESCRIBE Library=A global library object.
+&GET_ART Library=if(strmatch(%0,unicorn*),a,art(%0))
+@function get_art=num(Library), get_art
+&GET_PARENT_ROOM Library=#72
+@function get_parent_room=num(Library), get_parent_room
+&GET_PARENT_DRINK Library=#66
+@function get_parent_drink=num(Library), get_parent_drink
+&GET_PARENT_FOOD Library=#71
+@function get_parent_food=num(Library), get_parent_food
+&GET_PARENT_ITEM Library=#63
+@function get_parent_item=num(Library), get_parent_item
+&GET_PARENT_MATCHES Library=#60
+@function get_parent_matches=num(Library), get_parent_matches
+&GET_PARENT_SOAP Library=#59
+@function get_parent_soap=num(Library), get_parent_soap
+&GET_PARENT_SATCHEL Library=#54
+@function get_parent_satchel=num(Library), get_parent_satchel

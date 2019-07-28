@@ -1,0 +1,20 @@
+@@ [parent] Item
+@@ A parent object for items listed for sale.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_item.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_item
+@set parent_item=!NO_COMMAND
+@set parent_item=MONITOR
+@set parent_item=LINK_OK
+@lock/parent parent_item=power^WIZARD
+
+&ADESCRIBE parent_item=@if strmatch(lflags(%!),*FOR_SALE*)=@pemit %#=It costs [v(price)] gold.
+&FAILURE parent_item=That costs [v(price)] gold. Try [ansi(h,buy [name(%!)])] instead.
+&DROP parent_item=You drop the [name(%!)].
+&UFAIL parent_item=Try to [ansi(h,take)] or [ansi(h,buy)] it first.
+&EFAIL parent_item=An odd request.

@@ -1,0 +1,20 @@
+@@ Soap
+@@ A collectible soap object that replenishes itself.
+@@ Requires the parent object in "parent_soap.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/soap.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Bar of soap
+@set Bar of soap=QUIET
+@set Bar of soap=NO_COMMAND
+@lock/give Bar of soap==#1
+@lock/enter Bar of soap==#1
+@lock/basic Bar of soap=TAKEN/0
+@parent Bar of soap=get_parent_soap()
+
+&DESCRIBE Bar of soap=A thin bar of hard, pink soap that's wrapped in paper.
+&USE Bar of soap=The soap smells fresh and leaves your hands feeling crisp.

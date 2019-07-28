@@ -1,0 +1,32 @@
+@@ [parent] Soap
+@@ A parent object for collectible soap objects.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_soap.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@@ Note that for an item to @clone itself, restrictions on both @create and
+@@ @clone need to be set properly. Because I don't want non-WIZARD players
+@@ using @create, the restrictions I have look like this:
+@@ @command/restrict @create=FLAG^WIZARD|!TYPE^PLAYER
+
+@create parent_soap
+@set parent_soap=!NO_COMMAND
+@set parent_soap=MONITOR
+@set parent_soap=LINK_OK
+@lock/parent parent_soap=power^WIZARD
+
+&TAKEN parent_soap=t(namegrab(lcon(%#),name(%!))
+&ASUCCESS parent_soap=think setq(0,clone(%!));@lock/use %q0=+%q0;@teleport me=loc(%#)
+
+&ADROP parent_soap=@set %!=DARK;@nuke %!;@nuke %!
+&DROP parent_soap=You discard the soap.
+&EFAIL parent_soap=An odd request.
+&FAILURE parent_soap=You already have that.
+&GIVE_LOCK`FAILURE parent_soap=That could be misconstrued as an insult.
+&OUSE parent_soap=%n uses the soap.
+&SUCCESS parent_soap=You take the soap.
+&UFAIL parent_soap=Try to [ansi(h,take)] or [ansi(h,buy)] it first.
+&USE parent_soap=The soap smells fresh and leaves your hands feeling crisp.

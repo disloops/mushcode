@@ -1,0 +1,28 @@
+@@ [parent] Gold Satchel
+@@ A parent object for the Gold Satchel.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_gold_satchel.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_satchel
+@set parent_satchel=QUIET
+@set parent_satchel=MONITOR
+@set parent_satchel=!NO_COMMAND
+@lock/give parent_satchel==#1
+@lock/drop parent_satchel==#1
+@lock/enter parent_satchel==#1
+
+&DESCRIBE parent_satchel=A soft brown bag with a golden drawstring. Type [ansi(h,gold)] to see its contents.
+&USE parent_satchel=You cautiously check to see that your bag hasn't disappeared.
+
+&GIVE_LOCK`FAILURE parent_satchel=That type of charity must come later.
+&DROP_LOCK`FAILURE parent_satchel=That type of detachment must come later.
+
+&GET_AMOUNT parent_satchel=switch(v(amount),1,v(amount) piece,v(amount) pieces)
+&STATUS parent_satchel=pemit(loc(%!),You have [u(get_amount)] of gold.)
+
+&CMD_GOLD parent_satchel=$gold:think u(status)
+&ADESCRIBE parent_satchel=think u(status)

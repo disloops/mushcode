@@ -1,0 +1,21 @@
+@@ Matches
+@@ A collectible matchbook object that replenishes itself.
+@@ Requires the parent object in "parent_matches.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/matches.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Matches from Morley's
+@set Matches from Morley's=QUIET
+@set Matches from Morley's=NO_COMMAND
+@lock/Basic Matches from Morley's=TAKEN/0
+@lock/Enter Matches from Morley's==#1
+@lock/Give Matches from Morley's==#1
+@lock/Use Matches from Morley's=+Matches from Morley's
+@parent Matches from Morley's=get_parent_matches()
+
+&DESCRIBE Matches from Morley's=A vanilla-colored book of matches from Morley's Heirlooms in Caventry.
+&GIVE_LOCK Matches from Morley's==#1

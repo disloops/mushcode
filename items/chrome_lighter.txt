@@ -1,0 +1,22 @@
+@@ Chrome Lighter
+@@ Requires the parent object in "parent_item.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/items/chrome_lighter.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Chrome lighter
+@set Chrome lighter=QUIET
+@set Chrome lighter=NO_COMMAND
+@set Chrome lighter=FOR_SALE
+@set Chrome lighter=CLONE
+@lock/basic Chrome lighter==#1
+@lock/enter Chrome lighter==#1
+@lock/use Chrome lighter=+Chrome lighter
+@parent Chrome lighter=get_parent_item()
+
+&DESCRIBE Chrome lighter=A metallic flip-top lighter that burns using an oil-soaked cotton wick.
+&USE Chrome lighter=You deftly flip the lighter open and strike the flint. The wick bursts into a small flame.
+&PRICE Chrome lighter=18

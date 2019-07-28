@@ -1,0 +1,47 @@
+@@ Barista
+@@ A simple restaurateur.
+@@ Requires the parent objects in "parent_drink.txt" and "parent_food.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/barista.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@@ Note: The "check_gold()" and "charge_gold()" functions are attributes defined
+@@ in a bank object and exported using @function. See "bank.txt" and
+@@ "gold_satchel.txt" for more info on the money system in use.
+
+@create Barista
+@lock/basic Barista==#1
+@lock/enter Barista==#1
+@lset Barista/basic=NO_INHERIT
+@lset Barista/enter=NO_INHERIT
+@set Barista=!NO_COMMAND
+@set Barista=MONITOR
+@set Barista=WIZARD
+
+&FAILURE Barista=She is too busy!
+&EFAIL Barista=She's only concerned with coffee and scones!
+&USE Barista=She's busy! To see the menu, type [ansi(h,menu)].
+
+&DESCRIBE Barista=A girl in a bandana who is managing a number of coffee-making contraptions.
+
+&SHOW_MENU Barista=align(1 77,,table(iter(%0,##,|,|),20,77,|,|))
+&DRINKS Barista=Blonde Roast|Cafe Mocha|Cold Brew|Dark Roast|Espresso|Iced Tea|Unicorn Frappuccino
+&FOOD Barista=Cheese Danish|Chocolate Donut|Crescent Moon Cookie|Lemon Cookie|Sugar Cookie|Tea Biscuit
+&ITEM_PRICE Barista=1
+
+&CMD_MENU Barista=$menu:@pemit %#=%r[ansi(h,Drinks)]:%r%r[u(show_menu,v(drinks))]%r%r[ansi(h,Food)]:%r%r[u(show_menu,v(food))]%r%rOne gold each. To order something, type [ansi(h,order <food or drink>)].
+
+&CMD_TALK Barista=$talk *:@assert strmatch(name(%!),%0);@pemit %#=She's busy! To see the menu, type [ansi(h,menu)].
+
+&FIND_ITEM Barista=grab(strcat(v(drinks),|,v(food)),%0,|)
+
+&GET_ACTION Barista=if(match(v(drinks),%0,|),drink,eat)
+
+&GET_ITEM_PARENT Barista=if(match(v(drinks),%0,|),get_parent_drink(),get_parent_food())
+
+&MAKE_ITEM Barista=[setq(0,[u(find_item,%0)])][setq(1,create(%q0))][setq(2,capstr(get_art(%q0)) %q0. To use\, type [ansi(h,use %q0)] or [ansi(h,[u(get_action,%q0)] %q0)].)][attrib_set(%q1/describe,%q2)][attrib_set(%q1/charges,2)][set(%q1,DESTROY_OK)][set(%q1,MONITOR)][set(%q1,QUIET)][set(%q1,!NO_COMMAND)][tel(%q1,me)]%q0
+
+&CMD_ORDER Barista=$order *:@assert t(u(find_item,%0))=@pemit %#=Never heard of it. To see the menu, type [ansi(h,menu)]. To order something, type [ansi(h,order <food or drink>)].;@assert check_gold(%#,v(item_price))=@pemit %#=You don't have enough gold!;think setq(0,u(make_item,%0));say Sure, %n! One gold, please.;@wait 1={@parent %q0=[u(get_item_parent,%q0)];give %q0 to %#;@lock/use %q0=+%q0;@oemit %#=[name(%!)] gives %n [get_art(%q0)] %q0.};think charge_gold(%#,v(item_price))

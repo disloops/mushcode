@@ -1,0 +1,40 @@
+@@ Bartender
+@@ A simple bartender.
+@@ Requires the parent object in "parent_drink.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/bartender.txt
+
+@@ Note: The "check_gold()" and "charge_gold()" functions are attributes defined
+@@ in a bank object and exported using @function. See "bank.txt" and
+@@ "gold_satchel.txt" for more info on the money system in use.
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Bartender
+@lock/basic Bartender==#1
+@lock/enter Bartender==#1
+@lset Bartender/basic=NO_INHERIT
+@lset Bartender/enter=NO_INHERIT
+@set Bartender=!NO_COMMAND
+@set Bartender=MONITOR
+@set Bartender=WIZARD
+
+&FAILURE Bartender=Who would tend the bar?
+&EFAIL Bartender=He's not interested.
+&USE Bartender=He's not much for small talk. To see the menu, type [ansi(h,menu)].
+
+&DESCRIBE Bartender=A non-descript man wearing an apron.%rTo see what drinks are available, type [ansi(h,menu)].
+
+&SHOW_MENU Bartender=align(1 77,,table(iter(%0,##,|,|),20,77,|,|))
+&BEERS Bartender=Asahi|Beck's|John Courage|Heather Ale|Labatt's|Oktoberfest|Orion|Pilsner|Stella
+&BEER_PRICE Bartender=1
+
+&CMD_MENU Bartender=$menu:@pemit %#=%r[ansi(h,Beers)]:%r%r[u(show_menu,v(beers))]%r%rOne gold each. To order a drink, type [ansi(h,order <beer name>)].
+
+&CMD_TALK Bartender=$talk *:@assert strmatch(name(%!),%0);@pemit %#=He's not much for small talk. To see the menu, type [ansi(h,menu)].
+
+&MAKE_DRINK Bartender=[setq(0,Pint of [grab(v(beers),%0,|)])][setq(1,create(%q0))][setq(2,A %q0. To drink\, type [ansi(h,drink pint)] or [ansi(h,drink %q0)].)][setq(3,The world grows a little brighter.)][attrib_set(%q1/describe,%q2)][attrib_set(%q1/charges,2)][attrib_set(%q1/use,%q3)][attrib_set(%q1/use_text,%q3)][set(%q1,DESTROY_OK)][set(%q1,MONITOR)][set(%q1,QUIET)][set(%q1,!NO_COMMAND)][tel(%q1,me)]%q0
+
+&CMD_ORDER Bartender=$order *:@assert match(v(beers),%0,|)=@pemit %#=Never heard of it. To see the menu, type [ansi(h,menu)]. To order a drink, type [ansi(h,order <beer name>)].;@assert check_gold(%#,v(beer_price))=@pemit %#=You don't have enough gold!;think setq(0,u(make_drink,%0));say Okay, %n, that's one gold. Coming up.;@wait 1={@parent %q0=get_parent_drink();give %q0 to %#;@lock/use %q0=+%q0;@oemit %#=[name(%!)] gives %n a [name(%q0)].};think charge_gold(%#,v(beer_price));@wait 20=:starts wiping the bar.
