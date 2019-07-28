@@ -14,6 +14,7 @@
 @lock/give parent_satchel==#1
 @lock/drop parent_satchel==#1
 @lock/enter parent_satchel==#1
+@lock/parent parent_satchel=power^WIZARD
 
 &DESCRIBE parent_satchel=A soft brown bag with a golden drawstring. Type [ansi(h,gold)] to see its contents.
 &USE parent_satchel=You cautiously check to see that your bag hasn't disappeared.
