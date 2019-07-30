@@ -4,7 +4,7 @@
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
-@@ source = https://github.com/disloops/mushcode/blob/master/bank.txt
+@@ source = https://github.com/disloops/mushcode/blob/master/util_items/bank.txt
 
 @@ Note that this may use some custom flags created with @flag:
 @@ FOR_SALE: Just means it hasn't been picked up from the shop yet

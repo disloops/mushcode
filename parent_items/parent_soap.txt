@@ -19,7 +19,7 @@
 @lock/parent parent_soap=power^WIZARD
 
 &TAKEN parent_soap=t(namegrab(lcon(%#),name(%!))
-&ASUCCESS parent_soap=think setq(0,clone(%!));@lock/use %q0=+%q0;@teleport me=loc(%#)
+&ASUCCESS parent_soap=think setq(0,clone(%!));@lock/use %q0=+%q0;@teleport %!=loc(%#)
 
 &ADROP parent_soap=@set %!=DARK;@nuke %!;@nuke %!
 &DROP parent_soap=You discard the soap.

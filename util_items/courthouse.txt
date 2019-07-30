@@ -1,0 +1,21 @@
+@@ The Courthouse
+@@ A low-DBREF object used for @startup items.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/util_items/courthouse.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Courthouse
+@set Courthouse=QUIET
+@set Courthouse=MONITOR
+@set Courthouse=!NO_COMMAND
+@set Courthouse=WIZARD
+@set Courthouse=SAFE
+@lock/basic Courthouse==#1
+@lock/enter Courthouse==#1
+
+&DESCRIBE Courthouse=An administrative object to dispense startup settings.
+
+@startup Courthouse=@hook/override/inline buy=num(Bank),cmd_buy;@command/restrict @dig=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @open=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @link=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @unlink=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @parent=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @edit=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @create=FLAG^WIZARD|!TYPE^PLAYER;@command/restrict @tel=FLAG^WIZARD|!TYPE^PLAYER;@command/restrict @clone=FLAG^WIZARD|!TYPE^PLAYER

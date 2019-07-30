@@ -3,7 +3,7 @@
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
-@@ source = https://github.com/disloops/mushcode/blob/master/library.txt
+@@ source = https://github.com/disloops/mushcode/blob/master/util_items/library.txt
 
 @create Library
 @set Library=QUIET
