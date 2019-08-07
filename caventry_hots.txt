@@ -22,14 +22,14 @@
 @set Caventry Hots=WIZARD
 
 &FAILURE Caventry Hots=The cart belongs to the vendor!
-&EFAIL Caventry Hots=It would be a tight fit.
+&EFAIL Caventry Hots=The hotdog cart would be a tight fit. To see the menu, type [ansi(h,menu)].
 &USE Caventry Hots=To see the menu, type [ansi(h,menu)].
 
 &DESCRIBE Caventry Hots=A vendor with a food cart selling chili dogs. To see the menu, type [ansi(h,menu)].
 
 &SHOW_MENU Caventry Hots=align(1 77,,table(iter(%0,##,|,|),20,77,|,|))
-&DRINKS Caventry Hots=Cola|Moon Mist
-&FOOD Caventry Hots=Chili Dog|Chili Cheese Dog|Chili Slaw Dog|The Works
+&DRINKS Caventry Hots=Dr. Rocket|Nuka Cola|Moon Mist
+&FOOD Caventry Hots=Chili Dog|Chili Cheese Dog|Slaw Dog|The Works
 &ITEM_PRICE Caventry Hots=1
 
 &CMD_MENU Caventry Hots=$menu:@pemit %#=%r[ansi(h,Drinks)]:%r%r[u(show_menu,v(drinks))]%r%r[ansi(h,Food)]:%r%r[u(show_menu,v(food))]%r%rOne gold each. To order something, type [ansi(h,order <food or drink>)].
