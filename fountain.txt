@@ -1,0 +1,18 @@
+@@ Fountain
+@@ A little fountain in the town square.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/fountain.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Fountain
+@set Fountain=QUIET
+@lock/basic Fountain==#1
+@lock/enter Fountain==#1
+
+&DESCRIBE Fountain=The fountain is a wide, shallow oval. There is a steady trickle of water that falls into a series of basins and eventually drips into the pool below. The fountain is a shade of green that suggests tarnished copper and there are some small coins at the bottom of the pool.
+&USE Fountain=You dip one hand into the fountain and are suprised at how cold the water is. It must spring from deep below.
+&FAILURE Fountain=You can't take that.
+&EFAIL Fountain=It's not really meant for swimming.
