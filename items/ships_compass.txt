@@ -7,22 +7,22 @@
 
 @@ Created and tested under PennMUSH v1.8.7
 
-@create Ship's compass
-@set Ship's compass=QUIET
-@set Ship's compass=NO_COMMAND
-@set Ship's compass=FOR_SALE
-@set Ship's compass=CLONE
-@set Ship's compass=SINGLETON
-@lock/give Ship's compass==#1
-@lock/basic Ship's compass==#1
-@lock/enter Ship's compass==#1
-@lock/drop Ship's compass==#1
-@lock/use Ship's compass=+Ship's compass
-@parent Ship's compass=get_parent_item()
+@create Ship's Compass
+@set Ship's Compass=QUIET
+@set Ship's Compass=NO_COMMAND
+@set Ship's Compass=FOR_SALE
+@set Ship's Compass=CLONE
+@set Ship's Compass=SINGLETON
+@lock/give Ship's Compass==#1
+@lock/basic Ship's Compass==#1
+@lock/enter Ship's Compass==#1
+@lock/drop Ship's Compass==#1
+@lock/use Ship's Compass=+Ship's Compass
+@parent Ship's Compass=get_parent_item()
 
-&DESCRIBE Ship's compass=A gleaming brass instrument that reads directions to a precise degree. 
-&USE Ship's compass=You hold the [name(%!)] before you and take a reading.
-&PRICE Ship's compass=84
+&DESCRIBE Ship's Compass=A gleaming brass instrument that reads directions to a precise degree. 
+&USE Ship's Compass=You hold the [name(%!)] before you and take a reading.
+&PRICE Ship's Compass=84
 
-&GIVE_LOCK`FAILURE Ship's compass=Maybe they know where they're headed.
-&DROP_LOCK`FAILURE Ship's compass=That could be bad luck?
+&GIVE_LOCK`FAILURE Ship's Compass=Maybe they know where they're headed.
+&DROP_LOCK`FAILURE Ship's Compass=That could be bad luck?

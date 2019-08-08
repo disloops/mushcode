@@ -7,16 +7,16 @@
 
 @@ Created and tested under PennMUSH v1.8.7
 
-@create Turquoise beads
-@set Turquoise beads=QUIET
-@set Turquoise beads=NO_COMMAND
-@set Turquoise beads=FOR_SALE
-@set Turquoise beads=CLONE
-@lock/basic Turquoise beads==#1
-@lock/enter Turquoise beads==#1
-@lock/use Turquoise beads=+Turquoise beads
-@parent Turquoise beads=get_parent_item()
+@create Turquoise Beads
+@set Turquoise Beads=QUIET
+@set Turquoise Beads=NO_COMMAND
+@set Turquoise Beads=FOR_SALE
+@set Turquoise Beads=CLONE
+@lock/basic Turquoise Beads==#1
+@lock/enter Turquoise Beads==#1
+@lock/use Turquoise Beads=+Turquoise Beads
+@parent Turquoise Beads=get_parent_item()
 
-&DESCRIBE Turquoise beads=A double strand of blue-green turquoise beads. They are strung together on a red cord and fashioned into a necklace.
-&USE Turquoise beads=You count the beads in your hands and admire their natural smoothness.
-&PRICE Turquoise beads=8
+&DESCRIBE Turquoise Beads=A double strand of blue-green turquoise beads. They are strung together on a red cord and fashioned into a necklace.
+&USE Turquoise Beads=You count the beads in your hands and admire their natural smoothness.
+&PRICE Turquoise Beads=8

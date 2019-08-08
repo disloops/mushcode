@@ -30,3 +30,5 @@
 @function get_parent_soap=num(Library), get_parent_soap
 &GET_PARENT_SATCHEL Library=#54
 @function get_parent_satchel=num(Library), get_parent_satchel
+&GET_ROOM_HOSTEL Library=#12
+@function get_room_hostel=num(Library), get_room_hostel

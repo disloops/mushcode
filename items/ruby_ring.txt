@@ -7,16 +7,16 @@
 
 @@ Created and tested under PennMUSH v1.8.7
 
-@create Ruby ring
-@set Ruby ring=QUIET
-@set Ruby ring=NO_COMMAND
-@set Ruby ring=FOR_SALE
-@set Ruby ring=CLONE
-@lock/basic Ruby ring==#1
-@lock/enter Ruby ring==#1
-@lock/use Ruby ring=+Ruby ring
-@parent Ruby ring=get_parent_item()
+@create Ruby Ring
+@set Ruby Ring=QUIET
+@set Ruby Ring=NO_COMMAND
+@set Ruby Ring=FOR_SALE
+@set Ruby Ring=CLONE
+@lock/basic Ruby Ring==#1
+@lock/enter Ruby Ring==#1
+@lock/use Ruby Ring=+Ruby Ring
+@parent Ruby Ring=get_parent_item()
 
-&DESCRIBE Ruby ring=A golden ring with a solitare ruby set into the face.
-&USE Ruby ring=You hold the ring up to the light and admire the gleaming gem.
-&PRICE Ruby ring=400
+&DESCRIBE Ruby Ring=A golden ring with a solitare ruby set into the face.
+&USE Ruby Ring=You hold the ring up to the light and admire the gleaming gem.
+&PRICE Ruby Ring=400

@@ -1,5 +1,6 @@
 @@ The Courthouse
-@@ A low-DBREF object used for @startup items.
+@@ A low-DBREF object used for certain functions and @startup items.
+@@ Requires the gold satchel object in "gold_satchel.txt".
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
@@ -17,5 +18,9 @@
 @lock/enter Courthouse==#1
 
 &DESCRIBE Courthouse=An administrative object to dispense startup settings.
+&GET_GOLD_AMOUNT Courthouse=get(namegrab(lcon(%#),satchel of gold)/amount)
+&GET_GOLD Courthouse=switch(u(get_gold_amount),1,u(get_gold_amount) piece,u(get_gold_amount) pieces)
+&CMD_GET_NAME Courthouse=name(%0)
+&CMD_INVENTORY Courthouse=$inventory:@pemit %#=[ansi(h,You are carrying:)];@pemit %#=map(courthouse/cmd_get_name,lcon(%#), ,%r);@pemit %#=You have [u(get_gold)] of gold.
 
-@startup Courthouse=@hook/override/inline buy=num(Bank),cmd_buy;@command/restrict @dig=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @open=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @link=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @unlink=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @parent=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @edit=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @create=FLAG^WIZARD|!TYPE^PLAYER;@command/restrict @tel=FLAG^WIZARD|!TYPE^PLAYER;@command/restrict @clone=FLAG^WIZARD|!TYPE^PLAYER;@function check_gold=num(Bank), check_gold;@function charge_gold=num(Bank), charge_gold;@function get_art=num(Library), get_art;@function get_parent_room=num(Library), get_parent_room;@function get_parent_drink=num(Library), get_parent_drink;@function get_parent_food=num(Library), get_parent_food;@function get_parent_item=num(Library), get_parent_item;@function get_parent_matches=num(Library), get_parent_matches;@function get_parent_soap=num(Library), get_parent_soap;@function get_parent_satchel=num(Library), get_parent_satchel;@function/restrict check_gold=FLAG^WIZARD|!TYPE^PLAYER;@function/restrict charge_gold=FLAG^WIZARD|!TYPE^PLAYER
+@startup Courthouse=@hook/override/inline buy=num(Bank),cmd_buy;@command/restrict @dig=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @open=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @link=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @unlink=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @parent=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @edit=FLAG^WIZARD&!POWER^GUEST&!FLAG^GAGGED;@command/restrict @create=FLAG^WIZARD|!TYPE^PLAYER;@command/restrict @tel=FLAG^WIZARD|!TYPE^PLAYER;@command/restrict @clone=FLAG^WIZARD|!TYPE^PLAYER;@function check_gold=num(Bank), check_gold;@function charge_gold=num(Bank), charge_gold;@function get_art=num(Library), get_art;@function get_parent_room=num(Library), get_parent_room;@function get_parent_drink=num(Library), get_parent_drink;@function get_parent_food=num(Library), get_parent_food;@function get_parent_item=num(Library), get_parent_item;@function get_parent_matches=num(Library), get_parent_matches;@function get_parent_soap=num(Library), get_parent_soap;@function get_parent_satchel=num(Library), get_parent_satchel;@function/restrict check_gold=FLAG^WIZARD|!TYPE^PLAYER;@function/restrict charge_gold=FLAG^WIZARD|!TYPE^PLAYER;@hook/override/inline inventory=num(Courthouse),cmd_inventory;@function get_room_hostel=num(Library), get_room_hostel

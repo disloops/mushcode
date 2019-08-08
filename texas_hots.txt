@@ -1,0 +1,49 @@
+@@ Texas Hots
+@@ A chili dog cart.
+@@ Requires the parent objects in "parent_drink.txt" and "parent_food.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/texas_hots.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@@ Note: The "check_gold()" and "charge_gold()" functions are attributes defined
+@@ in a bank object and exported using @function. See "bank.txt" and
+@@ "gold_satchel.txt" for more info on the money system in use.
+
+@create Texas Hots
+@lock/basic Texas Hots==#1
+@lock/enter Texas Hots==#1
+@lset Texas Hots/basic=NO_INHERIT
+@lset Texas Hots/enter=NO_INHERIT
+@set Texas Hots=!NO_COMMAND
+@set Texas Hots=MONITOR
+@set Texas Hots=WIZARD
+
+&FAILURE Texas Hots=The cart belongs to the vendor!
+&EFAIL Texas Hots=The hotdog cart would be a tight fit. To see the menu, type [ansi(h,menu)].
+&USE Texas Hots=To see the menu, type [ansi(h,menu)].
+
+&DESCRIBE Texas Hots=A vendor with a food cart selling chili dogs. To see the menu, type [ansi(h,menu)].
+
+&SHOW_MENU Texas Hots=align(1 77,,table(iter(%0,##,|,|),20,77,|,|))
+&DRINKS Texas Hots=Dr. Rocket|Tab Cola|Moon Mist
+&FOOD Texas Hots=Chili Dog|Chili Cheese Dog|Slaw Dog|The Works Dog
+&ITEM_PRICE Texas Hots=1
+
+&CMD_MENU Texas Hots=$menu:@pemit %#=%r[ansi(h,Drinks)]:%r%r[u(show_menu,v(drinks))]%r%r[ansi(h,Food)]:%r%r[u(show_menu,v(food))]%r%rOne gold each. To order something, type [ansi(h,order <food or drink>)].
+
+&CMD_TALK Texas Hots=$talk *:@assert strmatch(name(%!),%0);@pemit %#=The vendor nods. To see the menu, type [ansi(h,menu)].
+
+&FIND_ITEM Texas Hots=grab(strcat(v(drinks),|,v(food)),%0,|)
+
+&GET_ACTION Texas Hots=if(match(v(drinks),%0,|),drink,eat)
+
+&GET_ITEM_PARENT Texas Hots=if(match(v(drinks),%0,|),get_parent_drink(),get_parent_food())
+
+&BUSY Texas Hots=0
+
+&MAKE_ITEM Texas Hots=[setq(0,[u(find_item,%0)])][setq(1,create(%q0))][setq(2,capstr(get_art(%q0)) %q0. To use\, type [ansi(h,use %q0)] or [ansi(h,[u(get_action,%q0)] %q0)].)][attrib_set(%q1/describe,%q2)][attrib_set(%q1/charges,2)][set(%q1,DESTROY_OK)][set(%q1,MONITOR)][set(%q1,QUIET)][set(%q1,!NO_COMMAND)][tel(%q1,me)]%q1
+
+&CMD_ORDER Texas Hots=$order *:@break v(busy)=@pemit %#=The vendor is serving another customer right now.;@assert t(u(find_item,%0))=@pemit %#=Never heard of it. To see the menu, type [ansi(h,menu)]. To order something, type [ansi(h,order <food or drink>)].;@assert check_gold(%#,v(item_price))=@pemit %#=You don't have enough gold!;@set %!=busy:1;think setq(0,u(make_item,%0));@pemit %#=The vendor says, "You got it. That's one gold.";@wait 1={@parent %q0=[u(get_item_parent,name(%q0))];give %q0 to %#;@lock/use %q0=+%q0;@oemit %#=The vendor gives %n [get_art(name(%q0))] [name(%q0)].};think charge_gold(%#,v(item_price));@set %!=busy:0

@@ -7,16 +7,16 @@
 
 @@ Created and tested under PennMUSH v1.8.7
 
-@create Chrome lighter
-@set Chrome lighter=QUIET
-@set Chrome lighter=NO_COMMAND
-@set Chrome lighter=FOR_SALE
-@set Chrome lighter=CLONE
-@lock/basic Chrome lighter==#1
-@lock/enter Chrome lighter==#1
-@lock/use Chrome lighter=+Chrome lighter
-@parent Chrome lighter=get_parent_item()
+@create Chrome Lighter
+@set Chrome Lighter=QUIET
+@set Chrome Lighter=NO_COMMAND
+@set Chrome Lighter=FOR_SALE
+@set Chrome Lighter=CLONE
+@lock/basic Chrome Lighter==#1
+@lock/enter Chrome Lighter==#1
+@lock/use Chrome Lighter=+Chrome Lighter
+@parent Chrome Lighter=get_parent_item()
 
-&DESCRIBE Chrome lighter=A metallic flip-top lighter that burns using an oil-soaked cotton wick.
-&USE Chrome lighter=You deftly flip the lighter open and strike the flint. The wick bursts into a small flame.
-&PRICE Chrome lighter=18
+&DESCRIBE Chrome Lighter=A metallic flip-top lighter that burns using an oil-soaked cotton wick.
+&USE Chrome Lighter=You deftly flip the lighter open and strike the flint. The wick bursts into a small flame.
+&PRICE Chrome Lighter=18

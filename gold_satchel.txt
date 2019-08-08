@@ -9,12 +9,12 @@
 
 @@ Created and tested under PennMUSH v1.8.7
 
-@create Satchel of gold
-@set Satchel of gold=QUIET
-@set Satchel of gold=MONITOR
-@set Satchel of gold=!NO_COMMAND
-@lock/give Satchel of gold==#1
-@lock/drop Satchel of gold==#1
-@lock/enter Satchel of gold==#1
-@parent Satchel of gold=get_parent_satchel()
-&AMOUNT Satchel of gold=50
+@create Satchel of Gold
+@set Satchel of Gold=QUIET
+@set Satchel of Gold=MONITOR
+@set Satchel of Gold=!NO_COMMAND
+@lock/give Satchel of Gold==#1
+@lock/drop Satchel of Gold==#1
+@lock/enter Satchel of Gold==#1
+@parent Satchel of Gold=get_parent_satchel()
+&AMOUNT Satchel of Gold=50
