@@ -26,3 +26,4 @@
 &CMD_STEAL Operator=$steal *:@pemit %#=You had better not!
 
 &CMD_QUIT Operator=$quit:@pemit %#=Type 'QUIT' in all caps to exit.
+&CMD_EXIT Operator=$exit:@pemit %#=Type 'QUIT' in all caps to exit.

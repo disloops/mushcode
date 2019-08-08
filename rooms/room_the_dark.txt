@@ -24,6 +24,6 @@
 
 &CHECK_BASIC_LOCK Outside (o)=strmatch(lock(%#),=%#)
 
-&FAILURE Outside (o)=Before leaving, take a moment to set a couple of your attributes:%r%r1) Description - This is what someone sees when they "look" at you.%rUse [ansi(h,@desc me=<description>)] to set it and [ansi(h,look me)] to see how it looks.%r%r2) Sex - Your sex \[Male/Female\]%rUse [ansi(h,@sex me=<Male/Female>)] to set it.
+&FAILURE Outside (o)=Before leaving, take a moment to set a couple of your attributes:%r%r1) Description - This is what someone sees when they "look" at you.%rUse [ansi(h,@desc me=<description>)] to set it and [ansi(h,look me)] to see how it looks.%r%r2) Sex - Your sex \[Male/Female\]%rUse [ansi(h,@sex me=<Male/Female>)] to set it.%r
 
 &ASUCCESS Outside (o)=@create Satchel of Gold;@set Satchel of Gold=QUIET;@set Satchel of Gold=MONITOR;@set Satchel of Gold=!NO_COMMAND;@lock/give Satchel of Gold==#1;@lock/drop Satchel of Gold==#1;@lock/enter Satchel of Gold==#1;@parent Satchel of Gold=get_parent_satchel();&AMOUNT Satchel of Gold=50;@tel Satchel of Gold=%#;@link %#=get_room_hostel()
