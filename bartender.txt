@@ -27,7 +27,7 @@
 
 &DESCRIBE Bartender=A non-descript man wearing an apron.%rTo see what drinks are available, type [ansi(h,menu)].
 
-&SHOW_MENU Bartender=align(1 77,,table(iter(%0,##,|,|),20,77,|,|))
+&SHOW_MENU Bartender=align(1 77,,table(%0,20,77,|,|)
 &BEERS Bartender=Asahi|Beck's|John Courage|Heather Ale|Labatt's|Oktoberfest|Orion|Pilsner|Stella
 &BEER_PRICE Bartender=1
 

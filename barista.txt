@@ -27,7 +27,7 @@
 
 &DESCRIBE Barista=A girl in a bandana who is managing a number of coffee-making contraptions.
 
-&SHOW_MENU Barista=align(1 77,,table(iter(%0,##,|,|),20,77,|,|))
+&SHOW_MENU Barista=align(1 77,,table(%0,20,77,|,|))
 &DRINKS Barista=Blonde Roast|Cafe Mocha|Cold Brew|Dark Roast|Espresso|Iced Tea|Unicorn Frappuccino
 &FOOD Barista=Cheese Danish|Chocolate Donut|Crescent Moon Cookie|Lemon Cookie|Sugar Cookie|Tea Biscuit
 &ITEM_PRICE Barista=1
