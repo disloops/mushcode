@@ -14,7 +14,7 @@
 
 &DESCRIBE Bulletin Board=A large cube with a corkboard surface that residents and travelers can use to post notes.%rThere are notes from the following people:%r%r[u(print_authors)]%r%rTo read a note, type [ansi(h,read <author>)]. To leave a note, type [ansi(h,write <message>)]. To remove your note, type [ansi(h,remove)].
 
-&CMD_WRITE Bulletin Board=$write *:think [attrib_set(%!/NOTE_[name(%#)],[left(%0,500)])];think [attrib_set(%!/AUTHORS,[setunion(v(authors),name(%#))])];@pemit %#=Your note has been pinned to the board.
+&CMD_WRITE Bulletin Board=$write *:think [attrib_set(%!/NOTE_[name(%#)],[edit(escape(left(%0,500)),\\\,,\,)])];think [attrib_set(%!/AUTHORS,[setunion(v(authors),name(%#))])];@pemit %#=Your note has been pinned to the board.
 
 &CMD_READ Bulletin Board=$read *:@if t(v(note_%0))={@pemit %#=[capstr(%0)] writes:%r%r[align(1 77,,v(note_%0)%r%r)]},{@pemit %#=There is no note by that author.}
 
