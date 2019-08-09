@@ -16,7 +16,7 @@
 
 &CMD_WRITE Bulletin Board=$write *:think [attrib_set(%!/NOTE_[name(%#)],[left(%0,500)])];think [attrib_set(%!/AUTHORS,[setunion(v(authors),name(%#))])];@pemit %#=Your note has been pinned to the board.
 
-&CMD_READ Bulletin Board=$read *:@if t(v(note_%0))={@pemit %#=[capstr(%0)] writes:%r%r[v(note_%0)]%r},{@pemit %#=There is no note by that author.}
+&CMD_READ Bulletin Board=$read *:@if t(v(note_%0))={@pemit %#=[capstr(%0)] writes:%r%r[align(1 77,,v(note_%0)%r%r)]},{@pemit %#=There is no note by that author.}
 
 &CMD_REMOVE Bulletin Board=$remove:think attrib_set(%!/AUTHORS,[remove(v(authors),name(%#))]);think attrib_set(%!/NOTE_[name(%#)]);@pemit %#=Removed.
 
