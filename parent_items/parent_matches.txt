@@ -26,7 +26,7 @@
 &EFAIL parent_matches=An odd request.
 &FAILURE parent_matches=You already have that.
 &GIVE_LOCK`FAILURE parent_matches=Better not... safety first.
-&OUSE parent_matches=%n strikes a match.
+&OUSE parent_matches=strikes a match.
 &SUCCESS parent_matches=You take the matches.
 &UFAIL parent_matches=Try to [ansi(h,take)] or [ansi(h,buy)] it first.
 &USE parent_matches=You strike a match and watch it burn.
