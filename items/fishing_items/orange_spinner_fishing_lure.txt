@@ -1,0 +1,24 @@
+@@ Orange Spinner
+@@ A fishing lure. Requires the parent object in "parent_fishing_lure.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/items/fishing_items/orange_spinner_fishing_lure.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Orange Spinner
+@set Orange Spinner=QUIET
+@set Orange Spinner=NO_COMMAND
+@set Orange Spinner=FOR_SALE
+@set Orange Spinner=CLONE
+@lock/basic Orange Spinner==#1
+@lock/enter Orange Spinner==#1
+@lock/use Orange Spinner=+Orange Spinner
+@parent Orange Spinner=get_parent_fishing_lure()
+
+&DESCRIBE Orange Spinner=A small fishing lure with a silver body and an orange blade.%rTo attach, type [ansi(h,use [name(%!)])].
+&PRICE Orange Spinner=2
+
+&AUSE Orange Spinner=think [u(parent(%!)/equip, %#)]
+&ADROP Orange Spinner=think [u(parent(%!)/unequip, %#)]

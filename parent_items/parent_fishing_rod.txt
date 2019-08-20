@@ -1,0 +1,23 @@
+@@ [parent] Fishing Rod
+@@ A parent fishing rod object.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_fishing_rod.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_fishing_rod
+@set parent_fishing_rod=!NO_COMMAND
+@set parent_fishing_rod=MONITOR
+@set parent_fishing_rod=LINK_OK
+@set parent_fishing_rod=WIZARD
+@lock/parent parent_fishing_rod=power^WIZARD
+@parent parent_fishing_rod=get_parent_item()
+
+&USE parent_fishing_rod=The [name(%!)] is now equipped. To use, type [ansi(h,cast)] when you're near water. Don't forget to attach a lure.
+&EQUIP parent_fishing_rod=switch(parent(%@),%!,attrib_set(%0/FISHING_ROD,%@))
+&UNEQUIP parent_fishing_rod=switch(parent(%@),%!,if(strmatch(get(%0/FISHING_ROD),%@),attrib_set(%0/FISHING_ROD)))
+
+@set parent_fishing_rod/equip=VISUAL NO_INHERIT PUBLIC
+@set parent_fishing_rod/unequip=VISUAL NO_INHERIT PUBLIC

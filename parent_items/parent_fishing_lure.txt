@@ -1,0 +1,23 @@
+@@ [parent] Fishing Lure
+@@ A parent fishing lure object.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_fishing_lure.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_fishing_lure
+@set parent_fishing_lure=!NO_COMMAND
+@set parent_fishing_lure=MONITOR
+@set parent_fishing_lure=LINK_OK
+@set parent_fishing_lure=WIZARD
+@lock/parent parent_fishing_lure=power^WIZARD
+@parent parent_fishing_lure=get_parent_item()
+
+&USE parent_fishing_lure=The [name(%!)] is now attached.
+&EQUIP parent_fishing_lure=switch(parent(%@),%!,attrib_set(%0/FISHING_LURE,%@))
+&UNEQUIP parent_fishing_lure=switch(parent(%@),%!,if(strmatch(get(%0/FISHING_LURE),%@),attrib_set(%0/FISHING_LURE)))
+
+@set parent_fishing_lure/equip=VISUAL NO_INHERIT PUBLIC
+@set parent_fishing_lure/unequip=VISUAL NO_INHERIT PUBLIC

@@ -30,5 +30,9 @@
 @function get_parent_soap=num(Library), get_parent_soap
 &GET_PARENT_SATCHEL Library=#54
 @function get_parent_satchel=num(Library), get_parent_satchel
+&GET_PARENT_FISHING_ROD Library=#89
+@function get_parent_fishing_rod=num(Library), get_parent_fishing_rod
+&GET_PARENT_FISHING_LURE Library=#91
+@function get_parent_fishing_lure=num(Library), get_parent_fishing_lure
 &GET_ROOM_HOSTEL Library=#12
 @function get_room_hostel=num(Library), get_room_hostel

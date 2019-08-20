@@ -1,0 +1,24 @@
+@@ Shimano Fishing Rod
+@@ Requires the parent object in "parent_fishing_rod.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/items/fishing_items/shimano_fishing_rod.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Shimano Fishing Rod
+@set Shimano Fishing Rod=QUIET
+@set Shimano Fishing Rod=NO_COMMAND
+@set Shimano Fishing Rod=FOR_SALE
+@set Shimano Fishing Rod=CLONE
+@lock/basic Shimano Fishing Rod==#1
+@lock/enter Shimano Fishing Rod==#1
+@lock/use Shimano Fishing Rod=+Shimano Fishing Rod
+@parent Shimano Fishing Rod=get_parent_fishing_rod()
+
+&DESCRIBE Shimano Fishing Rod=A carbon rod that's all-around great for fishing any conditions.%rTo equip, type [ansi(h,use [name(%!)])]. To use, type [ansi(h,cast)] when you're near water.
+&PRICE Shimano Fishing Rod=10
+
+&AUSE Shimano Fishing Rod=think [u(parent(%!)/equip, %#)]
+&ADROP Shimano Fishing Rod=think [u(parent(%!)/unequip, %#)]
