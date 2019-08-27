@@ -1,0 +1,16 @@
+@@ [parent] Body of Water
+@@ A parent object for the parents of bodies of water.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/bodies_of_water/parent_body_of_water.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_body_of_water
+@set parent_body_of_water=LINK_OK
+@set parent_body_of_water=!NO_COMMAND
+@set parent_body_of_water=MONITOR
+@lock/parent parent_body_of_water=power^WIZARD
+
+&CMD_BUY parent_body_of_water=$cast:@assert strmatch(parent(get(%#/FISHING_ROD)),get_parent_fishing_rod())=@pemit %#=You need to purchase and equip a fishing rod.

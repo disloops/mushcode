@@ -34,5 +34,9 @@
 @function get_parent_fishing_rod=num(Library), get_parent_fishing_rod
 &GET_PARENT_FISHING_LURE Library=#91
 @function get_parent_fishing_lure=num(Library), get_parent_fishing_lure
+&GET_PARENT_BODY_OF_WATER Library=#83
+@function get_parent_body_of_water=num(Library), get_parent_body_of_water
+&GET_PARENT_LAVERIAN_SEA Library=#103
+@function get_parent_laverian_sea=num(Library), get_parent_laverian_sea
 &GET_ROOM_HOSTEL Library=#12
 @function get_room_hostel=num(Library), get_room_hostel

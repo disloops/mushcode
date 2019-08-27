@@ -1,0 +1,22 @@
+@@ [parent] Laverian Sea
+@@ A parent object for rooms on the Laverian Sea.
+@@ Requires the parent object in "parent_body_of_water.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/bodies_of_water/parent_laverian_sea.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_laverian_sea
+@set parent_laverian_sea=LINK_OK
+@set parent_laverian_sea=!NO_COMMAND
+@set parent_laverian_sea=MONITOR
+@lock/parent parent_laverian_sea=power^WIZARD
+@parent parent_laverian_sea=get_parent_body_of_water()
+
+&COMMON_FISH parent_laverian_sea=Cod|Herring|Pollock|Salmon|Mackerel|Haddock|Scup|Sea Bass|Tuna|Flouder
+
+&UNCOMMON_FISH parent_laverian_sea=Squid|Swordfish|Thresher Shark|Mako Shark|Sturgeon
+
+&RARE_FISH parent_laverian_sea=Monkfish|Octopus|Puffer Fish|Stargazer|Anglerfish
