@@ -11,6 +11,18 @@
 @set parent_body_of_water=LINK_OK
 @set parent_body_of_water=!NO_COMMAND
 @set parent_body_of_water=MONITOR
+@set parent_body_of_water=WIZARD
 @lock/parent parent_body_of_water=power^WIZARD
 
-&CMD_BUY parent_body_of_water=$cast:@assert strmatch(parent(get(%#/FISHING_ROD)),get_parent_fishing_rod())=@pemit %#=You need to purchase and equip a fishing rod.
+&CMD_CAST parent_body_of_water=$cast:@assert strmatch(parent(get(%#/FISHING_ROD)),get_parent_fishing_rod())=@pemit %#=You need to purchase and equip a fishing rod.;@assert t(namegrab(lcon(%#),name(get(%#/FISHING_ROD))))=@pemit %#=You need to equip a fishing rod that belongs to you.;@assert strmatch(parent(get(%#/FISHING_LURE)),get_parent_fishing_lure())=@pemit %#=You need to purchase and equip a fishing lure.;@assert t(namegrab(lcon(%#),name(get(%#/FISHING_LURE))))=@pemit %#=You need to equip a fishing lure that belongs to you.;@break t(get(get(%#/FISHING_ROD)/LINE_OUT))=@pemit %#=You've got your line out already.;think u(last(lparent(%!))/get_catch, %#)
+
+@@ TO DO:
+@@ 1. Check to make sure that a child is calling GET_CATCH
+@@ 2. Do a @wait command while fishing and emit a message
+@@ 3. Set fish weight, adjective, name, desc, parent, price, flags, etc.
+@@ 4. Before teleport --> recheck all the necessary conditions
+@@ 5. After teleport --> @lock/use %q0=+%q0
+
+&GET_CATCH parent_body_of_water=[attrib_set(get(%#/FISHING_ROD)/LINE_OUT,1)][setq(0,Goldfish)][setq(1,create(%q0))][set(%q1,QUIET)][tel(%q1,%0,silent)][remit(%@,name(%#) caught [get_art(%q0)] %q0.)][attrib_set(get(%#/FISHING_ROD)/LINE_OUT)]
+
+@set parent_body_of_water/get_catch=VISUAL NO_INHERIT PUBLIC
