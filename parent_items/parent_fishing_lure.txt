@@ -21,3 +21,5 @@
 
 @set parent_fishing_lure/equip=VISUAL NO_INHERIT PUBLIC
 @set parent_fishing_lure/unequip=VISUAL NO_INHERIT PUBLIC
+
+&FISH_FINDER_FACTOR parent_fishing_lure=0

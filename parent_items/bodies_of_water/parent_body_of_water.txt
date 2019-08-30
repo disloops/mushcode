@@ -14,15 +14,55 @@
 @set parent_body_of_water=WIZARD
 @lock/parent parent_body_of_water=power^WIZARD
 
-&CMD_CAST parent_body_of_water=$cast:@assert strmatch(parent(get(%#/FISHING_ROD)),get_parent_fishing_rod())=@pemit %#=You need to purchase and equip a fishing rod.;@assert t(namegrab(lcon(%#),name(get(%#/FISHING_ROD))))=@pemit %#=You need to equip a fishing rod that belongs to you.;@assert strmatch(parent(get(%#/FISHING_LURE)),get_parent_fishing_lure())=@pemit %#=You need to purchase and equip a fishing lure.;@assert t(namegrab(lcon(%#),name(get(%#/FISHING_LURE))))=@pemit %#=You need to equip a fishing lure that belongs to you.;@break t(get(get(%#/FISHING_ROD)/LINE_OUT))=@pemit %#=You've got your line out already.;think u(last(lparent(%!))/get_catch, %#)
+&CMD_CAST parent_body_of_water=$cast:think setq(0,get(%#/FISHING_ROD));think setq(1,get(%#/FISHING_LURE));@assert strmatch(parent(%q0),get_parent_fishing_rod())=@pemit %#=You need to purchase and equip a fishing rod.;@assert t(namegrab(lcon(%#),name(%q0)))=@pemit %#=You need to equip a fishing rod that belongs to you.;@assert strmatch(parent(%q1),get_parent_fishing_lure())=@pemit %#=You need to purchase and equip a fishing lure.;@assert t(namegrab(lcon(%#),name(%q1)))=@pemit %#=You need to equip a fishing lure that belongs to you.;@break t(get(%q0/LINE_OUT))=@pemit %#=You've got your line out already.;think u(last(lparent(%!))/cast_line, %q0);
+@wait rand(bound(sub(3,get(%q0/WAIT_REDUCTION)),0,3),bound(sub(10,get(%q0/WAIT_REDUCTION)),0,10))={@pemit %#=[randword(v(fishing_text),|)];think u(last(lparent(%!))/go_fish, %#, %!, %q0, %q1)}
+
+&CAST_LINE parent_body_of_water=if(strmatch(last(lparent(%@)),%!),attrib_set(%0/LINE_OUT,1))
+@set parent_body_of_water/cast_line=VISUAL NO_INHERIT PUBLIC
+
+&FISHING_TEXT parent_body_of_water=Waiting for a bite...|The hook is set...|You watch the line intently...
 
 @@ TO DO:
-@@ 1. Check to make sure that a child is calling GET_CATCH
-@@ 2. Do a @wait command while fishing and emit a message
-@@ 3. Set fish weight, adjective, name, desc, parent, price, flags, etc.
-@@ 4. Before teleport --> recheck all the necessary conditions
+@@ 4. Before teleport --> recheck all the necessary conditions (and reel in line if not)
 @@ 5. After teleport --> @lock/use %q0=+%q0
+@@ 6. Update parent_fishing_rod, parent_fishing_lure, parent_fish and operator
+@@ 7. If rarity >= 6, make DESC say "Nice catch!"
 
-&GET_CATCH parent_body_of_water=[attrib_set(get(%#/FISHING_ROD)/LINE_OUT,1)][setq(0,Goldfish)][setq(1,create(%q0))][set(%q1,QUIET)][tel(%q1,%0,silent)][remit(%@,name(%#) caught [get_art(%q0)] %q0.)][attrib_set(get(%#/FISHING_ROD)/LINE_OUT)]
+@@ %0 = Person fishing
+@@ %1 = Fishing location
+@@ %2 = Fishing rod
+@@ %3 = Fishing lure
 
-@set parent_body_of_water/get_catch=VISUAL NO_INHERIT PUBLIC
+&GO_FISH parent_body_of_water=if(strmatch(last(lparent(%@)),%!),u(do_go_fish, %0, %1, %2, %3))
+&DO_GO_FISH parent_body_of_water=
+[setq(0,u(get_fish_name, %3))]
+[setq(1,u(get_fish_type, %3))]
+[setq(2,create(before(%q0,:) before(%q1,:)))]
+[setq(3,mul(after(%q0,:),after(%q1,:)))]
+[setq(4,rand(add(1,get(%2/BIG_GAME_FACTOR)),add(10,get(%2/BIG_GAME_FACTOR))))]
+[setq(5,ceil(fdiv(mul(power(%q3,2),%q4),3)))]
+[setq(6,capstr(get_art(name(%q2))) name(%q2) \(%q4 lbs\). It sells for div(%q5,2) gold.)]
+[set(%q2,QUIET)]
+[parent(%q2,get_parent_fish())]
+[attrib_set(%q2/use,It flops around a little.)]
+[attrib_set(%q2/RARITY,%q3)]
+[attrib_set(%q2/WEIGHT,%q4)]
+[attrib_set(%q2/PRICE,%q5)]
+[attrib_set(%q2/describe,%q6)]
+[u(get_catch, %q2)]
+
+@set parent_body_of_water/go_fish=VISUAL NO_INHERIT PUBLIC
+@set parent_body_of_water/do_go_fish=NO_INHERIT
+
+&GET_CATCH parent_body_of_water=[tel(%q1,%0,silent)][pemit(%0,You caught [get_art(%q0)] %q0.)][attrib_set(get(%0/FISHING_ROD)/LINE_OUT)]
+@set parent_body_of_water/get_catch=NO_INHERIT
+
+&GET_FISH_NAME parent_body_of_water=[setq(0,bound(sub(rand(1,100),get(%0/FISH_FINDER_FACTOR)),1,100))][swtich(%q0, <20, randword(v(rare_fish),|):3, switch(%q0, <50, randword(v(uncommon_fish),|):2, randword(v(common_fish),|):1))]
+@set parent_body_of_water/get_fish_name=NO_INHERIT
+
+&GET_FISH_TYPE parent_body_of_water=[setq(0,bound(sub(rand(1,100),get(%0/FISH_FINDER_FACTOR)),1,100))][swtich(%q0, <20, randword(v(rare_types),|):3, switch(%q0, <50, randword(v(uncommon_types),|):2, randword(v(common_types),|):1))]
+@set parent_body_of_water/get_fish_type=NO_INHERIT
+
+&COMMON_TYPES parent_body_of_water=Blue|Green|Red|Striped|Spotted
+&UNCOMMON_TYPES parent_body_of_water=Black|Golden|Scarlet
+&RARE_TYPES parent_body_of_water=Emerald|Neon|Glittering

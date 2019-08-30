@@ -1,0 +1,18 @@
+@@ [parent] Fish
+@@ A parent for fish objects.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_fish.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_fish
+@set parent_fish=!NO_COMMAND
+@set parent_fish=MONITOR
+@set parent_fish=LINK_OK
+@lock/parent parent_fish=power^WIZARD
+
+&DROP parent_fish=You drop the [name(%!)].
+&ADROP parent_fish=think switch(lparent(loc(%!)),get_parent_body_of_water(),@pemit %#=It swims away!,{@nuke %!;@nuke %!})
+&EFAIL parent_fish=An odd request.

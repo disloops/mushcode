@@ -21,3 +21,6 @@
 
 @set parent_fishing_rod/equip=VISUAL NO_INHERIT PUBLIC
 @set parent_fishing_rod/unequip=VISUAL NO_INHERIT PUBLIC
+
+&WAIT_REDUCTION parent_fishing_rod=0
+&BIG_GAME_FACTOR parent_fishing_rod=0
