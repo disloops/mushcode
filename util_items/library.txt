@@ -14,7 +14,7 @@
 @lock/basic Library==#1
 @lock/enter Library==#1
 &DESCRIBE Library=A global library object.
-&GET_ART Library=if(strmatch(%0,unicorn*),a,art(%0))
+&GET_ART Library=switch(%0,unicorn*,a,8,an,11,an,18,an,art(%0))
 @function get_art=num(Library), get_art
 &GET_PARENT_ROOM Library=#72
 @function get_parent_room=num(Library), get_parent_room
