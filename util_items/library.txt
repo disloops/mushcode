@@ -38,5 +38,7 @@
 @function get_parent_body_of_water=num(Library), get_parent_body_of_water
 &GET_PARENT_LAVERIAN_SEA Library=#103
 @function get_parent_laverian_sea=num(Library), get_parent_laverian_sea
+&GET_PARENT_FISH Library=#106
+@function get_parent_fish=num(Library), get_parent_fish
 &GET_ROOM_HOSTEL Library=#12
 @function get_room_hostel=num(Library), get_room_hostel

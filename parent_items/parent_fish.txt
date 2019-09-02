@@ -14,5 +14,5 @@
 @lock/parent parent_fish=power^WIZARD
 
 &DROP parent_fish=You drop the [name(%!)].
-&ADROP parent_fish=think switch(lparent(loc(%!)),get_parent_body_of_water(),@pemit %#=It swims away!,{@nuke %!;@nuke %!})
+&ADROP parent_fish=@if strmatch(last(lparent(loc(%!))),get_parent_body_of_water())=@pemit %#=It swims away!;@nuke %!;@nuke %!
 &EFAIL parent_fish=An odd request.
