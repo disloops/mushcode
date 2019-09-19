@@ -15,7 +15,7 @@
 @@ SINGLETON: Means that only one can be carried at a time
 @@ @flag/add SINGLETON=z,thing,wizard
 @@ FISH_MARKET: Applied to locations where you can sell fish
-@@ @flag/add FISH_MARKET=w,room,wizard
+@@ @flag/add FISH_MARKET=q,room,wizard
 
 @@ Created and tested under PennMUSH v1.8.7
 
@@ -46,16 +46,16 @@
 @hook/override/inline buy=num(Bank),cmd_buy
 @@ Note that @hook is not persistent, we have to run it on startup each time
 
-&CMD_SELL Bank=$sell *:@select %0=fish,@include %!/sell_all_fish,@include %!/do_sell=%0
+&CMD_SELL Bank=$sell *:@select %0=fish,@include %!/sell_all_fish,#*,@include %!/do_sell=name(%0),@include %!/do_sell=%0
 @command/add sell
 @hook/override/inline sell=num(Bank),cmd_sell
 @@ Note that @hook is not persistent, we have to run it on startup each time
 
+@@ Currently selling ALL fish in the game, and not for the right price...
 &SELL_ALL_FISH Bank=@assert strmatch(lflags(loc(%#)),*FISH_MARKET*)=@pemit %#=You can't sell that here.;think [setq(0,u(get_fish_price))];think [u(give_gold,%#,%q0))];@include %!/NUKE_FISH=%#;@pemit %#=You have received %q0 gold for your fish.
 
 &GET_FISH_PRICE Bank=[setq(A,lsearch(%#,parent,get_parent_fish()))][setq(B,lmath(add,iter(%qA,get(%i0/price))))]%qB
 &NUKE_FISH Bank=think setq(A,lsearch(%0,parent,get_parent_fish()));@dolist %qA={@nuke %i0;@nuke %i0}
 
-@@ TODO: Check to see if name or DBREF before namegrab()
-@@ TODO: Do the same for BUY?
-&DO_SELL Bank=@assert namegrab(lcon(%#),name(%0))=@pemit %#=You do not have that item.;@pemit %#=You cannot sell that.
+@@ TODO: Check for multiple items with same name?
+&DO_SELL Bank=@assert namegrab(lcon(%#),%0)=@pemit %#=You do not have that item.;@pemit %#=You cannot sell that.
