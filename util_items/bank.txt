@@ -51,11 +51,10 @@
 @hook/override/inline sell=num(Bank),cmd_sell
 @@ Note that @hook is not persistent, we have to run it on startup each time
 
-@@ Currently selling ALL fish in the game, and not for the right price...
 &SELL_ALL_FISH Bank=@assert strmatch(lflags(loc(%#)),*FISH_MARKET*)=@pemit %#=You can't sell that here.;think [setq(0,u(get_fish_price))];think [u(give_gold,%#,%q0))];@include %!/NUKE_FISH=%#;@pemit %#=You have received %q0 gold for your fish.
 
-&GET_FISH_PRICE Bank=[setq(A,lsearch(%#,parent,get_parent_fish()))][setq(B,lmath(add,iter(%qA,get(%i0/price))))]%qB
-&NUKE_FISH Bank=think setq(A,lsearch(%0,parent,get_parent_fish()));@dolist %qA={@nuke %i0;@nuke %i0}
+&GET_FISH_PRICE Bank=[setq(A,iter(lcon(%#),ifelse(match(parent(%i0),get_parent_fish()),%i0,)))][setq(B,lmath(add,iter(%qA,get(%i0/price))))][ceil(fdiv(%qB,2))]
+&NUKE_FISH Bank=think setq(A,iter(lcon(%#),ifelse(match(parent(%i0),get_parent_fish()),%i0,)));@dolist %qA={@nuke %i0;@nuke %i0}
 
 @@ TODO: Check for multiple items with same name?
 &DO_SELL Bank=@assert namegrab(lcon(%#),%0)=@pemit %#=You do not have that item.;@pemit %#=You cannot sell that.
