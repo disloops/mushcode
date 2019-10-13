@@ -38,7 +38,7 @@
 @function charge_gold=num(Bank), charge_gold
 
 &GIVE_GOLD Bank=attrib_set(u(satchel,%0)/amount,[add(get(u(satchel,%0)/amount),%1)])
-@function charge_gold=num(Bank), give_gold
+@function give_gold=num(Bank), give_gold
 
 &CMD_BUY Bank=$buy *:think setq(0,locate(%#,%0,TX));@assert eq(0,comp(loc(%q0),loc(%#)))=@pemit %#=Unable to find that item here.;@assert strmatch(lflags(%q0),*FOR_SALE*)=@pemit %#=It's not for sale.;@break cand(strmatch(lflags(locate(%#,%0,TX)),*SINGLETON*),t(namegrab(lcon(%#),%0)))=@pemit %#=Those are out of stock now.;@assert check_gold(%#,get(%q0/price))=@pemit %#=You can't afford that.;@think [u(charge_gold,%#,get(%q0/price))];@set %q0=!FOR_SALE;@lock %q0;@tel %q0=%#;@if strmatch(lflags(%q0),*CLONE*)={think setq(1,clone(%q0));@tel %q1=loc(%#);@set %q1=FOR_SALE;@lock %q1==#1;@lock/use %q1=+%q1};@remit loc(%#)=name(%#) has purchased the [name(%q0)].
 

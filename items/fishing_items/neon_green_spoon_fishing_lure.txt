@@ -1,0 +1,24 @@
+@@ Neon Green Spoon
+@@ A fishing lure. Requires the parent object in "parent_fishing_lure.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/items/fishing_items/orange_spinner_fishing_lure.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Neon Green Spoon
+@set Neon Green Spoon=QUIET
+@set Neon Green Spoon=NO_COMMAND
+@set Neon Green Spoon=FOR_SALE
+@set Neon Green Spoon=CLONE
+@lock/basic Neon Green Spoon==#1
+@lock/enter Neon Green Spoon==#1
+@lock/use Neon Green Spoon=+Neon Green Spoon
+@parent Neon Green Spoon=get_parent_fishing_lure()
+
+&DESCRIBE Neon Green Spoon=A small fishing lure with a shiny neon green body.%rTo attach, type [ansi(h,use [name(%!)])].
+&PRICE Neon Green Spoon=8
+
+&AUSE Neon Green Spoon=think [u(parent(%!)/equip, %#)]
+&ADROP Neon Green Spoon=think [u(parent(%!)/unequip, %#)]
