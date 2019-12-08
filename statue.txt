@@ -1,0 +1,25 @@
+@@ Statue
+@@ A special monument.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/statue.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Statue
+@set Fountain=Statue
+@lock/basic Statue==#1
+@lock/enter Statue==#1
+@set Statue=!NO_COMMAND
+@set Statue=MONITOR
+@set Statue=WIZARD
+
+&DESCRIBE Statue=A small dog made of bronze sits on top of a large marble base. Its coat has turned green over time from the salty ocean air. The dog seems alert as it watches the sea. The is a small plaque at its feet engraved with one word - "Scruffy".
+
+&CMD_TOUCH Statue=$touch *:@assert strmatch(name(%!),%0);say Feel free to look around.
+
+&USE Statue=You extend a hand toward the statue and pat its weathered bronze coat.
+&OUSE Statue=pats the statue affectionately.
+&FAILURE Statue=You can't take that.
+&EFAIL Statue=An odd request.
