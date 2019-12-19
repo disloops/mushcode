@@ -1,0 +1,24 @@
+@@ Sailor
+@@ An old sailor.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/sailor_001.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Old Sailor
+@lock/basic Old Sailor==#1
+@lock/enter Old Sailor==#1
+@set Old Sailor=!NO_COMMAND
+@set Old Sailor=MONITOR
+
+&FAILURE Old Sailor=His home is the sea.
+&EFAIL Old Sailor=He's not interested.
+&USE Old Sailor=That won't get you far. Try [ansi(h,talk [name(%!)])] instead.
+
+&DESCRIBE Old Sailor=A wirey fellow with a greasy hat and duck boots. Try [ansi(h,talk [name(%!)])] to hear a tall tale.
+
+&CMD_TALK Old Sailor=$talk *:@if strmatch(name(%!),%0)=say randword(v(use_text),|)
+
+&USE_TEXT Old Sailor=There's been a strong southern wind lately.|Fella hauled in a sparkly octopus yesterday. Never seen anything like it.|The fish are really biting off the western shore.|Nothing smells as good as the ocean breeze a mile out to sea!

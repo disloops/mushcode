@@ -1,0 +1,35 @@
+@@ Sailor
+@@ A sailor with a boat for rent.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/sailor_002.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Captain Drake
+@lock/basic Captain Drake==#1
+@lock/enter Captain Drake==#1
+@lset Captain Drake/basic=NO_INHERIT
+@lset Captain Drake/enter=NO_INHERIT
+@set Captain Drake=!NO_COMMAND
+@set Captain Drake=MONITOR
+@set Captain Drake=WIZARD
+
+&FAILURE Captain Drake=He can't come with you!
+&EFAIL Captain Drake=He's not interested.
+&USE Captain Drake=That won't get you far. Try [ansi(h,talk [name(%!)])] instead.
+
+&DESCRIBE Captain Drake=A tall man who is dressed very leisurely for a captain. Try [ansi(h,talk [name(%!)])] to inquire about his ship.
+
+&BUSY Captain Drake=0
+
+&BOAT_PRICE Captain Drake=300
+
+&BOAT_RENTED Captain Drake=t(namegrab(lcon(%#),Captain Drake's Boat Keys))
+
+&HAS_COMPASS Captain Drake=t(namegrab(lcon(%#),Ship's Compass))
+
+&CMD_TALK Captain Drake=$talk *:@if strmatch(name(%!),%0)={@if u(boat_rented)=say Fair winds!,{say There's a boat for rent if you're interested. It can hold enough petrol for three days at sea. Cost ya' [v(boat_price)] gold and you'll need a compass.;@pemit %#=To rent a boat, type [ansi(h,rent boat)].}}
+
+&CMD_RENT Captain Drake=$rent boat:@break v(busy)=@pemit %#=Captain Drake is talking to someone else at the moment.;@break u(boat_rented)=say You've already got the keys.;@assert check_gold(%#,v(boat_price))=say You don't have enough gold!;@assert u(has_compass)=say You'll need a real compass before you can pilot the boat.;@set %!=busy:1;say That's a magnificent compass! The boat is being restocked right now. I'll post a note in the town square when it's ready.;@pemit %#=%r[ansi(h,Congratulations)]. You've reached the "end of the world" for the time being and I - your guide and narrator - apologize for halting your progress. There is a mighty adventure ahead of you if you're willing to wait a little longer. In the meantime, take a second look around and see if there's anything you might have missed?;@set %!=busy:0
