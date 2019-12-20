@@ -22,3 +22,5 @@
 
 &AUSE Neon Green Spoon=think [u(parent(%!)/equip, %#)]
 &ADROP Neon Green Spoon=think [u(parent(%!)/unequip, %#)]
+
+&FISH_FINDER_FACTOR Neon Green Spoon=5

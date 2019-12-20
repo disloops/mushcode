@@ -15,7 +15,7 @@
 @lock/parent parent_fishing_rod=power^WIZARD
 @parent parent_fishing_rod=get_parent_item()
 
-&USE parent_fishing_rod=The [name(%!)] is now equipped. To use, type [ansi(h,cast)] when you're near water. Don't forget to attach a lure.
+&USE parent_fishing_rod=The [name(%!)] is now equipped. To use, type [ansi(h,cast)] when you're near water. Remember to attach a lure.
 &EQUIP parent_fishing_rod=switch(parent(%@),%!,attrib_set(%0/FISHING_ROD,%@))
 &UNEQUIP parent_fishing_rod=switch(parent(%@),%!,if(strmatch(get(%0/FISHING_ROD),%@),attrib_set(%0/FISHING_ROD)))
 
