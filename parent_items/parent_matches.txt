@@ -1,5 +1,5 @@
 @@ [parent] Matches
-@@ A parent object for the collectible matchbook objects
+@@ A parent object for the collectible matchbook objects.
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
