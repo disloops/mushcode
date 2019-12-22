@@ -24,6 +24,7 @@
 &CMD_EAT Operator=$eat *:@if strmatch(%0,#*)={@assert match(loc(%0),%#)=@pemit %#=You don't have that.;@break match(lparent(%0),get_parent_fish())=@pemit %#=It seems a little to lively to be sushi.;@assert match(lparent(%0),get_parent_eat())=@pemit %#=You can't eat that!;@verb %0=%#,get_use_text,You eat the [capstr(name(%0))],get_ouse_text,eats [get_art(name(%0))] [capstr(name(%0))].;@if gt(get(%0/charges),0)={@charges %0=dec(get(%0/charges));},{@pemit %#=You finish your food.;@set %0=DARK;@nuke %0;@nuke %0;}},{@break gte(words(namegraball(lcon(%#),%0)),2)=@pemit %#=I don't know which one you mean!;@assert setr(0,locate(%#,%0,TXi))=@pemit %#=You don't have that.;@assert match(lparent(%q0),get_parent_food())=@pemit %#=You can't eat that!;@verb %q0=%#,get_use_text,You eat the [capstr(name(%q0))],get_ouse_text,eats [get_art(name(%q0))] [capstr(name(%q0))].;@if gt(get(%q0/charges),0)={@charges %q0=dec(get(%q0/charges));},{@pemit %#=You finish your food.;@set %q0=DARK;@nuke %q0;@nuke %q0;}}
 
 &CMD_STEAL Operator=$steal *:@pemit %#=You had better not!
+&CMD_SEARCH Operator=$search*:@pemit %#=Nothing was found.
 
 &CMD_QUIT Operator=$quit:@pemit %#=Type 'QUIT' in all caps to exit.
 &CMD_EXIT Operator=$exit:@pemit %#=Type 'QUIT' in all caps to exit.
