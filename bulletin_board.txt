@@ -22,4 +22,10 @@
 
 &CMD_REMOVE Bulletin Board=$remove:think attrib_set(%!/AUTHORS,[remove(v(authors),name(%#))]);think attrib_set(%!/NOTE_[name(%#)]);@pemit %#=Removed.
 
-&PRINT_AUTHORS Bulletin Board=align(1 77,,iter(v(authors),%i0,,%r))
+&PRINT_AUTHORS Bulletin Board=align(1 77,,Mayor Carmel%r[iter(v(authors),%i0,,%r)])
+
+&NOTE_MAYOR_CARMEL Bulletin Board=Welcome to Caventry! Our seaside village has a noble history and a little magic for you to discover. Check back here for the latest news!
+
+&TOWN_UPDATES Bulletin Board=1/30/2020: Some spring flowers have appeared early near the shore.
+
+&CMD_READ Bulletin Board=$read *:@select [lcstr(%0)]=mayor carmel, {@pemit %#=Mayor Carmel writes:%r%r[align(1 77,,v(note_mayor_carmel)%r%r[iter(v(town_updates),%i0,|,%r%r)]%r%r)]}, {@if t(v(note_%0))={@pemit %#=[capstr(%0)] writes:%r%r[align(1 77,,v(note_%0)%r%r)]},{@pemit %#=There is no note by that author.}}
