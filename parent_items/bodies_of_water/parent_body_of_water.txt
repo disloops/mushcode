@@ -36,7 +36,7 @@
 @set parent_body_of_water/go_fish=VISUAL NO_INHERIT PUBLIC
 @set parent_body_of_water/do_go_fish=NO_INHERIT
 
-&GET_CATCH parent_body_of_water=[lock(%1/use,+%1)][tel(%1,%0,silent)][pemit(%0,You caught %3)][attrib_set(%2/LINE_OUT)]
+&GET_CATCH parent_body_of_water=[lock(%1/use,+%1)][tel(%1,%0,silent)][pemit(%0,You caught %3)][oemit(%0,[name(%0)] caught %3)][attrib_set(%2/LINE_OUT)]
 @set parent_body_of_water/get_catch=NO_INHERIT
 
 &GET_FISH_NAME parent_body_of_water=[setq(A,bound(sub(rand(1,100),get(%1/FISH_FINDER_FACTOR)),1,100))][switch(%qA, <20, randword(get(%0/rare_fish),|):3, switch(%qA, <50, randword(get(%0/uncommon_fish),|):2, randword(get(%0/common_fish),|):1))]

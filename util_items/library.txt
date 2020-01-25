@@ -40,5 +40,7 @@
 @function get_parent_laverian_sea=num(Library), get_parent_laverian_sea
 &GET_PARENT_FISH Library=#106
 @function get_parent_fish=num(Library), get_parent_fish
+&GET_PARENT_COIN Library=#40
+@function get_parent_coin=num(Library), get_parent_coin
 &GET_ROOM_HOSTEL Library=#12
 @function get_room_hostel=num(Library), get_room_hostel

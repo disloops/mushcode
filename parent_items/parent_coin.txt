@@ -1,0 +1,23 @@
+@@ [parent] Coin
+@@ A parent object for coin objects.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_coin.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@@ Note that for an item to @clone itself, restrictions on both @create and
+@@ @clone need to be set properly. Because I don't want non-WIZARD players
+@@ using @create, the restrictions I have look like this:
+@@ @command/restrict @create=FLAG^WIZARD|!TYPE^PLAYER
+
+@create parent_coin
+@set parent_coin=LINK_OK
+@lock/parent parent_coin=power^WIZARD
+
+&DROP parent_coin=You discard the coin.
+&EFAIL parent_coin=An odd request.
+&SUCCESS parent_coin=You take the coin.
+&UFAIL parent_coin=Try to [ansi(h,take)] or [ansi(h,buy)] it first.
+&USE parent_coin=You give the coin a flip.
