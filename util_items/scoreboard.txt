@@ -1,0 +1,30 @@
+@@ Scoreboard
+@@ A reference item that tracks player achievements.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/util_items/scoreboard.txt
+
+@create Scoreboard
+@set Scoreboard=QUIET
+@set Scoreboard=MONITOR
+@set Scoreboard=!NO_COMMAND
+@set Scoreboard=WIZARD
+@set Scoreboard=SAFE
+@lock/basic Scoreboard==#1
+@lock/enter Scoreboard==#1
+&DESCRIBE Scoreboard=A global scoreboard object.
+
+&ACHIEVEMENTS Scoreboard=Find a coin in the fountain.|Flowers for Scruffy.
+
+&SET_ACHIEVEMENT Scoreboard=[attrib_set(%!/SCORE_[trim(%0,#,l)],setunion(v(SCORE_[trim(%0,#,l)]),%1,|))]
+@function set_achievement=num(Scoreboard), set_achievement
+
+&GET_ACHIEVEMENT Scoreboard=[t(match(v(SCORE_[trim(%0,#,l)]),%1,|))]
+@function get_achievement=num(Scoreboard), get_achievement
+
+&GET_SCORE Scoreboard=%r[align(1 77,,[ansi(h,Score:)]%b[words(v(SCORE_[trim(%0,#,l)]),|)] out of [words(v(ACHIEVEMENTS),|)])]%r%r[align(1 77,,[ansi(h,Achievements:)]%r[iter([elements(v(ACHIEVEMENTS),edit(v(SCORE_[trim(%0,#,l)]),|,%b),|)],%i0,|,%r)])]%r
+
+&CMD_GET_SCORE Scoreboard=$score:@pemit %#=[u(get_score,%#)]
+@hook/override/inline score=num(Scoreboard),cmd_get_score
+@@ Note that @hook is not persistent, we have to run it on startup each time
