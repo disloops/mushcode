@@ -25,3 +25,5 @@
 &OUSE Statue=pats the statue affectionately.
 &FAILURE Statue=You can't take that.
 &EFAIL Statue=An odd request.
+
+@areceive Statue=@if strmatch([parent(%0)],[get_parent_flowers()])={@nuke %0;@nuke %0;@pemit %1=You set the flowers before Scruffy and the breeze arranges them properly.;@skip [get_achievement(%1,2)]=think set_achievement(%1,2)}

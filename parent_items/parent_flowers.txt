@@ -1,0 +1,33 @@
+@@ [parent] Flowers
+@@ A parent object for flower objects.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_flowers.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@@ Note: This parent requires child objects to have a DESC_TAKEN attribute for when the flowers are picked.
+
+@@ Note that for an item to @clone itself, restrictions on both @create and
+@@ @clone need to be set properly. Because I don't want non-WIZARD players
+@@ using @create, the restrictions I have look like this:
+@@ @command/restrict @create=FLAG^WIZARD|!TYPE^PLAYER
+
+@create parent_flowers
+@set parent_flowers=!NO_COMMAND
+@set parent_flowers=MONITOR
+@set parent_flowers=LINK_OK
+@lock/parent parent_flowers=power^WIZARD
+
+&TAKEN parent_flowers=t(namegrab(lcon(%#),name(%!))
+&ASUCCESS parent_flowers=@skip [strmatch(get(%!/desc),get(%!/desc_taken))]={think setq(0,clone(%!));@lock/use %q0=+%q0;@teleport %!=loc(%#);@desc %q0=[get(%q0/desc_taken)]}
+
+&ADROP parent_flowers=@set %!=DARK;@nuke %!;@nuke %!
+&DROP parent_flowers=You discard the flowers.
+&EFAIL parent_flowers=An odd request.
+&FAILURE parent_flowers=You already have some of those.
+&OUSE parent_flowers=is arranging some flowers.
+&SUCCESS parent_flowers=You gently take some of the flowers.
+&UFAIL parent_flowers=Try to [ansi(h,take)] or [ansi(h,buy)] them first.
+&USE parent_flowers=You thread a small flower through a button hole in your jacket.

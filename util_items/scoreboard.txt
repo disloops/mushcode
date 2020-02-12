@@ -17,7 +17,7 @@
 
 &ACHIEVEMENTS Scoreboard=Find a coin in the fountain.|Flowers for Scruffy.
 
-&SET_ACHIEVEMENT Scoreboard=[attrib_set(%!/SCORE_[trim(%0,#,l)],setunion(v(SCORE_[trim(%0,#,l)]),%1,|))]
+&SET_ACHIEVEMENT Scoreboard=[attrib_set(%!/SCORE_[trim(%0,#,l)],setunion(v(SCORE_[trim(%0,#,l)]),%1,|))][pemit(%0,Score +1! You can type [ansi(h,score)] to revist these events.)]
 @function set_achievement=num(Scoreboard), set_achievement
 
 &GET_ACHIEVEMENT Scoreboard=[t(match(v(SCORE_[trim(%0,#,l)]),%1,|))]

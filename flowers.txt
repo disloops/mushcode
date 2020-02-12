@@ -1,0 +1,20 @@
+@@ Flowers
+@@ Some flowers that replenishes themselves.
+@@ Requires the parent object in "parent_flowers.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/flowers.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Flowers
+@set Flowers=QUIET
+@set Flowers=NO_COMMAND
+@lock/enter Flowers==#1
+@lock/basic Flowers=TAKEN/0
+@parent Flowers=get_parent_flowers()
+
+&DESCRIBE Flowers=There are some yellow buttercups growing wild along the sandy roadside.
+&DESC_TAKEN Flowers=Yellow buttercups picked from along the road in North Caventry.
+&USE Flowers=You thread a small flower through a button hole in your jacket.

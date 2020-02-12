@@ -42,5 +42,7 @@
 @function get_parent_fish=num(Library), get_parent_fish
 &GET_PARENT_COIN Library=#40
 @function get_parent_coin=num(Library), get_parent_coin
+&GET_PARENT_FLOWERS Library=#150
+@function get_parent_flowers=num(Library), get_parent_flowers
 &GET_ROOM_HOSTEL Library=#12
 @function get_room_hostel=num(Library), get_room_hostel
