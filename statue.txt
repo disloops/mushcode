@@ -11,6 +11,7 @@
 @set Fountain=Statue
 @lock/basic Statue==#1
 @lock/enter Statue==#1
+@set Statue=ENTER_OK
 @set Statue=!NO_COMMAND
 @set Statue=MONITOR
 @set Statue=WIZARD

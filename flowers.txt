@@ -13,6 +13,7 @@
 @set Flowers=NO_COMMAND
 @lock/enter Flowers==#1
 @lock/basic Flowers=TAKEN/0
+@lock/use Flowers=+Flowers
 @parent Flowers=get_parent_flowers()
 
 &DESCRIBE Flowers=There are some yellow buttercups growing wild along the sandy roadside.
