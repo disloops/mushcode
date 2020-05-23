@@ -30,6 +30,6 @@
 
 &HAS_COMPASS Captain Drake=t(namegrab(lcon(%#),Ship's Compass))
 
-&TALK Captain Drake=@if u(boat_rented)={say Fair winds!},{say There's a boat for rent if you're interested. It can hold enough petrol for three days at sea. Cost ya' [v(boat_price)] gold and you'll need a compass.;@pemit %0=To rent a boat, type [ansi(h,rent boat)].}
+&TALK Captain Drake=@if u(boat_rented)={@pemit %0=[name(%!)] says, "Fair winds!"},{@pemit %0=[name(%!)] says, "There's a boat for rent if you're interested. It can hold enough petrol for three days at sea. Cost ya' [v(boat_price)] gold and you'll need a compass."%rTo rent a boat, type [ansi(h,rent boat)].}
 
 &CMD_RENT Captain Drake=$rent boat:@break v(busy)=@pemit %#=Captain Drake is talking to someone else at the moment.;@break u(boat_rented)=say You've already got the keys.;@assert check_gold(%#,v(boat_price))=say You don't have enough gold!;@assert u(has_compass)=say You'll need a real compass before you can pilot the boat.;@set %!=busy:1;say That's a magnificent compass! The boat is being restocked right now. I'll post a note in the town square when it's ready.;@pemit %#=[ansi(h,Congratulations)]. You've reached the "end of the world" for the time being and I - your guide and narrator - apologize for halting your progress. There is a mighty adventure ahead of you if you're willing to wait a little longer. In the meantime, take a second look around and see if there's anything you might have missed?;@set %!=busy:0
