@@ -31,9 +31,7 @@
 &BEERS Bartender=Asahi|Beck's|John Courage|Heather Ale|Labatt's|Oktoberfest|Orion|Pilsner|Stella
 &BEER_PRICE Bartender=1
 
-&CMD_MENU Bartender=$menu:@pemit %#=%r[ansi(h,Beers)]:%r%r[u(show_menu,v(beers))]%r%rOne gold each. To order a drink, type [ansi(h,order <beer name>)].
-
-&CMD_TALK Bartender=$talk *:@if strmatch(name(%!),%0)=@pemit %#=He's not much for small talk. To see the menu\, type [ansi(h,menu)].
+&TALK Bartender=@pemit %0=He's not much for small talk. To see the menu\, type [ansi(h,menu)].
 
 &BUSY Bartender=0
 

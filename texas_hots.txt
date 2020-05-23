@@ -34,7 +34,7 @@
 
 &CMD_MENU Texas Hots=$menu:@pemit %#=%r[ansi(h,Drinks)]:%r%r[u(show_menu,v(drinks))]%r%r[ansi(h,Food)]:%r%r[u(show_menu,v(food))]%r%rOne gold each. To order something, type [ansi(h,order <food or drink>)].
 
-&CMD_TALK Texas Hots=$talk *:@if strmatch(name(%!),%0)=@pemit %#=The vendor nods. To see the menu\, type [ansi(h,menu)].
+&TALK Texas Hots=@pemit %0=The vendor nods. To see the menu\, type [ansi(h,menu)].
 
 &FIND_ITEM Texas Hots=grab(strcat(v(drinks),|,v(food)),%0,|)
 

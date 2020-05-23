@@ -20,7 +20,7 @@
 
 &DESCRIBE Shopkeeper=[name(%!)] has the appearance of a business man of eastern descent. His skin is olive and his leather belt strains to cinch his pants below his tunic. He wears a cotton vest with tassles and a pair of gold spectacles he uses to read a paperback.%rYou can use [ansi(h,buy <object>)] to purchase any of the items in the shop.
 
-&CMD_TALK Shopkeeper=$talk *:@if strmatch(name(%!),%0)=say Feel free to look around.
+&TALK Shopkeeper=@pemit %0=[name(%!)] says, "Feel free to look around."
 
 &ON_ENTER Shopkeeper=^* blinds rattle *:@wait 20=@emit Without taking his eyes from his book, [ansi(h,[name(%!)])] takes a careful bite of his salad.
 

@@ -34,7 +34,7 @@
 
 &CMD_MENU Barista=$menu:@pemit %#=%r[ansi(h,Drinks)]:%r%r[u(show_menu,v(drinks))]%r%r[ansi(h,Food)]:%r%r[u(show_menu,v(food))]%r%rOne gold each. To order something, type [ansi(h,order <food or drink>)].
 
-&CMD_TALK Barista=$talk *:@if strmatch(name(%!),%0)=@pemit %#=She's busy! To see the menu\, type [ansi(h,menu)].
+&TALK Barista=@pemit %0=She's busy! To see the menu\, type [ansi(h,menu)].
 
 &FIND_ITEM Barista=grab(strcat(v(drinks),|,v(food)),%0,|)
 

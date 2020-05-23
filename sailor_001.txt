@@ -19,6 +19,6 @@
 
 &DESCRIBE Old Sailor=A wirey fellow with a greasy hat and duck boots. Try [ansi(h,talk [name(%!)])] to hear a tall tale.
 
-&CMD_TALK Old Sailor=$talk *:@if strmatch(name(%!),%0)=say randword(v(use_text),|)
+&TALK Old Sailor=@pemit %0=[name(%!)] says, "[randword(v(use_text),|)]"
 
 &USE_TEXT Old Sailor=There's been a strong southern wind lately.|Fella hauled in a sparkly octopus yesterday. Never seen anything like it.|The fish are really biting off the western shore.|Nothing smells as good as the ocean breeze a mile out to sea!
