@@ -20,7 +20,7 @@
 
 &CMD_TOUCH Statue=$touch *:@if strmatch(name(%!),%0)=@pemit %#=You extend a hand toward the statue and pat its weathered bronze coat.
 
-&CMD_TALK Statue=$talk *:@if strmatch(name(%!),%0)=@pemit %#=The statue makes no reply.
+&TALK Statue=@pemit %0=The statue makes no reply.
 
 &USE Statue=You extend a hand toward the statue and pat its weathered bronze coat.
 &OUSE Statue=pats the statue affectionately.

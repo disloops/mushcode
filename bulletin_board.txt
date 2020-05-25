@@ -26,4 +26,4 @@
 
 &TOWN_UPDATES Bulletin Board=1/30/2020: Some spring flowers have appeared early near the shore.
 
-&CMD_READ Bulletin Board=$read *:@select [lcstr(%0)]=mayor carmel, {@pemit %#=Mayor Carmel writes:%r%r[align(1 77,,v(note_mayor_carmel)%r%r[iter(v(town_updates),%i0,|,%r%r)]%r%r)]}, {@if t(v(note_%0))={@pemit %#=[capstr(%0)] writes:%r%r[align(1 77,,v(note_%0)%r%r)]},{@pemit %#=There is no note by that author. Try [ansi(h,look [name(%!)])].}}
+&CMD_READ Bulletin Board=$read *:@select [lcstr(%0)]=mayor carmel, {@pemit %#=Mayor Carmel writes:%r%r[align(1 77,,v(note_mayor_carmel)%r%r[iter(v(town_updates),%i0,|,%r%r)]%r%r)]}, {@if t(v(note_%0))={@pemit %#=[capstr(%0)] writes:%r%r[align(1 77,,v(note_%0)%r%r)]},{@pemit %#=There is no note by that author. Try [ansi(h,look [name(%!)])] and use the author's full name.}}
