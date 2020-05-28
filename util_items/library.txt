@@ -44,5 +44,7 @@
 @function get_parent_coin=num(Library), get_parent_coin
 &GET_PARENT_FLOWERS Library=#150
 @function get_parent_flowers=num(Library), get_parent_flowers
+&GET_PARENT_STONE Library=#142
+@function get_parent_stone=num(Library), get_parent_stone
 &GET_ROOM_HOSTEL Library=#12
 @function get_room_hostel=num(Library), get_room_hostel

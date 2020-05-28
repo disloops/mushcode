@@ -1,0 +1,18 @@
+@@ [parent] Stone
+@@ A parent object for stone objects.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_stone.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_stone
+@set parent_stone=LINK_OK
+@lock/parent parent_stone=power^WIZARD
+
+&DROP parent_stone=You discard the stone.
+&EFAIL parent_stone=An odd request.
+&SUCCESS parent_stone=You take the stone.
+&UFAIL parent_stone=Try to [ansi(h,take)] or [ansi(h,buy)] it first.
+&USE parent_stone=You hold the stone up to the light and examine its details.

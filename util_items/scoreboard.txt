@@ -15,7 +15,7 @@
 @lock/enter Scoreboard==#1
 &DESCRIBE Scoreboard=A global scoreboard object.
 
-&ACHIEVEMENTS Scoreboard=Find a coin in the fountain.|Flowers for Scruffy.
+&ACHIEVEMENTS Scoreboard=Find a coin in the Cavnetry fountain.|Flowers for Scruffy.|Find a stone in the Caventry tide pools.
 
 &SET_ACHIEVEMENT Scoreboard=[attrib_set(%!/SCORE_[trim(%0,#,l)],setunion(v(SCORE_[trim(%0,#,l)]),%1,|))][pemit(%0,Score +1! You can type [ansi(h,score)] to revist these events.)]
 @function set_achievement=num(Scoreboard), set_achievement

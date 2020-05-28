@@ -8,7 +8,10 @@
 @@ Created and tested under PennMUSH v1.8.7
 
 @create Bulletin Board
-@set Bulletin Board=QUIET MONITOR !NO_COMMAND WIZARD
+@set Bulletin Board=QUIET
+@set Bulletin Board=MONITOR
+@set Bulletin Board=!NO_COMMAND
+@set Bulletin Board=WIZARD
 @lock/basic Bulletin Board==#1
 @lock/enter Bulletin Board==#1
 
@@ -16,14 +19,15 @@
 
 &USE Bulletin Board=There are notes from the following people:%r%r[u(print_authors)]%r%rTo read a note, type [ansi(h,read <author>)]. To leave a note, type [ansi(h,write <message>)]. To remove your note, type [ansi(h,remove)].
 
-&CMD_WRITE Bulletin Board=$write *:think [attrib_set(%!/NOTE_[name(%#)],[edit(decompose(left(%0,500)),\\\,,\,)])];think [attrib_set(%!/AUTHORS,[setunion(v(authors),name(%#))])];@pemit %#=Your note has been pinned to the board.;@oemit %#=[name(%n)] writes on the bulletin board:%r%r[align(1 77,,v(note_[name(%#)])%r%r)]
+&CMD_WRITE Bulletin Board=$write *:think [attrib_set(%!/NOTE_%#],[edit(decompose(left(%0,500)),\\\,,\,)])];think [attrib_set(%!/AUTHORS,[setunion(v(authors),%#)])];@pemit %#=Your note has been pinned to the board.;@oemit %#=[name(%#)] writes on the bulletin board:%r%r[align(1 77,,v(note_%#)%r%r)]
 
-&CMD_REMOVE Bulletin Board=$remove:think attrib_set(%!/AUTHORS,[remove(v(authors),name(%#))]);think attrib_set(%!/NOTE_[name(%#)]);@pemit %#=Removed.
+&CMD_REMOVE Bulletin Board=$remove:think attrib_set(%!/AUTHORS,[remove(v(authors),%#)]);think attrib_set(%!/NOTE_%#);@pemit %#=Removed.
 
-&PRINT_AUTHORS Bulletin Board=align(1 77,,Mayor Carmel%r[iter(v(authors),%i0,,%r)])
+&PRINT_AUTHORS Bulletin Board=align(1 77,,Mayor Carmel%r[iter(v(authors),[name(%i0)],,%r)])
 
 &NOTE_MAYOR_CARMEL Bulletin Board=Welcome to Caventry! Our seaside village has a noble history and a little magic for you to discover. Check back here for the latest news!
 
-&TOWN_UPDATES Bulletin Board=1/30/2020: Some spring flowers have appeared early near the shore.
+&TOWN_UPDATES Bulletin Board=5/30/2020: Some spring flowers have appeared early near the shore.
 
+@@ FIX THIS:
 &CMD_READ Bulletin Board=$read *:@select [lcstr(%0)]=mayor carmel, {@pemit %#=Mayor Carmel writes:%r%r[align(1 77,,v(note_mayor_carmel)%r%r[iter(v(town_updates),%i0,|,%r%r)]%r%r)]}, {@if t(v(note_%0))={@pemit %#=[capstr(%0)] writes:%r%r[align(1 77,,v(note_%0)%r%r)]},{@pemit %#=There is no note by that author. Try [ansi(h,look [name(%!)])].}}

@@ -7,11 +7,6 @@
 
 @@ Created and tested under PennMUSH v1.8.7
 
-@@ Note that for an item to @clone itself, restrictions on both @create and
-@@ @clone need to be set properly. Because I don't want non-WIZARD players
-@@ using @create, the restrictions I have look like this:
-@@ @command/restrict @create=FLAG^WIZARD|!TYPE^PLAYER
-
 @create parent_coin
 @set parent_coin=LINK_OK
 @lock/parent parent_coin=power^WIZARD
