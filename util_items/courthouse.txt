@@ -20,7 +20,7 @@
 &DESCRIBE Courthouse=An administrative object to dispense startup settings.
 &GET_GOLD_AMOUNT Courthouse=if(namegrab(lcon(%#),satchel of gold),get(namegrab(lcon(%#),satchel of gold)/amount),0)
 &GET_GOLD Courthouse=switch(u(get_gold_amount),1,u(get_gold_amount) piece,u(get_gold_amount) pieces)
-&CMD_GET_NAME Courthouse=name(%0)
+&CMD_GET_NAME Courthouse=name(%0) \(%0\)
 &CMD_INVENTORY Courthouse=$inventory:@pemit %#=[ansi(h,You are carrying:)];@pemit %#=map(courthouse/cmd_get_name,lcon(%#), ,%r);@pemit %#=You have [u(get_gold)] of gold.
 
 @@ In cases where there are a function and command that do the same thing (like pemit() and @pemit),
