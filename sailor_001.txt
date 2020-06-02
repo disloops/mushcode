@@ -1,5 +1,6 @@
 @@ Sailor
 @@ An old sailor.
+@@ Requires the parent object in "parent_person.txt".
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
@@ -12,6 +13,7 @@
 @lock/enter Old Sailor==#1
 @set Old Sailor=!NO_COMMAND
 @set Old Sailor=MONITOR
+@parent Old Sailor=get_parent_person()
 
 &FAILURE Old Sailor=His home is the sea.
 &EFAIL Old Sailor=He's not interested.

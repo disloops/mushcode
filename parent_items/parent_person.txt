@@ -1,0 +1,14 @@
+@@ [parent] Person
+@@ A parent object for in-game people.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_person.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_person
+@set parent_person=LINK_OK
+@lock/parent parent_person=power^WIZARD
+
+&RECEIVE_LOCK`FAILURE parent_person=They're not interested.

@@ -1,5 +1,6 @@
 @@ Sailor
 @@ A sailor with a boat for rent.
+@@ Requires the parent object in "parent_person.txt".
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
@@ -15,6 +16,7 @@
 @set Captain Drake=!NO_COMMAND
 @set Captain Drake=MONITOR
 @set Captain Drake=WIZARD
+@parent Captain Drake=get_parent_person()
 
 &FAILURE Captain Drake=He can't come with you!
 &EFAIL Captain Drake=He's not interested.

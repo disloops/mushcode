@@ -20,6 +20,7 @@
 @set Bartender=!NO_COMMAND
 @set Bartender=MONITOR
 @set Bartender=WIZARD
+@parent Bartender=get_parent_person()
 
 &FAILURE Bartender=Who would tend the bar?
 &EFAIL Bartender=He's not interested.

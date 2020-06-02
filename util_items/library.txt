@@ -46,5 +46,7 @@
 @function get_parent_flowers=num(Library), get_parent_flowers
 &GET_PARENT_STONE Library=#142
 @function get_parent_stone=num(Library), get_parent_stone
+&GET_PARENT_PERSON Library=#145
+@function get_parent_person=num(Library), get_parent_person
 &GET_ROOM_HOSTEL Library=#12
 @function get_room_hostel=num(Library), get_room_hostel

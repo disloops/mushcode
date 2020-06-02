@@ -15,6 +15,9 @@
 @lock/basic Bulletin Board==#1
 @lock/enter Bulletin Board==#1
 
+&FAILURE Bulletin Board=That won't work!
+&EFAIL Bulletin Board=That won't work!
+
 &DESCRIBE Bulletin Board=A large cube with a corkboard surface that residents and travelers can use to post notes.%rThere are notes from the following people:%r%r[u(print_authors)]%r%rTo read a note, type [ansi(h,read <author>)]. To leave a note, type [ansi(h,write <message>)]. To remove your note, type [ansi(h,remove)].
 
 &USE Bulletin Board=There are notes from the following people:%r%r[u(print_authors)]%r%rTo read a note, type [ansi(h,read <author>)]. To leave a note, type [ansi(h,write <message>)]. To remove your note, type [ansi(h,remove)].

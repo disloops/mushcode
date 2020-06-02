@@ -1,5 +1,6 @@
 @@ Bob the Fisherman
 @@ The owner of the Rod N' Reel in Caventry.
+@@ Requires the parent object in "parent_person.txt".
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
@@ -13,6 +14,7 @@
 @set Bob the Fisherman=!NO_COMMAND
 @set Bob the Fisherman=MONITOR
 @set Bob the Fisherman=WIZARD
+@parent Bob the Fisherman=get_parent_person()
 
 &FAILURE Bob the Fisherman=He's not interested.
 &EFAIL Bob the Fisherman=He's not interested.

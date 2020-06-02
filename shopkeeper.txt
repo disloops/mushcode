@@ -1,5 +1,6 @@
 @@ Shopkeeper
 @@ A simple, multi-purpose shopkeeper.
+@@ Requires the parent object in "parent_person.txt".
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
@@ -13,6 +14,7 @@
 @set Shopkeeper=!NO_COMMAND
 @set Shopkeeper=MONITOR
 @set Shopkeeper=WIZARD
+@parent Shopkeeper=get_parent_person()
 
 &FAILURE Shopkeeper=He's not interested.
 &EFAIL Shopkeeper=He's not interested.
