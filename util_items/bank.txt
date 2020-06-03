@@ -47,6 +47,7 @@
 @@ Note that @hook is not persistent, we have to run it on startup each time
 
 &CMD_SELL Bank=$sell *:@select %0=fish,@include %!/sell_all_fish,#*,@include %!/do_sell=name(%0),@include %!/do_sell=%0
+
 @command/add sell
 @hook/override/inline sell=num(Bank),cmd_sell
 @@ Note that @hook is not persistent, we have to run it on startup each time
@@ -56,5 +57,4 @@
 &GET_FISH_PRICE Bank=[setq(A,iter(lcon(%#),if(strmatch(parent(%i0),get_parent_fish()),%i0)))][setq(B,lmath(add,iter(%qA,get(%i0/price))))][ceil(fdiv(%qB,2))]
 &NUKE_FISH Bank=think setq(A,iter(lcon(%#),if(strmatch(parent(%i0),get_parent_fish()),%i0)));@dolist %qA={@nuke %i0;@nuke %i0}
 
-@@ TODO: Check for multiple items with same name?
-&DO_SELL Bank=@assert namegrab(lcon(%#),%0)=@pemit %#=You do not have that item.;@pemit %#=You cannot sell that.
+&DO_SELL Bank=@assert setr(0,namegraball(lcon(%#),%0))=@pemit %#=You do not have that item.;@break gt(words(%q0),1)={@pemit %#=I don't know which one you mean.};@if strmatch(parent(%q0),get_parent_fish())={@assert strmatch(lflags(loc(%#)),*FISH_MARKET*)=@pemit %#=You can't sell that here.;@pemit %#=We buy in bulk. Just say [ansi(h,sell fish)] instead.},{@pemit %#=You cannot sell that.}

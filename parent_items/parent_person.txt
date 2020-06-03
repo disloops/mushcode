@@ -10,5 +10,5 @@
 @create parent_person
 @set parent_person=LINK_OK
 @lock/parent parent_person=power^WIZARD
-
-&RECEIVE_LOCK`FAILURE parent_person=They're not interested.
+@lock/receive parent_person==#1
+@lset parent_person/receive=!no_inherit

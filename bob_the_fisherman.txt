@@ -22,6 +22,6 @@
 
 &DESCRIBE Bob the Fisherman=[name(%!)] is a grey-haired fellow with a pipe. He is hunched over a small workbench behind the counter.%rYou can use [ansi(h,buy <object>)] to purchase any of the items in the shop.
 
-&ON_BUY Bob the Fisherman=^* has purchased the *\.:say Okay good luck out there.;@if strmatch(%1,*fishing rod*)={@pemit [num(%0)]=To use that\, first equip it by typing [ansi(h,use %1)]. You'll also need to buy and equip a fishing lure. Then type [ansi(h,cast)] when you're standing near water.},{@pemit [num(%0)]=To use that\, first equip it by typing [ansi(h,use %1)]. You'll also need to buy and equip a fishing rod. Then type [ansi(h,cast)] when you're standing near water.}
+&ON_BUY Bob the Fisherman=^* has purchased the *\.:say Okay good luck out there.;@if strmatch(%1,*fishing rod*)={@pemit [num(%0)]=To use that\, first equip it by typing [ansi(h,use my %1)]. You'll also need to buy and equip a fishing lure. Then type [ansi(h,cast)] when you're standing near water.},{@pemit [num(%0)]=To use that\, first equip it by typing [ansi(h,use my %1)]. You'll also need to buy and equip a fishing rod. Then type [ansi(h,cast)] when you're standing near water.}
 
 &TALK Bob the Fisherman=@pemit %0=[name(%!)] says, "Howdy! What can I do for ya?"
