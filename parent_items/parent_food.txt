@@ -16,7 +16,7 @@
 &ADROP parent_food=@set %!=DARK;@nuke %!;@nuke %!
 &DROP parent_food=You drop your food!
 
-&OUSE parent_food=%n eats [u(get_art,name(%!))] %!.
+&OUSE parent_food=eats [get_art(name(%!))] [name(%!)].
 &RUNOUT parent_food=@emit You finish your food.;@set %!=DARK;@nuke %!;@nuke %!
 
 &USE parent_food=randword(v(use_text),|)

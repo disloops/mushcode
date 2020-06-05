@@ -16,7 +16,7 @@
 &ADROP parent_drink=@set %!=DARK;@nuke %!;@nuke %!
 &DROP parent_drink=You drop your drink!
 
-&OUSE parent_drink=%n drinks [u(get_art,name(%!))] %!.
+&OUSE parent_drink=drinks [get_art(name(%!))] [name(%!)].
 &RUNOUT parent_drink=@emit You finish your drink.;@set %!=DARK;@nuke %!;@nuke %!
 
 &USE parent_drink=randword(v(use_text),|)
