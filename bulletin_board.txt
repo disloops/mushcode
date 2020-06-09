@@ -26,10 +26,12 @@
 
 &CMD_REMOVE Bulletin Board=$remove:think attrib_set(%!/AUTHORS,[remove(v(authors),%#)]);think attrib_set(%!/NOTE_[trim(%#,#,l)]);@pemit %#=Removed.
 
-&PRINT_AUTHORS Bulletin Board=align(1 77,,Mayor Carmel%r[iter(v(authors),[name(%i0)],,%r)])
+&PRINT_AUTHORS Bulletin Board=align(1 77,,Mayor Carmel%rCavanaugh's Pub%r[iter(v(authors),[name(%i0)],,%r)])
+
+&NOTE_CAVANAUGHS Bulletin Board=Join us every Wednesday evening at 8 PM to celebrate these summer nights!
 
 &NOTE_MAYOR_CARMEL Bulletin Board=Welcome to Caventry! Our seaside village has a noble history and a little magic for you to discover. Check back here for the latest news!
 
 &TOWN_UPDATES Bulletin Board=5/30/2020: Some spring flowers have appeared early near the shore.
 
-&CMD_READ Bulletin Board=$read *:@if strmatch([lcstr(%0)],mayor*)={@pemit %#=Mayor Carmel writes:%r%r[align(1 77,,v(note_mayor_carmel)%r%r[iter(v(town_updates),%i0,|,%r%r)]%r%r)]}, {@select setr(0,pmatch(%0))=#-1,{@pemit %#=There is no note by that author. Try [ansi(h,look [name(%!)])] and use the author's full name.},#-2,{@pemit %#=Not sure which one you mean. Try [ansi(h,look [name(%!)])] and use the author's full name.},{@pemit %#=[name(%q0)] writes:%r%r[align(1 77,,v(note_[trim(%q0,#,l)])%r%r)]}}
+&CMD_READ Bulletin Board=$read *:@break strmatch([lcstr(%0)],mayor*)={@pemit %#=Mayor Carmel writes:%r%r[align(1 77,,v(note_mayor_carmel)%r%r[iter(v(town_updates),%i0,|,%r%r)]%r%r)]};@if strmatch([lcstr(%0)],cavanaugh*)={@pemit %#=A Note from Cavanaugh's Pub:%r%r[align(1 77,,v(note_cavanaughs)%r%r)]}, {@select setr(0,pmatch(%0))=#-1,{@pemit %#=There is no note by that author. Try [ansi(h,look [name(%!)])] and use the author's full name.},#-2,{@pemit %#=Not sure which one you mean. Try [ansi(h,look [name(%!)])] and use the author's full name.},{@pemit %#=[name(%q0)] writes:%r%r[align(1 77,,v(note_[trim(%q0,#,l)])%r%r)]}}
