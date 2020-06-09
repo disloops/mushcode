@@ -22,7 +22,7 @@
 &ASUCCESS parent_soap=think setq(0,clone(%!));@lock/use %q0=+%q0;@teleport %!=loc(%#)
 
 &ADROP parent_soap=@set %!=DARK;@nuke %!;@nuke %!
-&DROP parent_soap=You discard the soap.
+&DROP parent_soap=You discard the soap and it is quickly lost.
 &EFAIL parent_soap=An odd request.
 &FAILURE parent_soap=You already have that.
 &GIVE_LOCK`FAILURE parent_soap=That could be misconstrued as an insult.

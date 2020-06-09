@@ -22,7 +22,7 @@
 &ASUCCESS parent_matches=think setq(0,clone(%!));@lock/use %q0=+%q0;@teleport %!=loc(%#)
 
 &ADROP parent_matches=@set %!=DARK;@nuke %!;@nuke %!
-&DROP parent_matches=You discard the matches.
+&DROP parent_matches=You discard the matches and they are quickly lost.
 &EFAIL parent_matches=An odd request.
 &FAILURE parent_matches=You already have that.
 &GIVE_LOCK`FAILURE parent_matches=Better not... safety first.

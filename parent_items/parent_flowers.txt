@@ -24,7 +24,7 @@
 &ASUCCESS parent_flowers=@skip [strmatch(get(%!/desc),get(%!/desc_taken))]={think setq(0,clone(%!));@lock/use %q0=+%q0;@teleport %!=loc(%#);@desc %q0=[get(%q0/desc_taken)]}
 
 &ADROP parent_flowers=@set %!=DARK;@nuke %!;@nuke %!
-&DROP parent_flowers=You discard the flowers.
+&DROP parent_flowers=You discard the flowers and they are lost to the wind.
 &EFAIL parent_flowers=An odd request.
 &FAILURE parent_flowers=You already have some of those.
 &OUSE parent_flowers=is arranging some flowers.
