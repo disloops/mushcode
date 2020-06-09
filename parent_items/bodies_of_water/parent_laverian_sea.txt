@@ -21,6 +21,6 @@
 
 &RARE_FISH parent_laverian_sea=Monkfish|Octopus|Puffer Fish|Stargazer|Anglerfish
 
-&CMD_SWIM parent_laverian_sea=$swim*:@pemit %#=You carefully enter the water and find it pretty cold! One dunk of your head is enough and you seek the comforts of a fuzzy towel. You feel brave and refreshed.
-
 &CMD_SPLASH parent_laverian_sea=$splash*:@pemit %#=Something about the sea feels a little too dignified to go splashing around. It's a noble old sea.
+
+&CMD_SWIM parent_laverian_sea=$swim*:@pemit %#=You carefully enter the water and find it pretty cold! One dunk of your head is enough and you seek the comforts of a fuzzy towel. You feel brave and refreshed.
