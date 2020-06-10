@@ -16,6 +16,9 @@
 @set Statue=MONITOR
 @set Statue=WIZARD
 
+&CHECK_FLOWER Statue=strmatch([parent(%#)],[get_parent_flowers()])
+@lock/receive Statue=CHECK_FLOWER/1
+
 &DESCRIBE Statue=A small dog made of bronze sits on top of a large marble base. Its coat has turned green over time from the salty ocean air. The dog seems alert as it watches the sea. There is a plaque at its feet engraved with one word - "Scruffy".
 
 &CMD_TOUCH Statue=$touch *:@if strmatch(name(%!),%0)=@pemit %#=You extend a hand toward the statue and pat its weathered bronze coat.
