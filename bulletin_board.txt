@@ -22,7 +22,7 @@
 
 &USE Bulletin Board=There are notes from the following people:%r%r[u(print_authors)]%r%rTo read a note, type [ansi(h,read <author>)]. To leave a note, type [ansi(h,write <message>)]. To remove your note, type [ansi(h,remove)].
 
-&CMD_WRITE Bulletin Board=$write *:think [attrib_set(%!/NOTE_[trim(%#,#,l)],[edit(decompose(left(edit(%0,%,),500)),\\\,,\,)])];think [attrib_set(%!/AUTHORS,[setunion(v(authors),%#)])];@pemit %#=Your note has been pinned to the board.;@oemit %#=[name(%#)] writes on the bulletin board:%r%r[align(1 77,,v(note_[trim(%#,#,l)])%r%r)]
+&CMD_WRITE Bulletin Board=$write *:think [attrib_set(%!/NOTE_[trim(%#,#,l)],[edit(decompose(left(edit(%0,%%,,#,),500)),\\\,,\,)])];think [attrib_set(%!/AUTHORS,[setunion(v(authors),%#)])];@pemit %#=Your note has been pinned to the board.;@oemit %#=[name(%#)] writes on the bulletin board:%r%r[align(1 77,,v(note_[trim(%#,#,l)])%r%r)]
 
 &CMD_REMOVE Bulletin Board=$remove:think attrib_set(%!/AUTHORS,[remove(v(authors),%#)]);think attrib_set(%!/NOTE_[trim(%#,#,l)]);@pemit %#=Removed.
 
@@ -35,3 +35,8 @@
 &TOWN_UPDATES Bulletin Board=5/30/2020: Some spring flowers have appeared early near the shore.
 
 &CMD_READ Bulletin Board=$read *:@break strmatch([lcstr(%0)],mayor*)={@pemit %#=Mayor Carmel writes:%r%r[align(1 77,,v(note_mayor_carmel)%r%r[iter(v(town_updates),%i0,|,%r%r)]%r%r)]};@if strmatch([lcstr(%0)],cavanaugh*)={@pemit %#=A Note from Cavanaugh's Pub:%r%r[align(1 77,,v(note_cavanaughs)%r%r)]}, {@select setr(0,pmatch(%0))=#-1,{@pemit %#=There is no note by that author. Try [ansi(h,look [name(%!)])] and use the author's full name.},#-2,{@pemit %#=Not sure which one you mean. Try [ansi(h,look [name(%!)])] and use the author's full name.},{@pemit %#=[name(%q0)] writes:%r%r[align(1 77,,v(note_[trim(%q0,#,l)])%r%r)]}}
+
+!!!!!!!!!!
+<Softcode> [ Boudica says, "edit(%0,%%,) should work, I think."
+<Softcode> [ Boudica ] says, "You can also use secure to replace the % with spaces."
+
