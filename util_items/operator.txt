@@ -28,7 +28,9 @@
 &CMD_QUIT Operator=$quit:@pemit %#=Type 'QUIT' in all caps to exit.
 &CMD_EXIT Operator=$exit:@pemit %#=Type 'QUIT' in all caps to exit.
 
-&CMD_TALK Operator=$talk *:@if strmatch(%0,#*)={@select words(matchall(lthings(loc(%#)),%0),)=0,{@break locate(%#,%0,)=@pemit %#=There is no reply.;@pemit %#=I don't see them here.},1,{@if hasattrval(%0/talk)={@trigger/inplace %0/talk=%#},{@pemit %#=There is no reply.}},{@pemit %#=I don't know which one you mean!}},{@select setr(0,locate(%#,%0,))=#-1,{@pemit %#=They cannot be found.},#-2,{@pemit %#=I don't know which one you mean!},{@if hasattrval(%q0/talk)={@trigger/inplace %q0/talk=%#},{@pemit %#=There is no reply.}}}
+&CMD_TALK Operator=$^talk\ (to\ )?(.+)$:@if strmatch(%2,#*)={@select words(matchall(lthings(loc(%#)),%2),)=0,{@break locate(%#,%2,)=@pemit %#=There is no reply.;@pemit %#=I don't see them here.},1,{@if hasattrval(%2/talk)={@trigger/inplace %2/talk=%#},{@pemit %#=There is no reply.}},{@pemit %#=I don't know which one you mean!}},{@select setr(0,locate(%#,%2,))=#-1,{@pemit %#=They cannot be found.},#-2,{@pemit %#=I don't know which one you mean!},{@if hasattrval(%q0/talk)={@trigger/inplace %q0/talk=%#},{@pemit %#=There is no reply.}}}
+
+@set Operator/CMD_TALK=regexp
 
 &CMD_PICK Operator=$pick *:@if strmatch(%0,#*)={@select words(matchall(lthings(loc(%#)),%0),)=0,{@break locate(%#,%0,)=@pemit %#=How would that work?;@pemit %#=It cannot be found.},1,{@if strmatch(lparent(%0),*[get_parent_flowers()]*)={@pemit %#=Try to [ansi(h,take)] it instead.},{@pemit %#=How would that work?}},{@pemit %#=It cannot be found.}},{@select setr(0,locate(%#,%0,))=#-1,{@pemit %#=It cannot be found.},#-2,{@pemit %#=I don't know which one you mean!},{@if strmatch(lparent(%q0),*[get_parent_flowers()]*)={@pemit %#=Try to [ansi(h,take)] it instead.},{@pemit %#=How would that work?}}}
 
