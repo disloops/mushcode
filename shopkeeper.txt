@@ -26,4 +26,4 @@
 
 &ON_ENTER Shopkeeper=^* blinds rattle *:@wait 20=@emit Without taking his eyes from his book, [ansi(h,[name(%!)])] takes a careful bite of his salad.
 
-&ON_BUY Shopkeeper=^* has purchased*:say An excellent choice!
+&ON_BUY Shopkeeper=^* has purchased*:say An excellent choice, [name(%0)]!
