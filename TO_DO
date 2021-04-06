@@ -24,3 +24,25 @@
   - Vacant stone buildings on the Caventry beach
   - Randomly appearing gold and objects
   - Spells!
+  - Fortune-telling machine
+
+ Code:
+
+  - +info
+  - Fix "busy" (on bartender and others) so it's the same as soda machine (include in @wait block?)
+  - +help newbie <-- Add link to custom commands
+  - +staff
+  - Fix bulletin board
+  - Try '@list commands' and '@list functions' to ensure blacklist is complete
+  - Add place, lay, drop, leave to statue flowers and kneel, pray to statue
+  - @ealias for flowers?
+  - Add "doing" to WHO?
+  - Add "make wish" to fountain
+  - Add "smell" to flowers
+  - "Drift" on boat
+  - "See help ambiguity"
+  - Address core dumps
+  - Prevent giving processor cycles
+  - get rid of #6 in code for "The_Dark" room
+  - Replace percent symbols on bboard and add "no_command" to attributes
+  - Remove "monitor" flags
