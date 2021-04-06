@@ -30,7 +30,7 @@
 
   - +info
   - Fix "busy" (on bartender and others) so it's the same as soda machine (include in @wait block?)
-  - +help newbie <-- Add link to custom commands
+  - update "help newbie" entry <-- Add link to custom commands
   - +staff
   - Fix bulletin board
   - Try '@list commands' and '@list functions' to ensure blacklist is complete
@@ -43,6 +43,7 @@
   - "See help ambiguity"
   - Address core dumps
   - Prevent giving processor cycles
-  - get rid of #6 in code for "The_Dark" room
+  - Get rid of #6 in code for "The_Dark" room
   - Replace percent symbols on bboard and add "no_command" to attributes
   - Remove "monitor" flags
+  - Use "log_commands @config option" instead of SUSPECT flag
