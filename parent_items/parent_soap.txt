@@ -14,7 +14,6 @@
 
 @create parent_soap
 @set parent_soap=!NO_COMMAND
-@set parent_soap=MONITOR
 @set parent_soap=LINK_OK
 @lock/parent parent_soap=power^WIZARD
 

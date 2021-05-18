@@ -9,7 +9,6 @@
 
 @create parent_drink
 @set parent_drink=!NO_COMMAND
-@set parent_drink=MONITOR
 @set parent_drink=LINK_OK
 @lock/parent parent_drink=power^WIZARD
 
