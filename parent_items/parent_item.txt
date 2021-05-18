@@ -9,7 +9,6 @@
 
 @create parent_item
 @set parent_item=!NO_COMMAND
-@set parent_item=MONITOR
 @set parent_item=LINK_OK
 @lock/parent parent_item=power^WIZARD
 
