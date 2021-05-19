@@ -9,7 +9,6 @@
 
 @create parent_food
 @set parent_food=!NO_COMMAND
-@set parent_food=MONITOR
 @set parent_food=LINK_OK
 @lock/parent parent_food=power^WIZARD
 

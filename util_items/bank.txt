@@ -21,7 +21,6 @@
 
 @create Bank
 @set Bank=QUIET
-@set Bank=MONITOR
 @set Bank=!NO_COMMAND
 @set Bank=WIZARD
 @set Bank=SAFE

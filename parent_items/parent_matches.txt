@@ -14,7 +14,6 @@
 
 @create parent_matches
 @set parent_matches=!NO_COMMAND
-@set parent_matches=MONITOR
 @set parent_matches=LINK_OK
 @lock/parent parent_matches=power^WIZARD
 

@@ -44,6 +44,6 @@
 
 &BUSY Barista=0
 
-&MAKE_ITEM Barista=[setq(0,[u(find_item,%0)])][setq(1,create(%q0))][setq(2,capstr(get_art(%q0)) %q0. To use\, type [ansi(h,use %q0)] or [ansi(h,[u(get_action,%q0)] %q0)].)][attrib_set(%q1/describe,%q2)][attrib_set(%q1/charges,2)][set(%q1,DESTROY_OK)][set(%q1,MONITOR)][set(%q1,QUIET)][set(%q1,!NO_COMMAND)][tel(%q1,me)]%q1
+&MAKE_ITEM Barista=[setq(0,[u(find_item,%0)])][setq(1,create(%q0))][setq(2,capstr(get_art(%q0)) %q0. To use\, type [ansi(h,use %q0)] or [ansi(h,[u(get_action,%q0)] %q0)].)][attrib_set(%q1/describe,%q2)][attrib_set(%q1/charges,2)][set(%q1,DESTROY_OK)][set(%q1,QUIET)][set(%q1,!NO_COMMAND)][tel(%q1,me)]%q1
 
 &CMD_ORDER Barista=$order *:@break v(busy)=@pemit %#=The barista is serving another customer right now.;@assert t(u(find_item,%0))=@pemit %#=Never heard of it. To see the menu, type [ansi(h,menu)]. To order something, type [ansi(h,order <food or drink>)].;@assert check_gold(%#,v(item_price))=@pemit %#=You don't have enough gold!;@set %!=busy:1;say Sure, %n! One gold, please.;@wait 1={think setq(0,u(make_item,%0));@wait 1={@parent %q0=[u(get_item_parent,name(%q0))];give %q0 to %#;@lock/use %q0=+%q0;@oemit %#=[name(%!)] gives %n [get_art(name(%q0))] [name(%q0)].;think charge_gold(%#,v(item_price));@set %!=busy:0}}

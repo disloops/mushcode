@@ -7,7 +7,6 @@
 
 @create Scoreboard
 @set Scoreboard=QUIET
-@set Scoreboard=MONITOR
 @set Scoreboard=!NO_COMMAND
 @set Scoreboard=WIZARD
 @set Scoreboard=SAFE

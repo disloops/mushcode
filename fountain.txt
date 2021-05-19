@@ -16,7 +16,7 @@
 @set Fountain=!NO_COMMAND
 @set Fountain=WIZARD
 
-&DESCRIBE Fountain=The fountain is a wide, shallow oval. There is a steady trickle of water that falls into a series of basins and eventually drips into the pool below. The fountain is a shade of green that suggests tarnished copper and there are some small coins at the bottom of the pool.
+&DESCRIBE Fountain=The fountain is a wide, shallow oval. There is a steady trickle of water that falls into a series of basins and eventually drips into the pool below. The fountain is a shade of green that suggests tarnished copper and there are some small coins at the bottom of the pool. It might be worthwhile to [ansi(wh,search fountain)].
 &USE Fountain=You dip one hand into the fountain and are suprised at how cold the water is. It must spring from deep below.
 &OUSE Fountain=dips a hand into the fountain.
 &FAILURE Fountain=You can't take that.

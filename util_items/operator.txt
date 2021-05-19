@@ -10,7 +10,6 @@
 @tel me=#2
 @create Operator
 @set Operator=QUIET
-@set Operator=MONITOR
 @set Operator=!NO_COMMAND
 @set Operator=WIZARD
 @set Operator=SAFE

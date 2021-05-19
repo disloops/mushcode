@@ -10,7 +10,6 @@
 
 @create Courthouse
 @set Courthouse=QUIET
-@set Courthouse=MONITOR
 @set Courthouse=!NO_COMMAND
 @set Courthouse=WIZARD
 @set Courthouse=SAFE

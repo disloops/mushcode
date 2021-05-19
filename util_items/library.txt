@@ -7,7 +7,6 @@
 
 @create Library
 @set Library=QUIET
-@set Library=MONITOR
 @set Library=!NO_COMMAND
 @set Library=WIZARD
 @set Library=SAFE
