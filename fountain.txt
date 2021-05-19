@@ -14,7 +14,6 @@
 @lock/basic Fountain==#1
 @lock/enter Fountain==#1
 @set Fountain=!NO_COMMAND
-@set Fountain=MONITOR
 @set Fountain=WIZARD
 
 &DESCRIBE Fountain=The fountain is a wide, shallow oval. There is a steady trickle of water that falls into a series of basins and eventually drips into the pool below. The fountain is a shade of green that suggests tarnished copper and there are some small coins at the bottom of the pool.

@@ -9,7 +9,6 @@
 
 @create Bulletin Board
 @set Bulletin Board=QUIET
-@set Bulletin Board=MONITOR
 @set Bulletin Board=!NO_COMMAND
 @set Bulletin Board=WIZARD
 @lock/basic Bulletin Board==#1

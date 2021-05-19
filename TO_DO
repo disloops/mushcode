@@ -47,6 +47,7 @@
   - Replace percent symbols on bboard and add "no_command" to attributes
   - Remove "monitor" flags
   - Use "log_commands @config option" instead of SUSPECT flag
+  - Improve "ambiguity" error messages
 
  Other:
 

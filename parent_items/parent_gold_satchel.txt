@@ -9,7 +9,6 @@
 
 @create parent_satchel
 @set parent_satchel=QUIET
-@set parent_satchel=MONITOR
 @set parent_satchel=!NO_COMMAND
 @lock/give parent_satchel==#1
 @lock/drop parent_satchel==#1
