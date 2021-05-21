@@ -9,7 +9,6 @@
 
 @create parent_fishing_lure
 @set parent_fishing_lure=!NO_COMMAND
-@set parent_fishing_lure=MONITOR
 @set parent_fishing_lure=LINK_OK
 @set parent_fishing_lure=WIZARD
 @lock/parent parent_fishing_lure=power^WIZARD

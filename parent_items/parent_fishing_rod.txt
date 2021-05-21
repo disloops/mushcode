@@ -9,7 +9,6 @@
 
 @create parent_fishing_rod
 @set parent_fishing_rod=!NO_COMMAND
-@set parent_fishing_rod=MONITOR
 @set parent_fishing_rod=LINK_OK
 @set parent_fishing_rod=WIZARD
 @lock/parent parent_fishing_rod=power^WIZARD
