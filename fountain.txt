@@ -26,6 +26,4 @@
 
 &MAKE_COIN Fountain=[setq(0,Arcade Token)][setq(1,create(%q0))][setq(2,The %q0 is a solid brass coin with a few inlaid stripes. It says "Akihabara" on its face.)][attrib_set(%q1/describe,%q2)][set(%q1,QUIET)][tel(%q1,me)]%q1
 
-&SEARCH Fountain=@break get_achievement(%0,1)={@pemit %0=Nothing was found.};@break v(busy)={@pemit %0=Someone else is too near the fountain right now.};@set %!=busy:1;think setq(0,u(make_coin));think set_achievement(%0,1);@pemit %0=There are some common coins in the bottom of the pool. One among them stands out - a thicker brass token. You take the coin.;@wait 1={@parent %q0=[get_parent_coin()];@tel %q0=%0;@lock/use %q0=+%q0;@lock/enter %q0==#1;@emit [name(%0)] finds [get_art(name(%q0))] [name(%q0)].;@set %!=busy:0}
-
 &SEARCH Fountain=@break get_achievement(%0,1)={@pemit %0=Nothing was found.};@break v(busy)={@pemit %0=Someone else is too near the fountain right now.};@set %!=busy:1;@wait 1={think setq(0,u(make_coin));think set_achievement(%0,1);@pemit %0=There are some common coins in the bottom of the pool. One among them stands out - a thicker brass token. You take the coin.;@wait 1={@parent %q0=[get_parent_coin()];@tel %q0=%0;@lock/use %q0=+%q0;@lock/enter %q0==#1;@emit [name(%0)] finds [get_art(name(%q0))] [name(%q0)].;@set %!=busy:0}}

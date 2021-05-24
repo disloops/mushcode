@@ -48,6 +48,8 @@
   - Remove "monitor" flags
   - Use "log_commands @config option" instead of SUSPECT flag
   - Improve "ambiguity" error messages
+  - Add HELP entry for custom flags
+  - Add everyone to <Public> channel
 
  Other:
 

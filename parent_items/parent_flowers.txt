@@ -16,7 +16,6 @@
 
 @create parent_flowers
 @set parent_flowers=!NO_COMMAND
-@set parent_flowers=MONITOR
 @set parent_flowers=LINK_OK
 @lock/parent parent_flowers=power^WIZARD
 

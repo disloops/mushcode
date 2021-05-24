@@ -11,7 +11,6 @@
 @create parent_laverian_sea
 @set parent_laverian_sea=LINK_OK
 @set parent_laverian_sea=!NO_COMMAND
-@set parent_laverian_sea=MONITOR
 @lock/parent parent_laverian_sea=power^WIZARD
 @parent parent_laverian_sea=get_parent_body_of_water()
 

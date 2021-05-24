@@ -10,7 +10,6 @@
 @create parent_body_of_water
 @set parent_body_of_water=LINK_OK
 @set parent_body_of_water=!NO_COMMAND
-@set parent_body_of_water=MONITOR
 @set parent_body_of_water=WIZARD
 @lock/parent parent_body_of_water=power^WIZARD
 
