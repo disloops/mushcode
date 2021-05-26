@@ -13,7 +13,6 @@
 @lock/enter Statue==#1
 @set Statue=ENTER_OK
 @set Statue=!NO_COMMAND
-@set Statue=MONITOR
 @set Statue=WIZARD
 
 &CHECK_FLOWER Statue=strmatch([parent(%#)],[get_parent_flowers()])

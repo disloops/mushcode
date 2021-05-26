@@ -9,7 +9,6 @@
 
 @create parent_fish
 @set parent_fish=!NO_COMMAND
-@set parent_fish=MONITOR
 @set parent_fish=LINK_OK
 @lock/parent parent_fish=power^WIZARD
 @lock/give parent_fish=#1
