@@ -14,7 +14,7 @@
 @lock/parent parent_laverian_sea=power^WIZARD
 @parent parent_laverian_sea=get_parent_body_of_water()
 
-&COMMON_FISH parent_laverian_sea=Cod|Herring|Pollock|Salmon|Mackerel|Haddock|Scup|Sea Bass|Tuna|Flouder
+&COMMON_FISH parent_laverian_sea=Cod|Herring|Pollock|Salmon|Mackerel|Haddock|Scup|Sea Bass|Tuna|Flounder
 
 &UNCOMMON_FISH parent_laverian_sea=Squid|Swordfish|Thresher Shark|Mako Shark|Sturgeon
 
