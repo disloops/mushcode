@@ -49,6 +49,7 @@
   - Improve "ambiguity" error messages
   - Add HELP entry for custom flags
   - Add everyone to <Public> channel
+  - Add "Out (o)" aliases to exits
 
  Other:
 
