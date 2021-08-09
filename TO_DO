@@ -29,10 +29,9 @@
  Code:
 
   - +info
-  - Fix "busy" (on bartender and others) so it's the same as soda machine (include in @wait block?)
+  - +rules
   - update "help newbie" entry <-- Add link to custom commands
   - +staff
-  - Fix bulletin board
   - Try '@list commands' and '@list functions' to ensure blacklist is complete
   - Add place, lay, drop, leave to statue flowers and kneel, pray to statue
   - @ealias for flowers?
