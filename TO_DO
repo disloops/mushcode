@@ -1,4 +1,10 @@
 
+  Iterative:
+
+   - Update +help
+   - Update Bulletin Board (#42)
+   - Update this TO DO list
+
   Read:
 
   http://www.mushcode.com/File/Ians-Big-Guide-to-Securing-your-MUX-MUSH
@@ -29,7 +35,9 @@
  Code:
 
   - +info
+  - +news
   - +rules
+  - +finger
   - update "help newbie" entry <-- Add link to custom commands
   - +staff
   - Try '@list commands' and '@list functions' to ensure blacklist is complete
@@ -50,6 +58,7 @@
   - Add HELP entry for custom flags
   - Add everyone to <Public> channel
   - Add "Out (o)" aliases to exits
+  - Have yum-cron shut down MUSH before reboots?
 
  Other:
 

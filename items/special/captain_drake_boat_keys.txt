@@ -1,0 +1,25 @@
+@@ Captain Drake's Boat Keys
+@@ Requires the parent object in "parent_boat_keys.txt".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/items/special/captain_drake_boat_keys.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Captain Drake's Boat Keys
+@set Captain Drake's Boat Keys=QUIET
+@set Captain Drake's Boat Keys=NO_COMMAND
+@lock/basic Captain Drake's Boat Keys==#1
+@lock/give Captain Drake's Boat Keys==#1
+@lock/drop Captain Drake's Boat Keys==#1
+@lock/enter Captain Drake's Boat Keys==#1
+@lock/use Captain Drake's Boat Keys=+Captain Drake's Boat Keys
+@parent Captain Drake's Boat Keys=get_parent_boat_keys()
+
+&DESCRIBE Captain Drake's Boat Keys=A set of keys with a red buoy keychain attached.
+&USE Captain Drake's Boat Keys=
+&AUSE Captain Drake's Boat Keys=@if strmatch(name(loc(%#)), Captain Drake's Trawler)={@pemit %#=You make sure the keys are firmly in place. The boat's motor growls with a low idle.},{@pemit %#=You flip the keys on your finger and examine the buoy keychain. They'd probably float if you dropped them in the drink... hopefully.}
+
+&GIVE_LOCK`FAILURE Captain Drake's Boat Keys=You'd better hang onto them!
+&DROP_LOCK`FAILURE Captain Drake's Boat Keys=You'd better hang onto them!

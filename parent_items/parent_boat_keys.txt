@@ -1,0 +1,22 @@
+@@ [parent] Boat Keys
+@@ A parent object for sets of boat keys.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_boat_keys.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_boat_keys
+@set parent_boat_keys=QUIET
+@set parent_boat_keys=NO_COMMAND
+@lock/give parent_boat_keys==#1
+@lock/drop parent_boat_keys==#1
+@lock/enter parent_boat_keys==#1
+@lock/parent parent_boat_keys=power^WIZARD
+
+&DESCRIBE parent_boat_keys=A set of keys with a small buoy keychain attached.
+&USE parent_boat_keys=You spin the keys on your finger. "Sure would be nice to be out to sea," you think to yourself.
+
+&GIVE_LOCK`FAILURE parent_boat_keys=You had better hang onto them.
+&DROP_LOCK`FAILURE parent_boat_keys=You had better hang onto them.
