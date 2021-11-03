@@ -7,6 +7,8 @@
 
 @@ Created and tested under PennMUSH v1.8.7
 
+@@ Note that @lock/give is actually set to Captain Drake's DBREF in practice.
+
 @create Captain Drake's Boat Keys
 @set Captain Drake's Boat Keys=QUIET
 @set Captain Drake's Boat Keys=NO_COMMAND
