@@ -37,7 +37,6 @@
   - +info
   - +news
   - +rules
-  - +finger
   - update "help newbie" entry <-- Add link to custom commands
   - +staff
   - Try '@list commands' and '@list functions' to ensure blacklist is complete
@@ -59,6 +58,7 @@
   - Add everyone to <Public> channel
   - Add "Out (o)" aliases to exits
   - Have yum-cron shut down MUSH before reboots?
+  - Rename Ransom so things are owned by a MUSH object?
 
  Other:
 

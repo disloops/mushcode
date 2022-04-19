@@ -22,7 +22,7 @@
 &DROP_LOCK`FAILURE parent_satchel=That type of detachment must come later.
 
 &GET_AMOUNT parent_satchel=switch(v(amount),1,v(amount) piece,v(amount) pieces)
-&STATUS parent_satchel=pemit(loc(%!),You have [u(get_amount)] of gold.)
+&STATUS parent_satchel=pemit(%0,You have [u(get_amount)] of gold.)
 
-&CMD_GOLD parent_satchel=$gold:think u(status)
-&ADESCRIBE parent_satchel=think u(status)
+&CMD_GOLD parent_satchel=$gold:@if strmatch(loc(me),%#)=think u(status,%#)
+&ADESCRIBE parent_satchel=@if strmatch(loc(me),%#)=think u(status,%#)
