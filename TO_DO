@@ -59,6 +59,8 @@
   - Add "Out (o)" aliases to exits
   - Have yum-cron shut down MUSH before reboots?
   - Rename Ransom so things are owned by a MUSH object?
+  - Add "best fish" metric to "score" page
+  - Add "soaps collected" to "score" page
 
  Other:
 
