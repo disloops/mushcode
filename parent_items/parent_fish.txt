@@ -14,6 +14,6 @@
 @lock/give parent_fish=#1
 
 &DROP parent_fish=You drop the [name(%!)].
-&ADROP parent_fish=@if strmatch(last(lparent(loc(%!))),get_parent_body_of_water())=@pemit %#=It swims away!;@nuke %!;@nuke %!
+&ADROP parent_fish=@if [is_water(loc(%!))]=@pemit %#=It swims away!;@nuke %!;@nuke %!
 &EFAIL parent_fish=An odd request.
 &GIVE_LOCK`FAILURE parent_fish=Fish-dealing is a slippery slope..!

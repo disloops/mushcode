@@ -51,3 +51,5 @@
 @function get_parent_boat_keys=num(Library), get_parent_boat_keys
 &GET_ROOM_HOSTEL Library=#12
 @function get_room_hostel=num(Library), get_room_hostel
+&IS_WATER Library=strmatch(last(lparent(%0)),get_parent_body_of_water())
+@function is_water=num(Library), is_water
