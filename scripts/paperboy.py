@@ -53,9 +53,20 @@ def connect():
     game_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     game_socket.connect((host, port))
     game_socket.settimeout(timeout)
-    game_socket.sendall(login.encode('utf-8'))
+    game_socket.sendall(login.encode())
+    clear_socket(game_socket)
     print('[*] Connected to ' + host + ':' + str(port) + ' as ' + bot_name + '.')
     return game_socket
+
+
+def clear_socket(game_socket):
+
+    try:
+        socket_file = game_socket.makefile(mode='rb')
+        while True:
+            socket_file.readline()
+    except socket.timeout:
+        return
 
 
 def print_news(game_socket, articles):
@@ -66,14 +77,18 @@ def print_news(game_socket, articles):
         link = replace_chars(article.link)
 
         news_ticker = '+' + channel_name + ' ;:\n'
-        game_socket.sendall(news_ticker.encode('utf-8'))
+        game_socket.sendall(news_ticker.encode())
+        clear_socket(game_socket)
         news_ticker = '+' + channel_name + ' ;: "' + title + '" -->\n'
-        game_socket.sendall(news_ticker.encode('utf-8'))
+        game_socket.sendall(news_ticker.encode())
+        clear_socket(game_socket)
         news_ticker = '+' + channel_name + ' ;: [' + link + ']\n'
-        game_socket.sendall(news_ticker.encode('utf-8'))
+        game_socket.sendall(news_ticker.encode())
+        clear_socket(game_socket)
 
     news_ticker = '+' + channel_name + ' ;:\n'
-    game_socket.sendall(news_ticker.encode('utf-8'))
+    game_socket.sendall(news_ticker.encode())
+    clear_socket(game_socket)
 
 
 def replace_chars(string):
