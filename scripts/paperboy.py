@@ -26,7 +26,7 @@ __version__ = '0.1'
 __email__ = 'disloops@gmail.com'
 
 # This script monitors RSS feeds and prints the headlines into a chat channel.
-# It runs daily as a cronjob locally.
+# It runs daily as a local cronjob.
 
 import sys
 import socket

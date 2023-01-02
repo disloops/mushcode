@@ -25,8 +25,8 @@ __author__ = 'Matt Westfall'
 __version__ = '0.1'
 __email__ = 'disloops@gmail.com'
 
-# This script monitors Twitter accounts for new tweets and prints them into the
-# a chat channel. It runs as a systemd service locally. This is the correct way
+# This script monitors Twitter accounts for new tweets and prints them into a
+# chat channel. It runs as a systemd service locally. This is the correct way
 # to install twint:
 #
 # pip3 install --user --upgrade git+https://github.com/twintproject/twint.git@origin/master#egg=twint
