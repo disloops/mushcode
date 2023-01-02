@@ -25,13 +25,18 @@ __author__ = 'Matt Westfall'
 __version__ = '0.1'
 __email__ = 'disloops@gmail.com'
 
-# This script monitors RSS feeds and prints the headlines into a chat channel.
-# It runs daily as a cronjob locally.
+# This script monitors Twitter accounts for new tweets and prints them into the
+# a chat channel. It runs as a systemd service locally. This is the correct way
+# to install twint:
+#
+# pip3 install --user --upgrade git+https://github.com/twintproject/twint.git@origin/master#egg=twint
 
 import sys
+import time
+import twint
 import socket
-import datetime
-import feedparser
+from datetime import datetime
+from datetime import timedelta
 
 host = '127.0.0.1'
 port = 4201
@@ -39,15 +44,36 @@ timeout = 0.5
 bot_name = ''
 bot_pw = ''
 channel_name = ''
-news_feed = ''
+users = []
+interval = 5
 login = 'connect ' + bot_name + ' ' + bot_pw + '\n'
 
 
-def get_news():
+def get_tweets(user, since):
 
-    print('[+] Getting news...')
-    NewsFeed = feedparser.parse(news_feed)
-    return NewsFeed.entries
+    c = twint.Config()
+    c.Username = user
+    c.Store_object = True
+    c.Since = since
+    c.Hide_output = True
+
+    twint.run.Search(c)
+    tweets = twint.output.tweets_list
+    twint.output.clean_lists()
+
+    return tweets
+
+
+def print_tweets(game_socket, tweets):
+
+    print('[+] Printing new tweets...')
+    for tweet in tweets:
+        user = replace_chars(tweet.username)
+        text = replace_chars(tweet.tweet)
+
+        twit_feed = '@cemit/noisy/noeval ' + channel_name + '=@' + user + ': ' + text + '\n'
+        game_socket.sendall(twit_feed.encode())
+        clear_socket(game_socket)
 
 
 def connect():
@@ -72,24 +98,6 @@ def clear_socket(game_socket):
         return
 
 
-def print_news(game_socket, articles):
-
-    print('[-] Printing the news...')
-    for article in articles:
-        title = replace_chars(article.title)
-        link = replace_chars(article.link)
-
-        news_ticker = '@cemit/noisy ' + channel_name + '=%b\n'
-        game_socket.sendall(news_ticker.encode())
-        clear_socket(game_socket)
-        news_ticker = '@cemit/noisy/noeval ' + channel_name + '="' + title + '" -->\n'
-        game_socket.sendall(news_ticker.encode())
-        clear_socket(game_socket)
-        news_ticker = news_ticker = '@cemit/noisy/noeval ' + channel_name + '=[' + link + ']\n'
-        game_socket.sendall(news_ticker.encode())
-        clear_socket(game_socket)
-
-
 def replace_chars(string):
 
     string = string.replace('‘','\'')
@@ -102,14 +110,26 @@ def replace_chars(string):
 
 def main():
 
-    now = datetime.datetime.now()
+    now = datetime.now()
     date_string = now.strftime("%B %d, %Y %H:%M:%S")
-    print('[-] Starting Paperboy - ' + date_string)
-    
-    articles = get_news()
+    print('[-] Starting Ornithopter Bot - ' + date_string)
+
     game_socket = connect()
-    print_news(game_socket, articles)
-    print('[*] Done!')
+
+    start_time = time.time()
+    last_interval = (datetime.now() - timedelta(minutes=interval))
+    since = last_interval.strftime("%Y-%m-%d %H:%M:%S")
+
+    while True:
+        
+        for user in users:
+            tweets = get_tweets(user, since)
+            if tweets:
+    	        print_tweets(game_socket, tweets)
+
+        time.sleep((interval * 60) - ((time.time() - start_time) % (interval * 60)))
+        last_interval = (last_interval + timedelta(minutes=interval))
+        since = last_interval.strftime("%Y-%m-%d %H:%M:%S")
 
 
 if __name__ == '__main__':
