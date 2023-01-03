@@ -89,6 +89,10 @@ def print_news(game_socket, articles):
         game_socket.sendall(news_ticker.encode())
         clear_socket(game_socket)
 
+    news_ticker = '@cemit/noisy ' + channel_name + '=%b\n'
+    game_socket.sendall(news_ticker.encode())
+    clear_socket(game_socket)
+
 
 def replace_chars(string):
 
