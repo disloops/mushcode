@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-
 # MIT License
-# Copyright (c) 2022 Matt Westfall (@disloops)
+# Copyright (c) 2023 Matt Westfall (@disloops)
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
