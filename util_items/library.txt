@@ -53,3 +53,10 @@
 @function get_room_hostel=num(Library), get_room_hostel
 &IS_WATER Library=strmatch(last(lparent(%0)),get_parent_body_of_water())
 @function is_water=num(Library), is_water
+&GET_MUSHGPT_URL Library=http://127.0.0.1:5000
+@function get_mushgpt_url=num(Library), get_mushgpt_url
+&GET_MUSHGPT_PW Library=[REDACTED]
+@function get_mushgpt_pw=num(Library), get_mushgpt_pw
+&TRAWLER_DBREFS Library=#335|#354|#161|#343|#518|#522
+&TRAWLER_UNDERWAY Library=[t(map(#apply/lvplayers,v(TRAWLER_DBREFS),|,))]
+@function trawler_underway=num(Library), trawler_underway

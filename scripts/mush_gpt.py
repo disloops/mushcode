@@ -48,26 +48,29 @@ def index():
         # Check for POST parameters
         json_data = request.get_json()
         if not json_data or 'text' not in json_data or 'auth' not in json_data or 'char' not in json_data:
-            return jsonify({"message": "Invalid request data"}), 400
+            return jsonify({"message": "Failed: Invalid request data"}), 400
 
         text = json_data['text'].strip()
         auth = json_data['auth'].strip()
         char = json_data['char'].strip()
 
         if len(auth) > 100 or auth != auth_key:
-            return jsonify({"message": "Unauthorized"}), 401
+            return jsonify({"message": "Failed: Unauthorized"}), 401
 
         if len(text) > 500:
-            return jsonify({"message": "Input exceeds maximum length"}), 400
+            return jsonify({"message": "Failed: Input exceeds maximum length"}), 400
 
         if len(char) > 100 or char not in prompts:
-            return jsonify({"message": "Invalid character reference"}), 400
+            return jsonify({"message": "Failed: Invalid character reference"}), 400
 
         # Format request to OpenAI API endpoint
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             max_tokens=1000,
-            temperature=0.8,
+            temperature=1,
+            top_p=1,
+            frequency_penalty=1,
+            presence_penalty=1,
             messages=[
                 {"role": "system", "content": prompt(char)},
                 {"role": "user", "content": text}
@@ -78,15 +81,15 @@ def index():
         finish_reason = response.choices[0]['finish_reason']
 
         if finish_reason == 'content_filter':
-            return jsonify({"message": "Content filter activated"})
+            return jsonify({"message": "Failed: Content filter activated"})
         elif finish_reason == 'length':
-            return jsonify({"message": "Output exceeds maximum length"})
+            return jsonify({"message": "Failed: Output exceeds maximum length"})
         else:
             message_content = response.choices[0]['message']['content']
             return jsonify({"message": message_content})
 
     except Exception as e:
-        return jsonify({"message": "Error"}), 500
+        return jsonify({"message": "Failed: Error"}), 500
 
 # Return an existing character prompt
 def prompt(char):

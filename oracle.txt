@@ -1,0 +1,29 @@
+@@ Oracle
+@@ An oracle character that makes use of the ChatGPT API.
+@@ Requires the server script in "mush_gpt.py".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/oracle.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create Oracle
+@lock/basic Oracle==#1
+@lock/enter Oracle==#1
+@lock/page Oracle==#1
+@set Oracle=MONITOR
+@set Oracle=WIZARD
+@parent Oracle=get_parent_person()
+
+&FAILURE Oracle=There is no need - you can cultivate these powers yourself.
+&EFAIL Oracle=Metaphysically?
+&USE Oracle=Just speak your query aloud. But beware, the oracle is said to conceal a great power.
+
+&DESCRIBE Oracle=An older woman with a tan complexion and an orange Kashmir shawl. Her jewelry is made of small gold coins strung together.
+
+&ON_SPEECH Oracle=^* says, "*":th setq(Content-Type,application/json);th setq(0,json(object, auth, json(string, [get_mushgpt_pw()]), char, json(string, oracle), text, json(string, u(func_secure,%1))));@http/post %!/speak=[get_mushgpt_url()], %q0
+
+&SPEAK Oracle=th setq(1,[u(func_secure,trim(json_query(edit(%0,\\u2013,-,\\u2014,-), get, message),"))]);@break strmatch(%q1,Failed:*)=say Some sort of trouble is brewing. Take shelter.;say %q1
+
+&FUNC_SECURE Oracle=[edit(regeditall(%0,\\$,),\%,,\[,,\],,#,,&,,\",",\\n\\n,%r,\\n,%r,\\,,)]
