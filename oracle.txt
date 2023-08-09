@@ -20,7 +20,7 @@
 &EFAIL Oracle=Metaphysically?
 &USE Oracle=Just speak your query aloud. But beware, the oracle is said to conceal a great power.
 
-&DESCRIBE Oracle=An older woman with a tan complexion and an orange Kashmir shawl. Her jewelry is made of small gold coins strung together.
+&DESCRIBE Oracle=An older woman with a tan complexion and an orange Kashmir shawl. Her jewelry is made of small gold coins strung together like charms on delicate chain.
 
 &ON_SPEECH Oracle=^* says, "*":th setq(Content-Type,application/json);th setq(0,json(object, auth, json(string, [get_mushgpt_pw()]), char, json(string, oracle), text, json(string, u(func_secure,%1))));@http/post %!/speak=[get_mushgpt_url()], %q0
 
