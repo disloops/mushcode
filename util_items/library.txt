@@ -60,3 +60,5 @@
 &TRAWLER_DBREFS Library=#335|#354|#161|#343|#518|#522
 &TRAWLER_UNDERWAY Library=[t(map(#apply/lvplayers,v(TRAWLER_DBREFS),|,))]
 @function trawler_underway=num(Library), trawler_underway
+&GET_PARENT_SUN_MEDALLION Library=#532
+@function get_parent_sun_medallion=num(Library), get_parent_sun_medallion

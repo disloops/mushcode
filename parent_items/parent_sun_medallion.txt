@@ -1,0 +1,25 @@
+@@ [parent] Sun Medallion
+@@ A parent object for the Oracle's Sun Medallion.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/parent_items/parent_sun_medallion.txt
+
+@@ Created and tested under PennMUSH v1.8.7
+
+@create parent_sun_medallion
+@set parent_sun_medallion=QUIET
+@set parent_sun_medallion=NO_COMMAND
+@set parent_sun_medallion=LINK_OK
+@lock/parent parent_sun_medallion=power^WIZARD
+@lock/basic parent_sun_medallion==#1
+@lock/enter parent_sun_medallion==#1
+@lock/give parent_sun_medallion==#1
+@lock/drop parent_sun_medallion==#1
+
+&EFAIL parent_sun_medallion=An odd request.
+&DESCRIBE parent_sun_medallion=A heavy, round token inlaid with a rising sun. A woven cord of many colors is strung through its jump ring.
+&USE parent_sun_medallion=You raise the medallion and watch it glimmer. Not all of its luster has faded.
+
+&GIVE_LOCK`FAILURE parent_sun_medallion=The Oracle's gift is only for you.
+&DROP_LOCK`FAILURE parent_sun_medallion=It's much too precious to drop!
