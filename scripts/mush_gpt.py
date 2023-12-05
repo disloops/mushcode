@@ -20,26 +20,30 @@
 # SOFTWARE.
 
 __author__ = 'Matt Westfall'
-__version__ = '0.1'
+__version__ = '0.2'
 __email__ = 'disloops@gmail.com'
 
 # This script functions as a localhost server that a MUSH can use to easily
 # interact with the OpenAI API.
 
 from flask import Flask, request, jsonify
-import openai
+from openai import AsyncOpenAI, OpenAI
+import time
 import os
 
 app = Flask(__name__)
 
 # OpenAI API key
-openai.api_key = "[API key here]"
+client = OpenAI(api_key="[API key here]")
 
 # Pseudo-secret password value that must be present in incoming requests
 auth_key = "[auth value here]"
 
 # Valid MUSH characters for which a system pre-prompt exists
 prompts = ["oracle"]
+
+# Add message buffer
+message_buffer = []
 
 @app.route('/', methods=['POST'])
 def index():
@@ -63,8 +67,14 @@ def index():
         if len(char) > 100 or char not in prompts:
             return jsonify({"message": "Failed: Invalid character reference"}), 400
 
+        # Add user message to the buffer
+        add_message("user", text, char)
+
+        # Filter messages for the current character
+        char_messages = get_char_messages(char)
+
         # Format request to OpenAI API endpoint
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             max_tokens=1000,
             temperature=1,
@@ -73,23 +83,45 @@ def index():
             presence_penalty=1,
             messages=[
                 {"role": "system", "content": prompt(char)},
-                {"role": "user", "content": text}
+                *char_messages
             ]
         )
 
         # Return response to caller
-        finish_reason = response.choices[0]['finish_reason']
+        finish_reason = response.choices[0].finish_reason
 
         if finish_reason == 'content_filter':
             return jsonify({"message": "Failed: Content filter activated"})
         elif finish_reason == 'length':
             return jsonify({"message": "Failed: Output exceeds maximum length"})
         else:
-            message_content = response.choices[0]['message']['content']
+            message_content = response.choices[0].message.content
+            add_message("assistant", message_content, char)
             return jsonify({"message": message_content})
 
     except Exception as e:
         return jsonify({"message": "Failed: Error"}), 500
+
+# Add a message to the buffer
+def add_message(role, content, character):
+    global message_buffer
+
+    message_buffer.append({"role": role, "content": content, "timestamp": time.time(), "character": character})
+
+    # Keep only the last 5 messages
+    message_buffer = message_buffer[-9:]
+
+    # Purge messages older than 1 hour
+    current_time = time.time()
+    message_buffer = [msg for msg in message_buffer if current_time - msg["timestamp"] < 3600]
+
+# Get filtered messages for the current character
+def get_char_messages(character):
+    return [
+        {"role": msg["role"], "content": msg["content"]}
+        for msg in message_buffer
+        if msg.get("character") == character
+    ]
 
 # Return an existing character prompt
 def prompt(char):
