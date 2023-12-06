@@ -57,13 +57,11 @@
   - Add HELP entry for custom flags
   - Add everyone to <Public> channel
   - Add "Out (o)" aliases to exits
-  - Have yum-cron shut down MUSH before reboots?
+  - Have auto-update shut down MUSH before reboots?
   - Rename Ransom so things are owned by a MUSH object?
   - Add "best fish" metric to "score" page
   - Add "soaps collected" to "score" page
   - Add "beers drank" to "score" page and create achievement for it
-  - Fix single quotes on MUSH-GPT
-  - Give GPT bots some chat history
 
  Other:
 
