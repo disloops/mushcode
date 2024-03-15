@@ -40,4 +40,4 @@
 @@ The @attribute commands no longer need to be run on @startup. They persist in the attribute table.
 
 @attribute/access email=no_inherit no_command
-@attribute/limit email=^\[a-zA-Z0-9.\]+@\[a-zA-Z0-9.\]+\.\[a-zA-Z\]\{2,4\}$
+@attribute/limit email=^\[a-zA-Z0-9\-.\]+@\[a-zA-Z0-9.\]+\.\[a-zA-Z\]\{2,4\}$
