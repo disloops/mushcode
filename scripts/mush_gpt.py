@@ -75,7 +75,7 @@ def index():
 
         # Format request to OpenAI API endpoint
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             max_tokens=1000,
             temperature=1,
             top_p=1,
@@ -108,8 +108,8 @@ def add_message(role, content, character):
 
     message_buffer.append({"role": role, "content": content, "timestamp": time.time(), "character": character})
 
-    # Keep only the last 5 messages
-    message_buffer = message_buffer[-9:]
+    # Keep only the last 10 messages
+    message_buffer = message_buffer[-19:]
 
     # Purge messages older than 1 hour
     current_time = time.time()

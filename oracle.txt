@@ -24,7 +24,7 @@
 
 &ON_SPEECH Oracle=^* says, "*":th setq(Content-Type,application/json);th setq(0,json(object, auth, json(string, [get_mushgpt_pw()]), char, json(string, oracle), text, json(string, u(func_secure,%1))));@http/post %!/speak=[get_mushgpt_url()], %q0
 
-&SPEAK Oracle=th setq(1,[u(func_secure,trim(json_query(edit(%0,\\u2013,-,\\u2014,-,\\u2019,'), get, message),"))]);@break strmatch(%q1,Failed:*)=say Some sort of trouble is brewing. Take shelter.;say %q1
+&SPEAK Oracle=th setq(1,[u(func_secure,trim(json_query(edit(%0,\\u2013,-,\\u2014,-,\\u2018,',\\u2019,',\\u201c,',\\u201d,'), get, message),"))]);@break strmatch(%q1,Failed:*)=say Some sort of trouble is brewing. Take shelter.;say %q1
 
 &FUNC_SECURE Oracle=[edit(regeditall(%0,\\$,),\%,,\[,,\],,#,,&,,\",",\\n\\n,%r,\\n,%r,\\,,)]
 
