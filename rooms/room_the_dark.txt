@@ -14,7 +14,7 @@
 &DESCRIBE here=Late at night, you awake with the sense that something outside requires your attention. A screened window carries the warm summer night to you and it feels alive with activity. As if in a dream, the mere thought of being outside seems to place you there. Something both strange and familiar beckons you onward.
 
 @open Outside (o)
-@link Outside (o)=#6
+@link Outside (o)=[num(your_starting_room)]
 @set Outside (o)=UNFINDABLE
 @set Outside (o)=WIZARD
 

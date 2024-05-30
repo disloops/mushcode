@@ -35,10 +35,8 @@
  Code:
 
   - +info
-  - +news
   - +rules
   - update "help newbie" entry <-- Add link to custom commands
-  - +staff
   - Try '@list commands' and '@list functions' to ensure blacklist is complete
   - Add place, lay, drop, leave to statue flowers and kneel, pray to statue
   - @ealias for flowers?
@@ -48,10 +46,7 @@
   - "Drift" on boat
   - "See help ambiguity"
   - Address core dumps
-  - Prevent giving processor cycles
-  - Get rid of #6 in code for "The_Dark" room
-  - Replace percent symbols on bboard and add "no_command" to attributes
-  - Remove "monitor" flags
+  - Prevent giving teraflops 
   - Use "log_commands @config option" instead of SUSPECT flag
   - Improve "ambiguity" error messages
   - Add HELP entry for custom flags
