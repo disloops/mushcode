@@ -39,15 +39,19 @@ timeout = 0.5
 bot_name = ''
 bot_pw = ''
 channel_name = ''
-news_feed = ''
+news_feeds = []
 login = 'connect ' + bot_name + ' ' + bot_pw + '\n'
 
 
 def get_news():
 
     print('[+] Getting news...')
-    NewsFeed = feedparser.parse(news_feed)
-    return NewsFeed.entries
+    FullFeed = []
+    for site in news_feeds:
+        feed = feedparser.parse(site)
+        for item in feed.entries:
+            FullFeed.append({'title': item.title, 'link': item.link})
+    return FullFeed
 
 
 def connect():
@@ -76,8 +80,8 @@ def print_news(game_socket, articles):
 
     print('[-] Printing the news...')
     for article in articles:
-        title = replace_chars(article.title)
-        link = replace_chars(article.link)
+        title = replace_chars(article['title'])
+        link = replace_chars(article['link'])
 
         news_ticker = '@cemit/noisy ' + channel_name + '=%b\n'
         game_socket.sendall(news_ticker.encode())
