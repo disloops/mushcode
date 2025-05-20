@@ -26,7 +26,9 @@ __version__ = '0.1'
 __email__ = 'disloops@gmail.com'
 
 # This script monitors RSS feeds and prints the headlines into a chat channel.
-# It runs daily as a local cronjob.
+# It runs daily as a local cronjob:
+# $ crontab -e
+# --> 0 12 * * * /usr/bin/python3 /home/ubuntu/paperboy/paperboy.py
 
 import sys
 import socket

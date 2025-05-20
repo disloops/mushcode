@@ -1,0 +1,29 @@
+@@ Ptolemy
+@@ A horoscope bot character that makes use of the OpenAI API.
+@@ Requires the server script in "mush_gpt.py".
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/ptolemy.txt
+
+@@ Created and tested under PennMUSH v1.8.8
+
+@create Ptolemy
+@lock/basic Ptolemy==#1
+@lock/enter Ptolemy==#1
+@lock/page Ptolemy==#1
+@set Ptolemy=MONITOR
+@set Ptolemy=WIZARD
+@parent Ptolemy=get_parent_person()
+
+&FAILURE Ptolemy=There is no need - you can cultivate these powers yourself.
+&EFAIL Ptolemy=Metaphysically?
+&USE Ptolemy=Just speak your query aloud!
+
+&DESCRIBE Ptolemy=Ptolemy is shrouded in mists.
+
+&ON_SPEECH Ptolemy=^<*> * says, "*":th setq(Content-Type,application/json);th setq(0,u(func_secure,%1 says\, "%2"));th setq(1,json(object, auth, json(string, [get_mushgpt_pw()]), char, json(string, ptolemy), text, json(string, %q0)));@http/post %!/speak=[get_mushgpt_url()], %q1
+
+&SPEAK Ptolemy=th setq(2,[u(func_secure,trim(json_query(edit(%0,\\u2013,-,\\u2014,-,\\u2018,',\\u2019,',\\u201c,',\\u201d,'), get, message),"))]);@break strmatch(%q2,Failed:*)=say The stars have arrayed into a troubling sign.;@chat astral=%q2
+
+&FUNC_SECURE Ptolemy=[edit(regeditall(%0,\\$,),\%,,\[,,\],,#,,&,,\",",\\n\\n,%r,\\n,%r,\\,,)]

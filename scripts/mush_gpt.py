@@ -28,6 +28,7 @@ __email__ = 'disloops@gmail.com'
 
 from flask import Flask, request, jsonify
 from openai import AsyncOpenAI, OpenAI
+import datetime
 import time
 import os
 
@@ -40,7 +41,10 @@ client = OpenAI(api_key="[API key here]")
 auth_key = "[auth value here]"
 
 # Valid MUSH characters for which a system pre-prompt exists
-prompts = ["oracle"]
+prompts = ["oracle","daemon","astro"]
+
+# Model (may depend on the prompt scenario)
+model = "gpt-4.1"
 
 # Add message buffer
 message_buffer = []
@@ -75,7 +79,7 @@ def index():
 
         # Format request to OpenAI API endpoint
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model=model,
             max_tokens=1000,
             temperature=1,
             top_p=1,
@@ -127,6 +131,11 @@ def get_char_messages(character):
 def prompt(char):
     if char == "oracle":
         return """[Put your oracle prompt here]"""
+    elif char == "daemon":
+        return """[Put your daemon prompt here]"""
+    elif char == "astro":
+        return """[Put your astro prompt here]"""
+    
 
 # Use default port 5000
 if __name__ == '__main__':

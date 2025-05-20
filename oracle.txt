@@ -1,5 +1,5 @@
 @@ Oracle
-@@ An oracle character that makes use of the ChatGPT API.
+@@ An oracle character that makes use of the OpenAI API.
 @@ Requires the server script in "mush_gpt.py".
 
 @@ author = Matt Westfall
