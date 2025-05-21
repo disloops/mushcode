@@ -39,6 +39,6 @@
 
 &CMD_+TODAY Operator=$+today:@pemit %#=Generating +today...;th setq(Content-Type,application/json);th setq(0,json(object, auth, json(string, [get_mushgpt_pw()])));@http/post %!/print_today=[get_mushgpt_url()]/today, %q0
 
-&PRINT_TODAY Operator=th setq(1,[u(func_secure,trim(json_query(edit(%0,\\u2013,-,\\u2014,-,\\u2018,',\\u2019,',\\u201c,',\\u201d,',\\u2022,-), get, message),"))]);@break strmatch(%q1,Failed:*)={@pemit %#=I can't retrieve that data. It must be the END OF DAYS!};@pemit %#=%r%q1
+&PRINT_TODAY Operator=th setq(1,[u(func_secure,trim(json_query(edit(%0,\\u2013,-,\\u2014,-,\\u2018,',\\u2019,',\\u201c,',\\u201d,',\\u2022,-), get, message),"))]);@break strmatch(%q1,Failed:*)={@pemit %#=I can't retrieve that data. It must be the END OF DAYS!};@pemit %#=%r%q1%r
 
 &FUNC_SECURE Operator=[edit(regeditall(%0,\\$,),\%,,\[,,\],,#,,&,and,\",",\\n,%r,\\n,%r,\\,,)]
