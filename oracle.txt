@@ -26,7 +26,7 @@
 
 &SPEAK Oracle=th setq(1,[u(func_secure,trim(json_query(edit(%0,\\u2013,-,\\u2014,-,\\u2018,',\\u2019,',\\u201c,',\\u201d,'), get, message),"))]);@break strmatch(%q1,Failed:*)=say Some sort of trouble is brewing. Take shelter.;say %q1
 
-&FUNC_SECURE Oracle=[edit(regeditall(%0,\\$,),\%,,\[,,\],,#,,&,,\",",\\n\\n,%r,\\n,%r,\\,,)]
+&FUNC_SECURE Oracle=[edit(regeditall(%0,\\$,),\%,,\[,,\],,#,,&,and,\",",\\n,%r,\\n,%r,\\,,)]
 
 &GIVE_MEDALLION Oracle=@break v(busy);@set %!=busy:1;@wait 1={think setq(0,u(create_medallion,%0));@wait 1={@parent %q0=get_parent_sun_medallion();give %q0 to %#;@lock/use %q0=+%q0;@lock/give %q0==#1;@lock/drop %q0==#1;@oemit %#=[name(%!)] gives %n a [name(%q0)].}};@wait 3={say Travel well, %n!;@set %!=busy:0;think set_achievement(%#,4);}
 
