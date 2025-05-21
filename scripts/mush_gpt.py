@@ -40,14 +40,54 @@ client = OpenAI(api_key="[API key here]")
 # Pseudo-secret password value that must be present in incoming requests
 auth_key = "[auth value here]"
 
-# Valid MUSH characters for which a system pre-prompt exists
-prompts = ["oracle","daemon","astro"]
+# Valid MUSH cases for which a system pre-prompt exists
+prompts = ["oracle","daemon","astro","today"]
 
 # Model (may depend on the prompt scenario)
 model = "gpt-4.1"
 
 # Add message buffer
 message_buffer = []
+
+@app.route('/today', methods=['POST'])
+def today():
+    try:
+        # Check for POST parameters
+        json_data = request.get_json()
+        if not json_data or 'auth' not in json_data:
+            return jsonify({"message": "Failed: Invalid request data"}), 400
+
+        auth = json_data['auth'].strip()
+
+        if len(auth) > 100 or auth != auth_key:
+            return jsonify({"message": "Failed: Unauthorized"}), 401
+
+        # Format request to OpenAI API endpoint
+        response = client.chat.completions.create(
+            model=model,
+            max_tokens=1000,
+            temperature=1,
+            top_p=1,
+            frequency_penalty=1,
+            presence_penalty=1,
+            messages=[
+                {"role": "system", "content": prompt("today")}
+            ]
+        )
+
+        # Return response to caller
+        finish_reason = response.choices[0].finish_reason
+
+        if finish_reason == 'content_filter':
+            return jsonify({"message": "Failed: Content filter activated"})
+        elif finish_reason == 'length':
+            return jsonify({"message": "Failed: Output exceeds maximum length"})
+        else:
+            message_content = response.choices[0].message.content
+            return jsonify({"message": message_content})
+
+    except Exception as e:
+        return jsonify({"message": "Failed: Error"}), 500
 
 @app.route('/', methods=['POST'])
 def index():
@@ -135,6 +175,8 @@ def prompt(char):
         return """[Put your daemon prompt here]"""
     elif char == "astro":
         return """[Put your astro prompt here]"""
+    elif char == "today":
+        return """[Put your +today prompt here]"""
     
 
 # Use default port 5000

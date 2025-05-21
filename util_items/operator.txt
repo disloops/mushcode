@@ -36,3 +36,9 @@
 &CMD_SEARCH Operator=$^search\ (the\ )?(.+)$:@if strmatch(%2,#*)={@select words(matchall(lthings(loc(%#)),%2),)=0,{@break strmatch(loc(%#),%2)={@if hasattrval(%2/search)={@trigger/inplace %q0/search=%#},{@pemit %#=Nothing was found.}};@break locate(%#,%2,)=Nothing was found.;@pemit %#=That cannot be found.},1,{@if hasattrval(%2/search)={@trigger/inplace %2/search=%#},{@pemit %#=Nothing was found.}},{@pemit %#=I don't know which one you mean!}},{@select setr(0,locate(%#,%2,))=#-1,{@pemit %#=That cannot be found.},#-2,{@pemit %#=I don't know which one you mean!},{@if hasattrval(%q0/search)={@trigger/inplace %q0/search=%#},{@pemit %#=Nothing was found.}}}
 
 @set Operator/CMD_SEARCH=regexp
+
+&CMD_+TODAY Operator=$+today:th setq(Content-Type,application/json);th setq(0,json(object, auth, json(string, [get_mushgpt_pw()])));@http/post %!/print_today=[get_mushgpt_url()]/today, %q0
+
+&PRINT_TODAY Operator=th setq(1,[u(func_secure,trim(json_query(edit(%0,\\u2013,-,\\u2014,-,\\u2018,',\\u2019,',\\u201c,',\\u201d,',\\u2022,-), get, message),"))]);@break strmatch(%q1,Failed:*)={@pemit %#=I can't retrieve that data. It must be the END OF DAYS!};@pemit %#=%r%q1
+
+&FUNC_SECURE Operator=[edit(regeditall(%0,\\$,),\%,,\[,,\],,#,,&,and,\",",\\n,%r,\\n,%r,\\,,)]
