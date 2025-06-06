@@ -1,5 +1,5 @@
 @@ UFO Parent
-@@ Ufo Parent object.
+@@ UFO Parent object.
 
 @@ author = Matt Westfall
 @@ email = disloops@gmail.com
