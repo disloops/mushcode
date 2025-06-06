@@ -1,0 +1,31 @@
+@@ Resonance
+@@ The solution to the UFO mystery.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/mulder/solution.txt
+
+@CREATE Resonance
+@LINK Resonance = [home DBREF]
+@LOCK/BASIC Resonance==[my DBREF]
+@LOCK/GIVE Resonance==[my DBREF]
+@LOCK/ENTER Resonance==[my DBREF]
+@LOCK/USE Resonance==[my DBREF]
+@SET Resonance = DARK
+@SET Resonance = MONITOR
+
+@AHEAR Resonance=@PEMIT %#=You hear a powerful voice that seems to speak without words. It says:%r%r%b[ANSI(h,"Now go ye and learn what this meaneth,)]%r%b[ANSI(h,that I desire not sacrifice, but mercy.")]%r%rIt looks like you've solved one mystery but have begun a new one. Enjoy your reward!;THINK [U(me/func_checksolution,%#)]
+
+@DESCRIBE Resonance=There is nothing to see.
+@SET Resonance/DESCRIBE=NO_COMMAND VISUAL
+
+@FAILURE Resonance=You aren't able to do that.
+
+&FUNC_CHECKSOLUTION Resonance=[IF(NOT(MATCH([GET([Log Book DBREF]/VAR_SOLUTION_001)],[NAME(%0)]\(%0\),|)),[SET([Log Book DBREF],VAR_SOLUTION_001:[GET([Log Book DBREF]/VAR_SOLUTION_001)]|[NAME(%0)]\(%0\))])]
+
+@LISTEN Resonance=* says, "Ye are not your own, ye are bought with a price*
+
+@SCENT Resonance=There is nothing to smell.
+@SOUND Resonance=There is nothing to hear.
+@TASTE Resonance=There is nothing to taste.
+@TOUCH Resonance=There is nothing to touch.

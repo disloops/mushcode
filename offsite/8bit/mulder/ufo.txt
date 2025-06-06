@@ -1,0 +1,20 @@
+@@ UFO "Alpha"
+@@ UFO that appears and disappears around the MUSH.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/mulder/ufo.txt
+
+@CREATE UFO "Alpha"
+@LINK UFO "Alpha" = [home DBREF]
+@PARENT UFO "Alpha"=[UFO Parent DBREF]
+@LOCK/BASIC UFO "Alpha"==[my DBREF]
+@LOCK/ENTER UFO "Alpha"==[my DBREF]
+@LOCK/GIVE UFO "Alpha"==[my DBREF]
+@LOCK/USE UFO "Alpha"==[my DBREF]
+
+@AMINUTELY UFO "Alpha"=THINK [U(me/func_getdir)];@TRIGGER me/CMD_MOVE;@WAIT 2=@IF [MATCH(MAP(func_playercheck,LCON(here)),1)]=@OEMIT me=%rThe UFO glides closer and you hear a voice that seems to have no source. It says:%r%r%b[ANSI(h,We are the Ophanim)]%r%b[ANSI(h,Go to where the stones are singing)]%r%b[ANSI(h,Unseal a word with "[PICK(v(VAR_CODES),1,|)]")%r%rWhat could it mean?%r
+
+@QUEUE UFO "Alpha"=
+
+&VAR_DIR UFO "Alpha"=north

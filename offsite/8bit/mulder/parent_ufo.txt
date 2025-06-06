@@ -1,0 +1,38 @@
+@@ UFO Parent
+@@ Ufo Parent object.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/mulder/parent_ufo.txt
+
+@CREATE UFO Parent
+@LINK UFO Parent = [home DBREF]
+@LOCK/BASIC UFO Parent==[my DBREF]
+@LOCK/ENTER UFO Parent==[my DBREF]
+@LOCK/GIVE UFO Parent==[my DBREF]
+@LOCK/USE UFO Parent==[my DBREF]
+
+&CMD_MOVE UFO Parent=@OEMIT me=[NAME(me)] [PICK(v(VAR_EXITMSGS),1,|)];@REMIT [LOC(v(VAR_DIR))]=[NAME(me)] [PICK(v(VAR_ENTERMSGS),1,|)];MOVE [v(VAR_DIR)]
+
+@DESCRIBE UFO Parent=[SHOWPICTURE(ufo)]
+@SET UFO Parent/DESCRIBE=NO_COMMAND VISUAL
+
+@FAILURE UFO Parent=That would immediately kill you.
+
+&FUNC_ADDPLAYER UFO Parent=[IF(NOT(MATCH([GET([Log Book DBREF]/VAR_INITIATES)],[NAME(%0)]\(%0\),|)),[SET([Log Book DBREF],VAR_INITIATES:[GET([Log Book DBREF]/VAR_INITIATES)]|[NAME(%0)]\(%0\))])]
+
+&FUNC_FINDEXIT UFO Parent=[SETQ(0,SETDIFF(LOCATE(me,%0,e),#-1))][IF(CAND(WORDS(%q0),NOT(MATCH(v(VAR_BADEXITS),%q0,|))),%0)]
+
+&FUNC_GETDIR UFO Parent=[SET(me,VAR_DIR:[PICK([U(me/func_findexit,west)] [U(me/func_findexit,east)] [U(me/func_findexit,north)] [U(me/func_findexit,south)])])]
+
+&FUNC_PLAYERCHECK UFO Parent=[IF(CAND(STRMATCH(TYPE(%0),PLAYER),NOT(STRMATCH(CONN(%0),-1))),[U(func_addplayer,%0)][PEMIT([my DBREF],[NAME(%0)]\(%0\) has had a close encounter with [NAME(me)]\([NUM(me)]\) at [NAME(LOC(me))]\([LOC(me)]\).)]1,0)]
+
+@SCENT UFO Parent=There's no smell at all.
+@SOUND UFO Parent=There is a faint rushing of air, but the craft makes no other sound.
+@TASTE UFO Parent=That would instantly kill you.
+@TOUCH UFO Parent=It is a cool metallic object.
+
+&VAR_BADEXITS UFO Parent=#12978
+&VAR_CODES UFO Parent=opal eyes|golden clover|royal honey
+&VAR_ENTERMSGS UFO Parent=silently hovers close to you.|shines a beam of light at you.|appears out of nowhere.
+&VAR_EXITMSGS UFO Parent=hovers for a moment, then zips off into the sky.|flashes a series of lights, then silently zips off.
