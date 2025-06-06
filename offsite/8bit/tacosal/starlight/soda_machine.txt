@@ -1,0 +1,46 @@
+@@ Soda Machine
+@@ A vending machine that dispenses various sodas.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/soda_machine.txt
+
+@CREATE Soda Machine
+@LINK Soda Machine = [Lodge DBREF]
+@LOCK/FUNCTIONS Soda Machine==[my DBREF]
+@LOCK/ENTER Soda Machine==[my DBREF]
+@LOCK/BASIC Soda Machine==[my DBREF]
+@LOCK/PAYMENT Soda Machine=CHOSEN/1&!BUSY/1
+
+@SET Soda Machine = OPAQUE
+
+@APAYMENT Soda Machine=@BREAK v(busy)={@PEMIT %#=[decompose(%r%bThe soda machine is serving someone else right now\, give it a second.%r)]};@WAIT DONE={think set(%!,busy:1);think if(not(u(CHOSEN)),{[pemit(%#,%r%bSomehow you got money into the machine and slapped a button at random! Tell TacoSal and he'll give you a lot of coins.%r)][set(%!,CHOICE_[trim(%#,l,#)]:[pick(v(sodas),,|)])]});think setq(0,[u(make_soda,[capstr(get(%!/CHOICE_[trim(%#,l,#)]))])]);@WAIT 1={@IF isdbref(%q0)={@IF not(strmatch([my DBREF],%#))={think set(%!,CUSTOMERS:[get(%!/CUSTOMERS)]|[name(%#)]\(%#\))};give %#=%q0;think wipe(%!/CHOICE_*);think soldproduct(993,2,%#);think set(%!,busy:0)},{@PEMIT %#=%r%bIt looks like TacoSal's baker credits have run out! Somebody ought to tell him.%r;think wipe(%!/CHOICE_*);think set(%!,busy:0)}}}
+
+&BUSY Soda Machine=0
+
+&CHOSEN Soda Machine=[t(get(%!/CHOICE_[trim(%#,l,#)]))]
+
+&CMD_PICK Soda Machine=$pick *:@BREAK v(busy)={@PEMIT %#=[decompose(%r%bThe soda machine is serving someone else right now\, give it a second.%r)]};@WAIT DONE={@ASSERT match(v(sodas),[secure(%0)],|)={@PEMIT %#=[decompose(%r%bNever heard of it. To select a soda\, just type [ansi(wh,pick pepsi)] and so on.%r)]};@SET %!=busy:1;think set(%!,CHOICE_[trim(%#,l,#)]:[secure(%0)]);@PEMIT %#=%r%bYou make a selection. Type [ansi(wh,give machine = 2)] to purchase.%r;@SET %!=busy:0}
+
+@COST Soda Machine=2
+
+@DESCRIBE Soda Machine=[showpicture(SL_SODAMACHINE_001)]%r%r%bTo purchase, type [ansi(wh,pick <soda>)] followed by [ansi(wh,give machine = 2)][if(hasflag([my DBREF],GAGGED),%r%r%bUh oh! It looks like TacoSal([my DBREF]) is GAGGED! That means the machine won't work.)]%r
+
+&EFAIL Soda Machine=Unless you're a quarter, that's not going to work.
+@FAILURE Soda Machine=It's awful heavy.
+
+&MAKE_SODA Soda Machine=[setq(1,switch(%0,Jolt,Cola,Soda))][setq(2,cook(%0 %q1,water sweet))][setq(3,To drink\, type "drink [name(%q2)]")][set(%q2,describe:\[showpicture(SL_SODA_[ucstr(%0)]_001)\])][set(%q2,use:%q3)][null(parent(%q2,[Soda Parent DBREF]))]%q2
+
+@OPAYMENT Soda Machine=drops two coins into the soda machine's coin slot. They careen through the interior mechanism and drop with a *clink* into the coin reservoir.
+
+@PAYFAIL Soda Machine=%r%bYou need to pick a soda. Just type [ansi(wh,pick pepsi)] and so on.%r%r%bIt's also possible that someone else is using it or TacoSal is GAGGED!%r
+
+@PAYMENT Soda Machine=%r%bYou drop two coins into the soda machine's coin slot. They careen through the interior mechanism and drop with a *clink* into the coin reservoir.%r
+
+&SODAS Soda Machine=jolt|pepsi|surge|tab
+
+@SCENT Soda Machine=The soda machine smells like it was wiped down with Windex recently.
+@SOUND Soda Machine=It hums slightly. You long to hear the sound of a quarter traversing its steely interior.
+@TASTE Soda Machine=You'd be better off tasting a delicious, ice-cold soda instead of the machine!
+@TOUCH Soda Machine=It feels warm and hums with an electric glow.
+@USE Soda Machine=Trying looking at it for directions!

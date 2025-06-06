@@ -1,0 +1,30 @@
+@@ Starlight Campgrounds
+@@ The main camping area.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/starlight_campground.txt
+
+@DIG/TELEPORT Starlight Campgrounds
+@LOCK/DROP here==[my DBREF]
+@LOCK/BASIC here==[my DBREF]
+@LOCK/TELEPORT here=PLAYERCHECK/1
+@SET here = HAVEN
+@SET here = NO_COMMAND
+@SET here = JUMP_OK
+
+@AENTER here=@IF OR(AND(STRMATCH(THING,[TYPE(%#)]),NOT(MATCH([GET([Clearances DBREF]/STAFF)],[NAME([OWNER(%#)])]\([OWNER(%#)]\),|))), MATCH([GET([Clearances DBREF]/BLACKLIST)],[NAME(%#)]\(%#\),|))={@PEMIT [my DBREF]={Alert! [NAME(%#)]\(%#\) is in [NAME(%!)]\(%!\)};@IF NOT(STRMATCH([NAME(%#)],Meeple))={@IF [GET([Log Book DBREF]/INTRUDERS_[TRIM(%!,l,#)])]={@SET [Log Book DBREF]={INTRUDERS_[TRIM(%!,l,#)]:[GET([Log Book DBREF]/INTRUDERS_[TRIM(%!,l,#)])]|[NAME(%#)]\(%#\)}},{@SET [Log Book DBREF]={INTRUDERS_[TRIM(%!,l,#)]:[NAME(%#)]\(%#\)}}};@TEL %#=[Drunk Tank DBREF]},{@IF NOT(MATCH([GET([Clearances DBREF]/STAFF)],[NAME([OWNER(%#)])]\([OWNER(%#)]\),|))={@IF [GET([Log Book DBREF]/VISITORS_[TRIM(%!,l,#)])]={@SET [Log Book DBREF]={VISITORS_[TRIM(%!,l,#)]:[GET([Log Book DBREF]/VISITORS_[TRIM(%!,l,#)])]|[NAME(%#)]\(%#\)}},{@SET [Log Book DBREF]={VISITORS_[TRIM(%!,l,#)]:[NAME(%#)]\(%#\)}}}}
+
+&AENTER_COMMENT here=IF NOT (player AND NOT owned by staff) OR blacklist --> @PEMIT, log intruder IF NOT name == Meeple, and @TEL [Drunk Tank DBREF], ELSE IF NOT owned by staff --> log visitor
+
+@DESCRIBE here=[SHOWPICTURE(SL_001)]%r%r%bThis area was established in June 2020 as the home of Starlight Campgrounds.%r%r%bVisit the lodge and explore the campgrounds - we're glad you're here!%r
+@SET here/DESCRIBE=NO_COMMAND VISUAL
+
+@ENTERFAIL here=%r%bPlease ask Starlight Campgrounds staff for help with your things!%r
+
+&PLAYERCHECK here=[STRMATCH(TYPE(%#),PLAYER)]
+
+@SCENT here=A campfire and a grill are both fired up somewhere around here.
+@SOUND here=Some birds chirp and the crack of a boulder or a rifle echoes in the distance.
+@TASTE here=Tastes like God's country!
+@TOUCH here=You reach out and gently pat a tree. Ahh...

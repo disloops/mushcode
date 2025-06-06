@@ -1,0 +1,23 @@
+@@ Insecure Room Parent
+@@ Parent room for non-secure areas.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/parent_items/sl_parent_room_insecure.txt
+
+@DIG/TELEPORT SL_Parent_Room_Insecure
+@LOCK/BASIC here==[my DBREF]
+@LOCK/TELEPORT here==[my DBREF]
+@LOCK/SPEECH here==[my DBREF]
+@LOCK/DROP here==[my DBREF]
+@SET here = DARK
+@SET here = HAVEN
+@SET here = NO_COMMAND
+@SET here = FLOATING
+
+@AENTER here=@IF MATCH([GET([Clearances DBREF]/BLACKLIST)],[NAME(%#)]\(%#\),|)={@PEMIT [my DBREF]={Alert! [NAME(%#)]\(%#\) is in [NAME(%!)]\(%!\)};@IF [GET([Log Book DBREF]/INTRUDERS_[TRIM(%!,l,#)])]={@SET [Log Book DBREF]={INTRUDERS_[TRIM(%!,l,#)]:[GET([Log Book DBREF]/INTRUDERS_[TRIM(%!,l,#)])]|[NAME(%#)]\(%#\)}},{@SET [Log Book DBREF]={INTRUDERS_[TRIM(%!,l,#)]:[NAME(%#)]\(%#\)}};@TEL %#=[Drunk Tank DBREF]}
+@set here/AENTER=no_command
+&AENTER_COMMENT here=IF blacklist --> @PEMIT, log intruder and @TEL [Drunk Tank DBREF]
+
+@DESCRIBE here=[NULL()]
+@SET here/DESCRIBE=NO_COMMAND VISUAL

@@ -1,0 +1,22 @@
+@@ Chemical Shower
+@@ A secure decontamination facility.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/chemical_shower.txt
+
+@DIG/TELEPORT Chemical Shower
+@LOCK/BASIC here==[my DBREF]
+@LOCK/SPEECH here==[my DBREF]
+@LOCK/TELEPORT here==[my DBREF]
+@LOCK/DROP here==[my DBREF]
+@SET here = DARK
+@SET here = HAVEN
+@SET here = NO_COMMAND
+@SET here = FLOATING
+
+@AENTER here=@IF AND(OR(STRMATCH(OWNER(%#),#1000),STRMATCH(OWNER(%#),#7841)),STRMATCH(NAME(%#),*dart*),STRMATCH(PARENT(%#),#23772))={@TEL %#=#26473},{@IF NOT(MATCH([GET([Clearances DBREF]/TS)],[NAME([OWNER(%#)])]\([OWNER(%#)]\),|))={@PEMIT [my DBREF]={Intruder! [NAME(%#)]\(%#\) is in [NAME(%!)]\(%!\)};@IF [GET([Log Book DBREF]/INTRUDERS_[TRIM(%!,l,#)])]={@SET [Log Book DBREF]={INTRUDERS_[TRIM(%!,l,#)]:[GET([Log Book DBREF]/INTRUDERS_[TRIM(%!,l,#)])]|[NAME(%#)]\(%#\)}},{@SET [Log Book DBREF]={INTRUDERS_[TRIM(%!,l,#)]:[NAME(%#)]\(%#\)}};@TEL %#=[Drunk Tank DBREF]}}
+&AENTER_COMMENT here=IF (owned by Luigi OR 8BitMUSH) AND name == dart AND parent == Bag of Darts --> @TEL to #26473, ELSE IF NOT owned by ts --> @PEMIT, log intruder and @TEL to [Drunk Tank DBREF]
+
+@DESCRIBE here=%r%bAn airlocked facility for processing hazardous materials and personnel.%r
+@SET here/DESCRIBE=NO_COMMAND VISUAL

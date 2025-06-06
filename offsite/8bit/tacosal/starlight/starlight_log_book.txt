@@ -1,0 +1,31 @@
+@@ Log Book
+@@ A book that tracks room visits and visitors.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/starlight_log_book.txt
+
+@CREATE Log Book
+@LINK Log Book = [SOC DBREF]
+@LOCK/LINK Log Book==[my DBREF]
+@LOCK/EXAMINE Log Book==[my DBREF]
+@LOCK/RECEIVE Log Book==[my DBREF]
+@LOCK/GIVE Log Book==[my DBREF]
+@LOCK/USE Log Book==[my DBREF]
+@LOCK/LEAVE Log Book==[my DBREF]
+@LOCK/SPEECH Log Book==[my DBREF]
+@LOCK/ENTER Log Book==[my DBREF]
+@LOCK/TELEPORT Log Book==[my DBREF]
+@LOCK/BASIC Log Book==[my DBREF]
+@LOCK/FOLLOW Log Book==[my DBREF]
+@LOCK/COMMAND Log Book==[my DBREF]
+@LOCK/FUNCTIONS Log Book==[my DBREF]
+@LOCK/PARENT Log Book==[my DBREF]
+@SET Log Book = DARK
+@SET Log Book = HAVEN
+@SET Log Book = OPAQUE
+@SET Log Book = SAFE
+@SET Log Book = NO_COMMAND
+&ROOM_DBREF001 Log Book=[Room name]
+&ROOM_DBREF002 Log Book=[Room name]
+&VISITORS_DBREF001 Log Book=name(DBREF)|name(DBREF)|...

@@ -1,0 +1,30 @@
+@@ Club Vendor
+@@ A slot in the wall for paying club dues.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/5555_club/club_vendor.txt
+
+@CREATE Club Vendor
+@LINK Club Vendor = [Motel Hallway DBREF]
+@LOCK/BASIC Club Vendor==[my DBREF]
+@LOCK/ENTER Club Vendor==[my DBREF]
+@LOCK/FUNCTIONS Club Vendor==[my DBREF]
+@LOCK/PAYMENT Club Vendor=NOT_MEMBER/1&!BUSY/1
+@SET Club Vendor = OPAQUE
+
+@APAYMENT Club Vendor=@BREAK v(busy)={@PEMIT %#=It's not safe, just a second.};@WAIT DONE={think set(%!,busy:1);think [u(FUNC_ADD_MEMBER,%#)];@WAIT 1={think soldproduct(1032,555,%#);think set(%!,busy:0)}}
+
+@OPAYMENT Club Vendor=slides an envelope through a slot in the wall.
+
+&BUSY Club Vendor=0
+@COST Club Vendor=555
+
+@DESCRIBE Club Vendor=A thin brass slot with a plaque above it:%r%r%b%b"We see you - submit your dues here."%r%rTo join the [ansi(y,Crazy 5's Club)] type [ansi(wh,give slot = 555)].[if(hasflag(#30406,GAGGED),%r%rUh oh! It looks like TacoSal(#30406) is GAGGED! That means membership is closed.)]
+
+@ENTERFAIL Club Vendor=Unless you're 555 coins, that's not going to work.
+@FAILURE Club Vendor=It's stuck in the wall.
+
+&FUNC_ADD_MEMBER Club Vendor=[set([Club Log Book DBREF],MEMBERS:[get([Club Log Book DBREF]/MEMBERS)]|[name(%0)]\(%0\))][if(match(get([Club Log Book DBREF]/SPIES),[name(%0)]\(%0\),|),[if(strmatch(get([Club Log Book DBREF]/SPIES),[name(%0)]\(%0\)),wipe([Club Log Book DBREF]/SPIES),[set([Club Log Book DBREF],SPIES:[edit(edit(get([Club Log Book DBREF]/SPIES),[name(%0)]\(%0\)|,),|[name(%0)]\(%0\),)])])])][pemit(%0,Now you're in. Type [ansi(wh,@tel #5555)] to enter the club from anywhere.)]
+
+&NOT_MEMBER Club Vendor=[not(match(get([Club Log Book DBREF]/MEMBERS),[name(%#)]\(%#\),|))]

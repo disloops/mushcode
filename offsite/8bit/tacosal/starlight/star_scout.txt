@@ -1,0 +1,24 @@
+@@ Star Scout
+@@ A friendly NPC that helps guide players.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/star_scout.txt
+
+@CREATE Star Scout
+@LINK Star Scout = [Lodge DBREF]
+@LOCK/BASIC Star Scout==[my DBREF]
+@LOCK/ENTER Star Scout==[my DBREF]
+@SET Star Scout = NO_COMMAND
+@SET Star Scout = PUPPET
+
+@DESCRIBE Star Scout=[showpicture(SL_SCOUT_001)]%r%r A rugged fella that isn't afraid of anything. He knew you were coming.%r
+
+&EFAIL Star Scout=He isn't interested.
+@FAILURE Star Scout=He's at work!
+
+@SCENT Star Scout="That's probably the pine sap you're smelling! Was hauling some trees this morning."
+@SOUND Star Scout=He listens too. You start to get an idea of what this place is all about.
+@TASTE Star Scout="Whoa! You must have started your camping experience a bit early - I'm no toad!"
+@TOUCH Star Scout=He extends a hand for a firm shake!
+@USE Star Scout=He's here to help! Try '[ansi(wh,look star scout)]' instead.

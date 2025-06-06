@@ -1,2 +1,26 @@
 **/ignore_files
 **/in_progress
+
+# Editor files
+.vscode/
+.editorconfig
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyd
+
+# System files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+
+# Editor files
+*~
+*.swp
+*.swo

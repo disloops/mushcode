@@ -1,0 +1,23 @@
+@@ Secure Room Parent
+@@ Parent room for secure areas.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/parent_items/sl_parent_room_secure.txt
+
+@DIG/TELEPORT SL_Parent_Room_Secure
+@LOCK/DROP here==[my DBREF]
+@LOCK/SPEECH here==[my DBREF]
+@LOCK/TELEPORT here==[my DBREF]
+@LOCK/BASIC here==[my DBREF]
+@SET here = DARK
+@SET here = HAVEN
+@SET here = NO_COMMAND
+@SET here = FLOATING
+
+@AENTER here=@IF NOT(MATCH([GET([Clearances DBREF]/TS)],[NAME([OWNER(%#)])]\([OWNER(%#)]\),|))={@PEMIT [my DBREF]={Intruder! [NAME(%#)]\(%#\) is in [NAME(%!)]\(%!\)};@IF [GET([Log Book DBREF]/INTRUDERS_[TRIM(%!,l,#)])]={@SET [Log Book DBREF]={INTRUDERS_[TRIM(%!,l,#)]:[GET([Log Book DBREF]/INTRUDERS_[TRIM(%!,l,#)])]|[NAME(%#)]\(%#\)}},{@SET [Log Book DBREF]={INTRUDERS_[TRIM(%!,l,#)]:[NAME(%#)]\(%#\)}};@TEL %#=[Drunk Tank DBREF]}
+
+&AENTER_COMMENT here=IF NOT owned by ts --> @PEMIT, log intruder and @TEL [Drunk Tank DBREF]
+
+@DESCRIBE here=[SWITCH(%L,NUM(ME),[U(CHILD_DESC)]%r%bRemember to @SET HERE=HALT and then !HALT to avoid alarms.%r,[IF(MATCH([GET([Clearances DBREF]/TS)],[NAME([OWNER(%#)])]\([OWNER(%#)]\),|),%r%bI guess you had to be there.%r,[PEMIT([my DBREF],Spy! [NAME(%#)]\(%#\) is looking at [NAME(%!)]\(%!\))][IF(GET([Log Book DBREF]/SPIES_[TRIM(%!,l,#)]),[SET([Log Book DBREF],SPIES_[TRIM(%!,l,#)]:[GET([Log Book DBREF]/SPIES_[TRIM(%!,l,#)])]|[NAME(%#)]\(%#\))],[SET([Log Book DBREF],SPIES_[TRIM(%!,l,#)]:[NAME(%#)]\(%#\))])]%r%bThis attempt has been logged.%r)])]
+@SET here/DESCRIBE=NO_COMMAND VISUAL

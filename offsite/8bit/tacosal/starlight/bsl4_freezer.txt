@@ -1,0 +1,29 @@
+@@ BSL-4 Freezer
+@@ A secure containment unit for dangerous items.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/bsl4_freezer.txt
+
+@CREATE BSL-4 Freezer
+@LINK BSL-4 Freezer = [home DBREF]
+@LOCK/FOLLOW BSL-4 Freezer==[my DBREF]
+@LOCK/COMMAND BSL-4 Freezer==[my DBREF]
+@LOCK/FUNCTIONS BSL-4 Freezer==[my DBREF]
+@LOCK/PARENT BSL-4 Freezer==[my DBREF]
+@LOCK/BASIC BSL-4 Freezer==[my DBREF]
+@LOCK/SPEECH BSL-4 Freezer==[my DBREF]
+@LOCK/TELEPORT BSL-4 Freezer==[my DBREF]|[chemical shower DBREF]
+@LOCK/ENTER BSL-4 Freezer==[my DBREF]
+@LOCK/LEAVE BSL-4 Freezer==[my DBREF]
+@LOCK/USE BSL-4 Freezer==[my DBREF]
+@LOCK/GIVE BSL-4 Freezer==[my DBREF]
+@LOCK/RECEIVE BSL-4 Freezer==[my DBREF]
+@LOCK/EXAMINE BSL-4 Freezer==[my DBREF]
+@LOCK/LINK BSL-4 Freezer==[my DBREF]
+@SET BSL-4 Freezer = DARK
+@SET BSL-4 Freezer = HAVEN
+@SET BSL-4 Freezer = OPAQUE
+@SET BSL-4 Freezer = SAFE
+@SET BSL-4 Freezer = NO_COMMAND
+@SET BSL-4 Freezer = NO_LEAVE

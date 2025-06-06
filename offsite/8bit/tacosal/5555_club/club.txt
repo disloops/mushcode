@@ -1,0 +1,40 @@
+@@ The Crazy 5's Club
+@@ A members only club.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/5555_club/club.txt
+
+@NAME here=The Crazy 5's Club
+
+@SET here=HAVEN
+@SET here=JUMP_OK
+
+@LOCK/SPEECH here=FUNC_IS_MEMBER/1
+@LOCK/TELEPORT here=FUNC_IS_MEMBER/1
+
+@DESC here=if(match(get([Log Book DBREF]/MEMBERS),[name([owner(%#)])]\([owner(%#)]\),|),[u(SHOW_DESC)],[remit(%!,<5555> Spy! [ansi(yh,[name(%#)]\(%#\))] is looking at [name(%!)]\(%!\).)][if(and(not(strmatch([name(%#)],Meeple)),not(strmatch([name(%#)]\(%#\),last(get([Log Book DBREF]/SPIES),|)))),[if(get([Log Book DBREF]/SPIES),[set([Log Book DBREF],SPIES:[get([Log Book DBREF]/SPIES)]|[name(%#)]\(%#\))],[set([Log Book DBREF],SPIES:[name(%#)]\(%#\))])])]%r%bThis attempt has been logged.%r)
+
+&FUNC_TRACKER here=@DOLIST unique(lwho())={@IF [hasattr(%!,DBREF_LOC_[unique(rest(##,#))])]={@IF [not(strmatch(loc(##),get(%!/DBREF_LOC_[unique(rest(##,#))])))]={th [remit(%!,<5555> [ansi(yh,[name(##)](##))] has moved from [name(get(%!/DBREF_LOC_[unique(rest(##,#))]))]([get(%!/DBREF_LOC_[unique(rest(##,#))])]) to [name(loc(##))]([loc(##)]).)];th [set(%!,DBREF_LOC_[unique(rest(##,#))]:[loc(##)])]}};@IF [not(hasattr(%!,DBREF_LOC_[unique(rest(##,#))]))]={th [remit(%!,<5555> [ansi(yh,[name(##)](##))] is online! They are located in [name(loc(##))]([loc(##)]).)];th [set(%!,DBREF_LOC_[unique(rest(##,#))]:[loc(##)])]}};@WAIT 5=@TRIGGER me/FUNC_TRACKER
+
+@AHOURLY here=@HALT here=@TRIGGER me/FUNC_TRACKER
+
+@STARTUP here=@HALT here=@TRIGGER me/FUNC_TRACKER
+
+&SHOW_DESC here=%r%b%b%b%b%b_________________%r%b%b%b%b/%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b/|%r%b%b%b/_______________%b/%b|%r%b%b|%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b|%b%b|%r%b%b|%b%b%b%b%b%b#5555%b%b%b%b%b|%b%b|%r%b%b|%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b|%b%b.%r%b%b|%b%b%b\[\]%b%b%b_%b%b%b\[\]%b%b|%b/%r%b%b|_______|||______|/%r%r[ansi(g,Members:)]%r[u(FUNC_SHOW_MEMBERS)]%r%r[ansi(r,Recent Spies:)]%r[u(FUNC_SHOW_SPIES)]%r%r[ansi(m,Recent Visitors:)]%r[u(FUNC_SHOW_VISITORS)]%r%r[ansi(y,Commands:)]%r[ansi(w,members)] - List members%r[ansi(w,spies)] - View spies%r[ansi(w,history)] - Show club history
+
+&CMD_MEMBERS here=$members:@PEMIT %#=The Crazy 5's Club Members:%r[u(FUNC_SHOW_MEMBERS)]
+
+&FUNC_SHOW_MEMBERS here=[iter(get([Log Book DBREF]/MEMBERS),##,|,%r)]
+
+&CMD_SPIES here=$spies:@PEMIT %#=Who has attempted to breach the Club?%r[u(FUNC_SHOW_SPIES)]
+
+&FUNC_SHOW_SPIES here=[iter(get([Log Book DBREF]/SPIES),##,|,%r)]
+
+&FUNC_SHOW_VISITORS here=[if(get([Log Book DBREF]/VISITORS),[iter(extract(revwords(get([Log Book DBREF]/VISITORS),|),1,5,|),##,|,%r)],None!)]
+
+&FUNC_IS_MEMBER here=or(t(grab(get([Log Book DBREF]/MEMBERS),[name(%#)](%#),|)),strmatch(%#,#5555))
+
+&CMD_HISTORY here=$history:@PEMIT %#={%r[ansi(yh,Club History)]%r%rAt some point I became interested in creating a secret club and criminal organization within 8Bit. I thought the headquarters should have a convenient DBREF and I began looking at existing objects. One caught my eye:%r%rBird God Statue (#5555)%rThe stone carving is quite intricate and the eyes are of ruby gemstones. The statue seems to have a magical aura about it.%rOwner: 8BitMUSH Zone: *NOTHING* Coins: 1%rBasic Lock: Connecting..(#0)%rHome: Pre-8Bit: Dynamix Era Artifacts%rLocation: Pre-8Bit: Dynamix Era Artifacts%r%rThe Bird God's DBREF would make a good home for the new club. Very carefully, I teleported it to my location and @CLONED a copy of it. It was also necessary to @LINK it to the "Pre-8Bit: Dynamix Era Artifacts" (#11440) exhibit and @LOCK it to the "Connecting.." room, which is DBREF (#0).%r%rI teleported the phony statue back to the museum, where it sits today. I still had no ability to change the type of an existing object to a room, so I @NUKED the original statue and quickly dug a new room, hoping that (#5555) would be the first available DBREF. This is how The Crazy 5's Club (#5555) was created.}
+
+@AENTER here=@IF or(and(strmatch(THING,[type(%#)]),not(match([get([Log Book DBREF]/MEMBERS)],[name([owner(%#)])]\([owner(%#)]\),|))),and(strmatch(PLAYER,[type(%#)]),not(match([get([Log Book DBREF]/MEMBERS)],[name(%#)]\(%#\),|))))={@REMIT %!={<5555> Spy! [ansi(yh,[name(%#)]\(%#\))] is in [name(%!)]\(%!\).};@IF and(not(strmatch([name(%#)],Meeple)),not(strmatch([name(%#)]\(%#\),last(get([Log Book DBREF]/SPIES),|))))={@IF [get([Log Book DBREF]/SPIES)]={@SET [Log Book DBREF]={SPIES:[get([Log Book DBREF]/SPIES)]|[name(%#)]\(%#\)}},{@SET [Log Book DBREF]={SPIES:[name(%#)]\(%#\)}}};@TEL %#=#10},{@IF and(strmatch(PLAYER,[type(%#)]),not(strmatch([name(%#)]\(%#\),TacoSal\([my DBREF]\))),not(strmatch([name(%#)]\(%#\),last(get([Log Book DBREF]/VISITORS),|))))={@IF [get([Log Book DBREF]/VISITORS)]={@SET [Log Book DBREF]={VISITORS:[get([Log Book DBREF]/VISITORS)]|[name(%#)]\(%#\)}},{@SET [Log Book DBREF]={VISITORS:[name(%#)]\(%#\)}}}}

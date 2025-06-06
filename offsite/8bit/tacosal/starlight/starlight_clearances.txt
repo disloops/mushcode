@@ -1,0 +1,31 @@
+@@ Starlight Clearances
+@@ A system for managing staff permissions and blacklists.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/starlight_clearances.txt
+
+@CREATE Clearances
+@LINK Clearances = [SOC DBREF]
+@LOCK/BASIC Clearances==[my DBREF]
+@LOCK/TELEPORT Clearances==[my DBREF]
+@LOCK/ENTER Clearances==[my DBREF]
+@LOCK/SPEECH Clearances==[my DBREF]
+@LOCK/LEAVE Clearances==[my DBREF]
+@LOCK/USE Clearances==[my DBREF]
+@LOCK/GIVE Clearances==[my DBREF]
+@LOCK/RECEIVE Clearances==[my DBREF]
+@LOCK/EXAMINE Clearances==[my DBREF]
+@LOCK/LINK Clearances==[my DBREF]
+@LOCK/FOLLOW Clearances==[my DBREF]
+@LOCK/COMMAND Clearances==[my DBREF]
+@LOCK/FUNCTIONS Clearances==[my DBREF]
+@LOCK/PARENT Clearances==[my DBREF]
+@SET Clearances = DARK
+@SET Clearances = HAVEN
+@SET Clearances = OPAQUE
+@SET Clearances = SAFE
+@SET Clearances = NO_COMMAND
+&BLACKLIST Clearances=name(DBREF)|name(DBREF)|...
+&STAFF Clearances=name(DBREF)|name(DBREF)|...
+&TS Clearances=name(DBREF)|name(DBREF)|...

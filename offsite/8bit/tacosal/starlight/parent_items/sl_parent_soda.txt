@@ -1,0 +1,38 @@
+@@ Soda Parent
+@@ Parent item for Starlight Soda products.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/parent_items/sl_parent_soda.txt
+
+@CREATE SL_Parent_Soda
+@LINK SL_Parent_Soda = [Supply Room DBREF]
+
+@DESCRIBE SL_Parent_Soda=%r%bThe PARENT object for the soda products.%r
+@SET SL_Parent_Soda/DESCRIBE=NO_COMMAND VISUAL
+
+@DROP SL_Parent_Soda=You drop your drink!
+@ODROP SL_Parent_Soda=drops %p drink!
+
+@SERVINGSIZE SL_Parent_Soda=1
+
+@EAT SL_Parent_Soda=%r%bYou finish your drink. Ahhh!%r%r%b[pick(v(eat_text),,|)]%r%r%b%b- Star Scout's Soda Jokes. Collect them all!%r
+
+@EATSERVING SL_Parent_Soda=%r%bYou crack open an icy-cold can of soda. [pick(v(eatserving_text),,|)]%r
+&EATSERVING_TEXT SL_Parent_Soda=You take an enormous sip of your drink.|This is a nice drink.|What a well-made drink.|You take a quick glance around to see if anyone noticed your drink.
+
+&EAT_TEXT SL_Parent_Soda=I got hit in the head with a can of soda yesterday. Luckily for me, it was a soft drink. (1/15)|I just quit my job at a can crushing factory. It was soda-pressing. (2/15)|Last night I had a dream that I was swimming in an ocean of orange soda. I guess it was just a Fanta sea! (3/15)|What do you call a musician who drinks soda and sings at the same time? A popsinger. (4/15)|What soda do dogs drink? Pupsi! (5/15)|Did you hear about the guy who drowned his boss in soda? It was done out of pure Sprite. (6/15)|What did Dr. Pepper say when he got pulled over by the soda cops? Oh no! It's the fizz! (7/15)|I always wondered where those little cans of soda came from until I carefully read the writing on one. It said, "Made in Halfcanistan"! (8/15)|My friend had a long life dream of studying carbonation. After many years of schooling, he accomplished his dream - he became a licensed Fizzyologist. (9/15)|How much soda can a tropical bird drink? Tucans! (10/15)|What size soda does Kim Jong-Un buy at 7-11? A supreme liter! (11/15)|What do you get when you inject soda from a dirty needle? Pep C! (12/15)|What did the alien say to the soda vendor? Take me to your liter! (13/15)|There's a new soda with Viagra in it. It's called Mount and Do! (14/15)|Which state serves the smallest drinks? Mini soda! (15/15)
+
+&MAKE_SODA SL_Parent_Soda=[setq(1,switch(%0,Jolt,Cola,Soda))][setq(2,cook(%0 %q1,water sweet))][setq(3,To drink\, type "drink [name(%q2)]")][set(%q2,describe:\[showpicture(SL_SODA_[ucstr(%0)]_001)\])][set(%q2,use:%q3)][null(parent(%q2,#27756))]%q2
+
+@OEAT SL_Parent_Soda=[pick(v(oeat_text),,|)] %p drink.
+@OEATSERVING SL_Parent_Soda=[pick(v(oeat_text),,|)] %p drink.
+&OEAT_TEXT SL_Parent_Soda=takes an enormous sip of|looks around to see if anyone noticed
+
+@SUCCESS SL_Parent_Soda=You pick up an icy-cold, delicious soda!
+@OSUCCESS SL_Parent_Soda=picks up an icy-cold, delicious soda!
+
+@SCENT SL_Parent_Soda=It smells like a soda, fresh from the vending machine!
+@SOUND SL_Parent_Soda=You hear the gentle sound of jostling liquid.
+@TASTE SL_Parent_Soda=Try "drink [name(%!)]" to taste it!
+@TOUCH SL_Parent_Soda=It's ice-cold and ready to satisfy thirst!

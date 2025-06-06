@@ -1,0 +1,134 @@
+@@ Player attributes
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/me.txt
+
+@LINK me = [HOME DBREF]
+@LOCK/ENTER me==[my DBREF]
+@LOCK/FOLLOW me==[my DBREF]
+@LOCK/EAT me==[my DBREF]
+@LOCK/BASIC me==[my DBREF]
+@LOCK/COMMAND me==[my DBREF]
+@LOCK/USE me==[my DBREF]
+@LOCK/TELEPORT me==[my DBREF]
+
+@LOCK/PAGE me=FUNC_BLOCKLIST/0
+@LOCK/GIVE me=FUNC_BLOCKLIST/0
+
+@SET me = OPAQUE
+@SET me = SAFE
+@SET me = ENTER_OK
+@SET me = ANSI
+@SET me = COLOR
+@SET me = MYOPIC
+@SET me = PARANOID
+
+@ADESCRIBE me=think %r%b%n(%#) just looked at you. Location is [name(loc(%#))]([loc(%#)]).%r
+
+@ADISCONNECT me=home
+
+@AENTER me=think %r%b[name(%#)](%#) has entered you.%r;@IF strmatch(type(%#),PLAYER)=@TEL %#=#10
+
+@AENTERFAIL me=think %r%b[name(%#)](%#) tried to enter you.%r
+
+@AFAILURE me=%r%b[name(%#)](%#) tried to take you.%r
+
+@AFOLLOW me=think %r%b[name(%#)](%#) has followed you.%r;dismiss
+
+@ALIAS me=[my alias]
+
+@ASCENT me=think %r%b%n(%#) is smelling you.%r
+
+@ASOUND me=think %r%b%n(%#) is listening to you.%r
+
+@ASUCCESS me=think %r%b%n(%#) has picked you up.%r
+
+@ATASTE me=think %r%b%n(%#) is tasting you.%r
+
+@ATOUCH me=think %r%b%n(%#) is touching you.%r
+
+&CHD_WARN me=$warn:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@WCHECK/me}
+
+&CMD_5 me=$5:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=#5555}
+
+&CMD_CANADA me=$canada:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=#3129}
+
+&CMD_CHAT me=$+pp *:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think setq(0,STONED AND DETHRONED);@CHAN/TITLE public=[ansi(,[iter(lnum(strlen(%q0)),color(pick(1 9 88 124 160 196),,mid(%q0,##,1)),,)])];@CHAT public=%0}
+
+&CMD_CLEAR me=$clear:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{examine #29538}
+
+&CMD_CMD me=$cmd:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think %r%bShortcut Commands:%r%b------------------%r;think iter(lattr([my DBREF]),if(and(strmatch(##,CMD_*),not(strmatch(##,CMD_CMD))),pemit([my DBREF],%b##:%r%b[get([my DBREF]/##)]%r)),,)}
+
+&CMD_CONFIG me=$config:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think iter([sort([config()],a)],## --> [config(##)],,%r)}
+
+&CMD_CREATED me=$created:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think %r%bObject Creation Dates:%r%b----------------------%r;think [setq(a,[sort([iter([search(me,none,none)],[convtime([ctime(##)])]|##,,%b)],n)])][setq(b,[squish([iter(%qa,[switch([hastype([after(##,|)],exit)],0,{##})],,%b)])])][iter(%qb,%b[name([after(##,|)])] \([after(##,|)]\) --> [convsecs([before(##,|)])],,%r)]%r}
+
+&CMD_DRUNK me=$godrunk:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=[Drunk Tank DBREF]}
+
+&CMD_EYE me=$eye *:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think %b;look %0;think %r[align(18 18 18 18,%bOwner:%b[ansi(xh,[name([owner(%0)])])],Number:%b[ansi(xh,num(%0))],Type:%b[ansi(xh,[capstr([lcstr(type(%0))])])],Parent:%b[ansi(xh,[switch(parent(%0),#-1*,None,[parent(%0)])])])];think [align(18 18 18 18,%bVisual:%b[ansi(xh,[if(hasflag(%0,visual),Yes,No)])],Link:%b[ansi(xh,[if(hasflag(%0,link_ok),Yes,No)])],Chown:%b[ansi(xh,[if(hasflag(%0,chown_ok),Yes,No)])],Jump:%b[ansi(xh,[if(hasflag(%0,jump_ok),Yes,No)])])]%r}
+
+&CMD_FF me=$ff:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@PEM/S %#=%b[ansi(yh,Final Fantasy I "Prelude" \(NES\))];th [play(MFL12n28n18n20n23n28n30n32n35n40n42n44n47n52n54n56n59n64n59n56n54n52n47n44n42n40n35n32n30n28n23n20n18n25n27n28n20n25n27n28n32n37n39n40n44n49n51n52n56n61n56n52n51n49n44n40n39n37n32n28n27n25n20n28n27n28n18n20n23n28n30n32n35n40n42n44n47n52n54n56n59n64n59n56n54n52n47n44n42n40n35n32n30n28n23n20n18n25n27n28n20n25n27n28n32n37n39n40n44n49n51n52n56n61n56n52n51n49n44n40n39n37n32n28n27n25n20n28n27n25n28n21n23n25n28n33n35n37n40n45n47n49n52n57n59n61n59n57n52n49n47n45n40n37n35n33n28n25n23n21n28n27n18n23n25n27n30n35n37n39n42n47n49n51n54n59n61n63n61n59n54n51n49n47n42n39n37n35n30n27n25n23n18n24n28n19n23n24n28n31n35n36n40n43n47n48n52n55n59n60n59n55n52n48n47n43n40n36n35n31n28n24n23n19n28n26n18n21n25n26n30n33n37n38n42n45n49n50n54n57n61n62n61n57n54n50n49n45n42n38n37n33n30n26n25n21n18)]}
+
+&CMD_GOCHEM me=$gochem:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=[Chemical Shower DBREF]}
+
+&CMD_GOGO me=$gogo:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=[Lot DBREF]}
+
+&CMD_GOLD me=$gold:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@CHAN/TITLE public=[ansi(yh,GOLDEN NOOB)]}
+
+&CMD_GOMIL me=$gomil:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=[HOME DBREF]}
+
+&CMD_GOPAR me=$gopar:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=#29507}
+
+&CMD_GOPAR2 me=$gopar2:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=#29965}
+
+&CMD_HAM me=$ham:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=#11111}
+
+&CMD_HOO me=$hoo:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think %r%b-=\[ 8BitMUSH \]=-%r%r[iter(setdiff(lwho(),#4014 #10645 #17863 #23860),%b[ansi(wh,[name(##)](##))] in [name(loc(##))]([loc(##)])%r%b[if(lt(idle(##),300),[ansi(g,Idle:)],[ansi(r,Idle:)])]%b[timestring(idle(##))][if(isdarted(##),%b[ansi(wh,Dart Time: ([darttime(##)]))])],,%r%r)]%r}
+
+&CMD_LIST me=$list:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{examine [TO DO List DBREF]}
+
+&CMD_LOG me=$log:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{examine [Log Book DBREF]}
+
+&CMD_SCAN me=$scan:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think [iter([lcon(%l)] [lexits(%l)],[ansi([switch(1,[hastype(##,PLAYER)],c,w)],name(##))]%b\(##\)%b\[[type(##)]\]%b--%b[ansi(xh,Owner:%b[name([owner(##)])](##))]%b--%bFlags:%b[flags(##)],, %r)]}
+
+@DEATH me=%r%bwhy u do dis%r
+
+@DESCRIBE me=%r%bA man balancing a plate of hot enchiladas.%r
+@SET me/DESCRIBE=no_command visual
+
+@EATFAIL me=%r%bDon't do that.%r
+
+@ENTER me=%r%bYou will regret this.%r
+
+@FAILURE me=%r%bwhy u do dis%r
+
+@FOLLOW me=%r%bDon't do that.%r
+
+&FUNC_BLOCKLIST me=[t(grab(get([Clearances DBREF]/BLACKLIST),[name(%#)](%#),|))]
+
+@GIVEFAIL me=%r%r%bNo thanks.%r
+
+@HAVEN me=%r%r%bYou wot?%r
+
+&MISC me=https://youtu.be/az5i5VBLIWw
+
+&SAVED_CHAT_001 me=@CHAN/TITLE public=[ansi(f,[color(rand(34,50),0,H)])][ansi(f,[color(rand(34,50),0,a)])][ansi(f,[color(rand(34,50),0,p)])][ansi(f,[color(rand(34,50),0,p)])][ansi(f,[color(rand(34,50),0,y)])] [ansi(f,[color(rand(196,201),0,C)])][ansi(f,[color(rand(196,201),0,a)])][ansi(f,[color(rand(196,201),0,m)])][ansi(f,[color(rand(196,201),0,p)])][ansi(f,[color(rand(196,201),0,e)])][ansi(f,[color(rand(196,201),0,r)])];@CHAT public = %0
+&SAVED_CHAT_002 me=@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think setq(0,NEW);think setq(1,LEAF);@CHAN/TITLE public=[ansi(,[iter(lnum(strlen(%q0)),color(pick(22 28 34 40 41 46 47 42 48),,mid(%q0,##,1)),,)] [iter(lnum(strlen(%q1)),color(pick(22 28 34 40 41 46 47 42 48),,mid(%q1,##,1)),,)])];@CHAT public=%0}
+
+&SAVED_FIND_FORCE me=think iter(lsearch([my DBREF],,),iter(lattr(##),if(strmatch([get(##/%i0)],*@fo*),name(##)(##)/%i0 --> [get(##/%i0)]%r%r),,),,)
+
+@SCENT me=%r%bDon't do that.%r
+
+@SEX me=male
+@SET me/SEX=no_command visual
+
+@SOUND me=%r%bCheck <Public> instead.%r
+
+@SUCCESS me=%r%bYou will regret this.%r
+
+@TASTE me=%r%bDon't do that.%r
+
+@TOUCH me=%r%bDon't do that.%r
+
+&WWW me=http://8bit.disloops.com
