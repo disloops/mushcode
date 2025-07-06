@@ -17,10 +17,8 @@
 @SET here = BATHROOM
 @SET here = NO_TEL
 
-@AMINUTELY here=@IF [NOT(STRMATCH(LOC(#1000),GET(%!/WIZ_LAST_LOC)))]={TH [REMIT(%!,<WizReport> [ANSI(yh,Luigi(#1000))] has moved from [NAME(GET(%!/WIZ_LAST_LOC))]([GET(%!/WIZ_LAST_LOC)]) to [NAME(LOC(#1000))]([LOC(#1000)]).)];TH [SET(%!,WIZ_LAST_LOC:[LOC(#1000)])]}
-
 @BATHROOM here=%bYou hit the head before settling down to work.%r
 
-&CHILD_DESC here=%r%b[ANSI(m,\[)][ANSI(mhf,8BitMUSH)][ANSI(m,\])]%r%r[ITER(SETDIFF(LWHO(),#4014 #10645 #17863 #23860),%b[ANSI(wh,[NAME(##)](##))] in [NAME(LOC(##))]([LOC(##)])%r%b[IF(LT(IDLE(##),300),[ANSI(g,Idle:)],[ANSI(r,Idle:)])]%b[TIMESTRING(IDLE(##))][IF(ISDARTED(##),%b[ANSI(wh,Dart Time: ([DARTTIME(##)]))])],,%r%r)]%r%r%bYou're in a low building made of cool concrete, with wiring and steel piping neatly running along the walls.%r
+&CHILD_DESC here=%r%b[ANSI(m,\[)][ANSI(mhf,8BitMUSH)][ANSI(m,\])]%r%r[ITER(SETDIFF(LWHO(),#4014 #10645 #17863 #23860),%b[ANSI(wh,[NAME(##)]\(##\))] in [NAME(LOC(##))]\([LOC(##)]\)%r%b[IF(LT(IDLE(##),300),[ANSI(g,Idle:)],[ANSI(r,Idle:)])]%b[TIMESTRING(IDLE(##))][IF(ISDARTED(##),%b[ANSI(wh,Dart Time: ([DARTTIME(##)]))])],,%r%r)]%r%r%bYou're in a low building made of cool concrete, with wiring and steel piping neatly running along the walls.%r
 
 &WIZ_LAST_LOC here=#10
