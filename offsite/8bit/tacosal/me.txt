@@ -54,11 +54,13 @@
 
 &CMD_CANADA me=$canada:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{@TEL [my DBREF]=#3129}
 
-&CMD_CHAT me=$+pp *:@SWI/FIRST [strmatch(%#,#30406)]=0,{@pem/s %#=Permission denied.},{think setq(0,Green Bank StarQuest XX);@chan/title public=[ansi(yf,c(15))]%b[ansi(,[iter(lnum(strlen(%q0)),color(pick(220 221 222 226 227 228),,mid(%q0,##,1)),,)])]%b[ansi(yhf,c(15))];@chat public=[if(or(strmatch(left(%0,1),:),strmatch(left(%0,1),;)),[left(%0,1)][ansi(wh,mid(%0,1))],[ansi(wh,%0)])]}
+&CMD_CHAT me=$+pp *:@SWI/FIRST [strmatch(%#,#30406)]=0,{@pem/s %#=Permission denied.},{think setq(0,AMBER ALERT FOR LUIGI);@chan/title public=[ansi(mhf,c(3))]%b[ansi(,[iter(lnum(strlen(%q0)),color(pick(161 162 163 198 199),,mid(%q0,##,1)),,)])]%b[ansi(mhf,c(3))];@chat public=[if(or(strmatch(left(%0,1),:),strmatch(left(%0,1),;)),[left(%0,1)][ansi(wh,mid(%0,1))],[ansi(wh,%0)])]}
 
 &CMD_CHAT_002 me=$+pp002 *:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think setq(0,STONED AND DETHRONED);@CHAN/TITLE public=[ansi(,[iter(lnum(strlen(%q0)),color(pick(1 9 88 124 160 196),,mid(%q0,##,1)),,)])];@CHAT public=%0}
 
 &CMD_CHAT_003 me=$+pp003 *:@swi/first [strmatch(%#,#30406)]=0,{@pem/s %#=Permission denied.},{think setq(0,ASTRAL WEEKS);@chan/title public=[ansi(,[iter(lnum(strlen(%q0)),color(pick(28 34 40 46 84),,mid(%q0,##,1)),,)])];@chat publlic=%0}
+
+&CMD_CHAT_004 me=$+pp004 *:@SWI/FIRST [strmatch(%#,#30406)]=0,{@pem/s %#=Permission denied.},{think setq(0,Green Bank StarQuest XX);@chan/title public=[ansi(yf,c(15))]%b[ansi(,[iter(lnum(strlen(%q0)),color(pick(220 221 222 226 227 228),,mid(%q0,##,1)),,)])]%b[ansi(yhf,c(15))];@chat public=[if(or(strmatch(left(%0,1),:),strmatch(left(%0,1),;)),[left(%0,1)][ansi(wh,mid(%0,1))],[ansi(wh,%0)])]}
 
 &CMD_CLEAR me=$clear:@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{examine #29538}
 

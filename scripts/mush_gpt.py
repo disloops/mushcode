@@ -20,17 +20,26 @@
 # SOFTWARE.
 
 __author__ = 'Matt Westfall'
-__version__ = '0.2'
+__version__ = '0.3'
 __email__ = 'disloops@gmail.com'
 
 # This script functions as a localhost server that a MUSH can use to easily
 # interact with the OpenAI API.
+#
+# ASTRONOMICAL DATA INTEGRATION:
+# - Fetches real astronomical data from NASA's JPL Horizons API
+# - Provides accurate moon phases, planetary positions, and zodiac signs
+# - Automatically embeds astronomical data into "astro" and "today" bot prompts
+# - Uses NASA's official ephemeris data for reliability and accuracy
+# - No API keys required for NASA data (free and official)
 
 from flask import Flask, request, jsonify
 from openai import AsyncOpenAI, OpenAI
 import datetime
 import time
 import os
+import sys
+import json
 
 app = Flask(__name__)
 
@@ -48,6 +57,50 @@ model = "gpt-4.1"
 
 # Add message buffer
 message_buffer = []
+
+# Astronomy data cache
+astro_cache = {}
+astro_cache_time = 0
+CACHE_DURATION = 3600  # Cache for 1 hour
+
+def get_astronomical_context():
+    """Get current astronomical data for inclusion in prompts (cached for performance)"""
+    global astro_cache, astro_cache_time
+
+    current_time = time.time()
+
+    # Return cached data if still valid
+    if current_time - astro_cache_time < CACHE_DURATION and astro_cache:
+        return astro_cache.get('context', '')
+
+    try:
+        # Execute astronomy_data.py with --bot flag for clean output
+        import subprocess
+        import os
+
+        script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'astronomy_data.py')
+        result = subprocess.run(
+            [sys.executable, script_path, '--bot'],
+            capture_output=True,
+            text=True,
+            timeout=30  # 30 second timeout
+        )
+
+        if result.returncode == 0 and result.stdout.strip():
+            summary = result.stdout.strip()
+            context = f"\n\nCurrent Astronomical Data: {summary}"
+            # Cache the result
+            astro_cache = {'context': context, 'summary': summary}
+            astro_cache_time = current_time
+            return context
+        else:
+            return "\n\nCurrent Astronomical Data: Unable to fetch data"
+    except subprocess.TimeoutExpired:
+        print("Error: Astronomy data fetch timed out")
+        return "\n\nCurrent Astronomical Data: Timeout fetching data"
+    except Exception as e:
+        print(f"Error fetching astronomical data: {e}")
+        return "\n\nCurrent Astronomical Data: Error fetching data"
 
 @app.route('/today', methods=['POST'])
 def today():
@@ -174,10 +227,12 @@ def prompt(char):
     elif char == "daemon":
         return """[Put your daemon prompt here]"""
     elif char == "astro":
-        return """[Put your astro prompt here]"""
+        astro_context = get_astronomical_context()
+        return f"""[Put your astro prompt here]{astro_context}"""
     elif char == "today":
-        return """[Put your +today prompt here]"""
-    
+        astro_context = get_astronomical_context()
+        return f"""[Put your +today prompt here]{astro_context}"""
+
 
 # Use default port 5000
 if __name__ == '__main__':
