@@ -1,0 +1,36 @@
+@@ Guest Book
+@@ A book that tracks campsite rentals.
+
+@@ author = Matt Westfall
+@@ email = disloops@gmail.com
+@@ source = https://github.com/disloops/mushcode/blob/master/offsite/8bit/tacosal/starlight/starlight_guest_book.txt
+
+@CREATE Guest Book
+@LINK Guest Book = [Starlight Lodge DBREF]
+@LOCK/LINK Guest Book==[my DBREF]
+@LOCK/EXAMINE Guest Book==[my DBREF]
+@LOCK/RECEIVE Guest Book==[my DBREF]
+@LOCK/GIVE Guest Book==[my DBREF]
+@LOCK/USE Guest Book==[my DBREF]
+@LOCK/LEAVE Guest Book==[my DBREF]
+@LOCK/SPEECH Guest Book==[my DBREF]
+@LOCK/ENTER Guest Book==[my DBREF]
+@LOCK/TELEPORT Guest Book==[my DBREF]
+@LOCK/BASIC Guest Book==[my DBREF]
+@LOCK/FOLLOW Guest Book==[my DBREF]
+@LOCK/COMMAND Guest Book==[my DBREF]
+@LOCK/FUNCTIONS Guest Book==[my DBREF]
+@LOCK/PARENT Guest Book==[my DBREF]
+@SET Guest Book = HAVEN
+@SET Guest Book = OPAQUE
+@SET Guest Book = SAFE
+@SET Guest Book = NO_COMMAND
+
+&CURRENT_GUEST Guest Book=
+&PAST_GUESTS Guest Book=
+
+@DESC Guest Book=%r[ansi(g,Current Guest:)]%r[if(get(%!/CURRENT_GUEST),[get(%!/CURRENT_GUEST)],None!)]%r%r[ansi(m,Recent Guests:)]%r[u(FUNC_SHOW_PAST_GUESTS)]
+
+&FUNC_SHOW_PAST_GUESTS Guest Book=[if(v(PAST_GUESTS),[iter(extract(revwords(v(PAST_GUESTS),|),1,10,|),##,|,%r)],None!)]
+
+@ADAILY Guest Book=@ASSERT [t(v(CURRENT_GUEST))];@WAIT 21600={think setq(0,[timefmt($b $d\, $Y)]);think setq(1,[v(CURRENT_GUEST)]);@if [t(v(PAST_GUESTS))]={think set(%!,PAST_GUESTS:[v(PAST_GUESTS)]|%q0 - %q1)},{think set(%!,PAST_GUESTS:%q0 - %q1)};think wipe(%!/CURRENT_GUEST);@LOCK [Campsite entrance DBREF]==[My DBREF]}

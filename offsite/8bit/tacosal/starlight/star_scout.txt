@@ -9,10 +9,9 @@
 @LINK Star Scout = [Lodge DBREF]
 @LOCK/BASIC Star Scout==[my DBREF]
 @LOCK/ENTER Star Scout==[my DBREF]
-@SET Star Scout = NO_COMMAND
 @SET Star Scout = PUPPET
 
-@DESCRIBE Star Scout=[showpicture(SL_SCOUT_001)]%r%r A rugged fella that isn't afraid of anything. He knew you were coming.%r
+@DESCRIBE Star Scout=[if(u(FUNC_CHECK_OCCUPIED),showpicture(SL_SCOUT_002),showpicture(SL_SCOUT_001))]%r%r A rugged fella that isn't afraid of anything. He knew you were coming.%r
 
 &EFAIL Star Scout=He isn't interested.
 @FAILURE Star Scout=He's at work!
@@ -22,3 +21,20 @@
 @TASTE Star Scout="Whoa! You must have started your camping experience a bit early - I'm no toad!"
 @TOUCH Star Scout=He extends a hand for a firm shake!
 @USE Star Scout=He's here to help! Try '[ansi(wh,look star scout)]' instead.
+
+&FUNC_CHECK_OCCUPIED Star Scout=[t(u(FUNC_CURRENT_GUEST))]
+&FUNC_CURRENT_GUEST Star Scout=[get([Guest Book DBREF]/CURRENT_GUEST)]
+
+@APAYMENT Star Scout=@BREAK v(busy)={@PEMIT %#=[decompose(%r%bStar Scout is helping someone else right now\, he'll be with you shortly.%r)]};@BREAK [u(FUNC_CHECK_OCCUPIED)]={@PEMIT %#=[decompose(%r%bThe campsite is occupied. Please come back later.%r%r)]};@WAIT DONE={think set(%!,busy:1);think setq(1,[Guest Book DBREF]);@DOLIST [lcon([Campsite DBREF])]={@PEMIT ##=Sorry, folks! This campsite has been rented.;@TEL ##=[Lodge DBREF]};@lock #59208=%#;think set(%q1,CURRENT_GUEST:[name(%#)]\(%#\));think soldproduct(1055,25,%#);@PEMIT %#=[showpicture(SL_SCOUT_003)];think set(%!,busy:0)}
+
+@LOCK/PAYMENT Star Scout=!BUSY/1&!FUNC_CHECK_OCCUPIED/1
+
+&BUSY Star Scout=0
+
+@COST Star Scout=25
+
+@OPAYMENT Star Scout=hands 25 coins over to Star Scout.
+
+@PAYMENT Star Scout=%r%bYou hand 25 coins over to Star Scout. He stacks them neatly in a column on the desk.%r
+
+@PAYFAIL Star Scout=[if(v(busy),%r%bStar Scout is helping someone else right now\, he'll be with you shortly.%r,%r%bThe campsite is currently occupied by [u(CURRENT_GUEST)]. Please come back later.%r)]

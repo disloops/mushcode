@@ -36,6 +36,7 @@
 
   - +info
   - +rules
+  - 'Cheers' command with beer/in bar
   - update "help newbie" entry <-- Add link to custom commands
   - Try '@list commands' and '@list functions' to ensure blacklist is complete
   - Add place, lay, drop, leave to statue flowers and kneel, pray to statue
@@ -46,7 +47,7 @@
   - "Drift" on boat
   - "See help ambiguity"
   - Address core dumps
-  - Prevent giving teraflops 
+  - Prevent giving teraflops
   - Use "log_commands @config option" instead of SUSPECT flag
   - Improve "ambiguity" error messages
   - Add HELP entry for custom flags
