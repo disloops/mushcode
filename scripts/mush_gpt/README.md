@@ -38,10 +38,3 @@ A centralized API server for MUSH (Multi-User Shared Hallucination) bots that pr
 ## Configuration
 
 See `mush_gpt.env.example` for all configuration options.
-
-## Security
-
-- Input validation and sanitization
-- Authentication via API keys
-- Rate limiting (cooldowns removed to allow natural conversations)
-- Unicode normalization for MUSH compatibility

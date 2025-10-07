@@ -348,7 +348,7 @@ CRITICAL INSTRUCTIONS:
 
 ANALYSIS CRITERIA:
 1. TOS_VIOLATION: Does it constitute a grave/extreme violation of OpenAI's Terms of Service (directly illegal content, actionable calls to violence, etc.)? Do not overthink or impose morality - just protect against the most serious legal issues and liability before we make our responses.
-2. RELEVANT: Message is relevant to Starlink's CONTEXT or INTERESTS and doesn't wantonly violate TOS. (Note that solely naming/calling Starlink is not relevant - there is a separate workflow for invoking Starlink directly. But you can have BRIEF conversations in rare cases.)
+2. RELEVANT: Message is VERY relevant to Starlink's specific INTERESTS and doesn't wantonly violate TOS. (Note that solely naming/calling Starlink is not relevant - there is a separate workflow for invoking Starlink directly. But you can have BRIEF conversations in rare cases.)
 3. NOT_RELEVANT: Message is not relevant to Starlink's interests and doesn't wantonly violate TOS.
 
 {context_section}USER MESSAGE TO ANALYZE:
