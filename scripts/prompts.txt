@@ -1,0 +1,24 @@
+# Character Prompts
+# Edit these prompts directly in this file - no need to touch Python code
+#
+# FORMAT RULES:
+# - Section headers must be [CHARACTER_NAME] at the start of a line
+# - You can use {today}, {time}, {datetime} placeholders
+# - You can have [brackets] inside prompts - they won't be treated as headers
+# - Line breaks are preserved in prompts
+# - Comments start with # and are ignored
+
+[ORACLE]
+[Your Oracle character prompt here]
+
+[DAEMON]
+[Your Daemon character prompt here]
+
+[PTOLEMY]
+[Your Ptolemy character prompt here]
+
+[TODAY]
+[Your Today Bot character prompt here]
+
+[STARLINK]
+[Your Starlink character prompt here]

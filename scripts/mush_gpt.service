@@ -1,0 +1,17 @@
+[Unit]
+Description=MUSH GPT Server
+After=network.target
+
+[Service]
+User=YOUR_USERNAME
+Type=simple
+WorkingDirectory=YOUR_WORKING_DIRECTORY
+ExecStart=/usr/bin/python3 YOUR_WORKING_DIRECTORY/mush_gpt.py
+EnvironmentFile=YOUR_WORKING_DIRECTORY/mush_gpt.env
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

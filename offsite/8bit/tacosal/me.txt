@@ -127,9 +127,6 @@
 
 &MISC me=https://youtu.be/az5i5VBLIWw
 
-&SAVED_CHAT_001 me=@CHAN/TITLE public=[ansi(f,[color(rand(34,50),0,H)])][ansi(f,[color(rand(34,50),0,a)])][ansi(f,[color(rand(34,50),0,p)])][ansi(f,[color(rand(34,50),0,p)])][ansi(f,[color(rand(34,50),0,y)])] [ansi(f,[color(rand(196,201),0,C)])][ansi(f,[color(rand(196,201),0,a)])][ansi(f,[color(rand(196,201),0,m)])][ansi(f,[color(rand(196,201),0,p)])][ansi(f,[color(rand(196,201),0,e)])][ansi(f,[color(rand(196,201),0,r)])];@CHAT public = %0
-&SAVED_CHAT_002 me=@SWI/FIRST [strmatch(%#,[my DBREF])]=0,{@PEM/S %#=Permission denied.},{think setq(0,NEW);think setq(1,LEAF);@CHAN/TITLE public=[ansi(,[iter(lnum(strlen(%q0)),color(pick(22 28 34 40 41 46 47 42 48),,mid(%q0,##,1)),,)] [iter(lnum(strlen(%q1)),color(pick(22 28 34 40 41 46 47 42 48),,mid(%q1,##,1)),,)])];@CHAT public=%0}
-
 &SAVED_FIND_FORCE me=think iter(lsearch([my DBREF],,),iter(lattr(##),if(strmatch([get(##/%i0)],*@fo*),name(##)(##)/%i0 --> [get(##/%i0)]%r%r),,),,)
 
 @SCENT me=%r%bDon't do that.%r

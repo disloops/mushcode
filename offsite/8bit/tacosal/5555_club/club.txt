@@ -22,7 +22,7 @@
 
 @STARTUP here=@HALT me=@TRIGGER me/FUNC_TRACKER
 
-&SHOW_DESC here=%r%b%b%b%b%b_________________%r%b%b%b%b/%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b/|%r%b%b%b/_______________%b/%b|%r%b%b|%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b|%b%b|%r%b%b|%b%b%b%b%b%b#5555%b%b%b%b%b|%b%b|%r%b%b|%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b|%b%b.%r%b%b|%b%b%b\[\]%b%b%b_%b%b%b\[\]%b%b|%b/%r%b%b|_______|||______|/%r%r[ansi(g,Members:)]%r[u(FUNC_SHOW_MEMBERS)]%r%r[ansi(r,Recent Spies:)]%r[u(FUNC_SHOW_SPIES)]%r%r[ansi(m,Recent Visitors:)]%r[u(FUNC_SHOW_VISITORS)]%r%r[ansi(y,Commands:)]%r[ansi(w,members)] - List members%r[ansi(w,spies)] - View spies%r[ansi(w,history)] - Show club history%r[ansi(w,intel)] - View latest intel%r[ansi(w,scry)] - See random MUSH code%r[ansi(w,jump)] - Teleport to random room%r
+&SHOW_DESC here=%r%b%b%b%b%b_________________%r%b%b%b%b/%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b/|%r%b%b%b/_______________%b/%b|%r%b%b|%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b|%b%b|%r%b%b|%b%b%b%b%b%b#5555%b%b%b%b%b|%b%b|%r%b%b|%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b%b|%b%b.%r%b%b|%b%b%b\[\]%b%b%b_%b%b%b\[\]%b%b|%b/%r%b%b|_______|||______|/%r%r[ansi(g,Members:)]%r[u(FUNC_SHOW_MEMBERS)]%r%r[ansi(r,Recent Spies:)]%r[u(FUNC_SHOW_SPIES)]%r%r[ansi(m,Recent Visitors:)]%r[u(FUNC_SHOW_VISITORS)]%r%r[ansi(y,Commands:)]%r[ansi(w,members)] - List members%r[ansi(w,spies)] - View spies%r[ansi(w,history)] - Show club history%r[ansi(w,intel)] - View latest intel%r[ansi(w,scry)] - See random MUSH code%r[ansi(w,jump)] - Teleport to random room%r[ansi(w,starlink)] - Starlink AI service info%r
 
 &CMD_MEMBERS here=$members:@PEMIT %#=%r[ansi(yh,The Crazy 5's Club Members:)]%r%r[u(FUNC_SHOW_MEMBERS)]
 
@@ -34,9 +34,13 @@
 
 &FUNC_SHOW_VISITORS here=[if(get([Log Book DBREF]/VISITORS),[iter(extract(revwords(get([Log Book DBREF]/VISITORS),|),1,5,|),##,|,%r)],None!)]
 
+@SET [Log Book DBREF]/MEMBERS=VISUAL
+
 &FUNC_IS_MEMBER here=or(t(grab(get([Log Book DBREF]/MEMBERS),[name(%#)]\(%#\),|)),strmatch(%#,#5555))
 
 &CMD_HISTORY here=$history:@PEMIT %#={%r[ansi(yh,Club History)]%r%rAt some point I became interested in creating a secret club and criminal organization within 8Bit. I thought the headquarters should have a convenient DBREF and I began looking at existing objects. One caught my eye:%r%rBird God Statue (#5555)%rThe stone carving is quite intricate and the eyes are of ruby gemstones. The statue seems to have a magical aura about it.%rOwner: 8BitMUSH Zone: *NOTHING* Coins: 1%rBasic Lock: Connecting..(#0)%rHome: Pre-8Bit: Dynamix Era Artifacts%rLocation: Pre-8Bit: Dynamix Era Artifacts%r%rThe Bird God's DBREF would make a good home for the new club. Very carefully, I teleported it to my location and @CLONED a copy of it. It was also necessary to @LINK it to the "Pre-8Bit: Dynamix Era Artifacts" (#11440) exhibit and @LOCK it to the "Connecting.." room, which is DBREF (#0).%r%rI teleported the phony statue back to the museum, where it sits today. I still had no ability to change the type of an existing object to a room, so I @NUKED the original statue and quickly dug a new room, hoping that (#5555) would be the first available DBREF. This is how The Crazy 5's Club (#5555) was created.}
+
+&CMD_STARLINK here=$starlink:@PEMIT %#={%r[ansi(yh,Starlink AI Service)]%r%rStarlink is an AI bot player. It will always respond to requests from club members that are prefaced with an asterisk ("on-demand service"). Non-members must visit Starlink-enabled locations for this service. Starlink will also have brief conversations at-will based on its interests. You can invoke it like this:%r%r%b[ansi(wh,<Public> TacoSal says, "* Hey Starlink, what's the latest?")]%r}
 
 @AENTER here=@IF or(and(strmatch(THING,[type(%#)]),not(match([get([Log Book DBREF]/MEMBERS)],[name([owner(%#)])]\([owner(%#)]\),|))),and(strmatch(PLAYER,[type(%#)]),not(match([get([Log Book DBREF]/MEMBERS)],[name(%#)]\(%#\),|))))={@REMIT %!={<5555> Spy! [ansi(yh,[name(%#)]\(%#\))] is in [name(%!)]\(%!\).};@IF and(not(strmatch([name(%#)],Meeple)),not(strmatch([name(%#)]\(%#\),last(get([Log Book DBREF]/SPIES),|))))={@IF [get([Log Book DBREF]/SPIES)]={@SET [Log Book DBREF]={SPIES:[get([Log Book DBREF]/SPIES)]|[name(%#)]\(%#\)}},{@SET [Log Book DBREF]={SPIES:[name(%#)]\(%#\)}}};@TEL %#=#10},{@IF and(strmatch(PLAYER,[type(%#)]),not(strmatch([name(%#)]\(%#\),TacoSal\([my DBREF]\))),not(strmatch([name(%#)]\(%#\),last(get([Log Book DBREF]/VISITORS),|))))={@IF [get([Log Book DBREF]/VISITORS)]={@SET [Log Book DBREF]={VISITORS:[get([Log Book DBREF]/VISITORS)]|[name(%#)]\(%#\)}},{@SET [Log Book DBREF]={VISITORS:[name(%#)]\(%#\)}}}}
 

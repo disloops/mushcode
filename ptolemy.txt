@@ -22,8 +22,7 @@
 
 &DESCRIBE Ptolemy=Ptolemy is shrouded in mists.
 
-&ON_SPEECH Ptolemy=^<*> * says, "*":th setq(Content-Type,application/json);th setq(0,u(func_secure,%1 says\, "%2"));th setq(1,json(object, auth, json(string, [get_mushgpt_pw()]), char, json(string, ptolemy), text, json(string, %q0)));@http/post %!/speak=[get_mushgpt_url()], %q1
+&ON_SPEECH Ptolemy=^<*> * says, "*":th setq(Content-Type,application/json);th setq(0,%1 says\, "%2");th setq(1,json(object, auth, json(string, [get_mushgpt_pw()]), char, json(string, ptolemy), text, json(string, %q0)));@http/post %!/speak=[get_mushgpt_url()]/bot, %q1
 
-&SPEAK Ptolemy=th setq(2,[u(func_secure,trim(json_query(edit(%0,\\u2013,-,\\u2014,-,\\u2018,',\\u2019,',\\u201c,',\\u201d,'), get, message),"))]);@break strmatch(%q2,Failed:*)=say The stars have arrayed into a troubling sign.;@chat astral=%q2
+&SPEAK Ptolemy=th setq(2,[trim(json_query(%0, get, message),")]);@break strmatch(%q2,Failed:*)={@chat astral=The stars have arrayed into a troubling sign.};@fo me=+astral %q2
 
-&FUNC_SECURE Ptolemy=[edit(regeditall(%0,\\$,),\%,,\[,,\],,#,,&,and,\",",\\n,%r,\\n,%r,\\,,)]

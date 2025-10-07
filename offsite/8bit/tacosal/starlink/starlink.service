@@ -1,0 +1,17 @@
+[Unit]
+Description=Starlink MUSH Bot
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_USERNAME
+WorkingDirectory=YOUR_WORKING_DIRECTORY
+ExecStart=/usr/bin/python3 YOUR_WORKING_DIRECTORY/starlink.py
+EnvironmentFile=YOUR_WORKING_DIRECTORY/starlink.env
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+# Starlink Bot - Git Ignore File
+
+# Starlink-specific files
+starlink.env
+starlink.log
