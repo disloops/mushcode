@@ -14,7 +14,7 @@
 @LOCK/SPEECH here=FUNC_IS_MEMBER/1
 @LOCK/TELEPORT here=FUNC_IS_MEMBER/1
 
-@DESC here=if(match(get([Log Book DBREF]/MEMBERS),[name([owner(%#)])]\([owner(%#)]\),|),[u(SHOW_DESC)],[remit(%!,<5555> Spy! [ansi(yh,[name(%#)]\(%#\))] is looking at [name(%!)]\(%!\).)][if(not(strmatch([name(%#)]\(%#\),last(get([Log Book DBREF]/SPIES),|))),[if(get([Log Book DBREF]/SPIES),[set([Log Book DBREF],SPIES:[get([Log Book DBREF]/SPIES)]|[name(%#)]\(%#\))],[set([Log Book DBREF],SPIES:[name(%#)]\(%#\))])])]%r%bThis attempt has been logged.%r)
+@DESC here=if(match(get([Log Book DBREF]/MEMBERS),[name([owner(%#)])]\([owner(%#)]\),|),[u(SHOW_DESC)],if(not(strmatch([name(%#)]\(%#\),last(get([Log Book DBREF]/SPIES),|))),[remit(%!,<5555> Spy! [ansi(yh,[name(%#)]\(%#\))] is looking at [name(%!)]\(%!\).)][if(get([Log Book DBREF]/SPIES),[set([Log Book DBREF],SPIES:[get([Log Book DBREF]/SPIES)]|[name(%#)]\(%#\))],[set([Log Book DBREF],SPIES:[name(%#)]\(%#\))])]%r%bThis attempt has been logged.%r))
 
 &FUNC_TRACKER here=th [iter(unique(lwho()),{if(hasattr(%!,DBREF_LOC_[unique(rest(##,#))]),if(not(strmatch(loc(##),get(%!/DBREF_LOC_[unique(rest(##,#))]))),[remit(%!,<5555> [ansi(yh,[name(##)]\(##\))] has moved from [name(get(%!/DBREF_LOC_[unique(rest(##,#))]))]([get(%!/DBREF_LOC_[unique(rest(##,#))])]) to [name(loc(##))]([loc(##)]).)] [set(%!,DBREF_LOC_[unique(rest(##,#))]:[loc(##)])]),if(not(hasattr(%!,DBREF_LOC_[unique(rest(##,#))])),[remit(%!,<5555> [ansi(yh,[name(##)]\(##\))] is online! They are located in [name(loc(##))]([loc(##)]).)] [set(%!,DBREF_LOC_[unique(rest(##,#))]:[loc(##)])]))})];@WAIT 5=@TRIGGER me/FUNC_TRACKER
 
