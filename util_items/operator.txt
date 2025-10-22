@@ -39,4 +39,6 @@
 
 &CMD_+TODAY Operator=$+today:@pemit %#=Generating +today...;th setq(Content-Type,application/json);th setq(0,json(object, auth, json(string, [get_mushgpt_pw()]), char, json(string, today)));@http/post %!/print_today=[get_mushgpt_url()]/cmd, %q0
 
-&PRINT_TODAY Operator=th setq(1,[trim(json_query(%0, get, message),")]);@break strmatch(%q1,Failed:*)={@pemit %#=I can't retrieve that data. It must be the END OF DAYS!};@pemit %#=%r%q1%r
+&CMD_HELPER Operator=[edit(%0,\\",",%%r,%r)]
+
+&PRINT_TODAY Operator=th setq(1,[trim(json_query(%0, get, message),")]);@break strmatch(%q1,Failed:*)={@pemit %#=I can't retrieve that data. It must be the END OF DAYS!};@pemit %#=%r[u(CMD_HELPER,%q1)]%r

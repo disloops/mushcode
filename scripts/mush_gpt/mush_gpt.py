@@ -94,8 +94,6 @@ max_completion_tokens = int(os.getenv('MAX_COMPLETION_TOKENS', '10000'))
 
 character_buffers = {}
 
-
-
 def secure_sanitize_message(message, character=None, endpoint=None):
     """
     Centralized secure sanitization function for ChatGPT responses.
@@ -104,31 +102,7 @@ def secure_sanitize_message(message, character=None, endpoint=None):
     if not isinstance(message, str):
         return ""
 
-    if endpoint != '/cmd':
-        message = message.replace('%r', ' ')  # Convert %r to spaces for /bot endpoint
-
-    message = message.replace('[', '')     # Remove left brackets (MUSH commands)
-    message = message.replace(']', '')     # Remove right brackets (MUSH commands)
-    message = message.replace('%', '')     # Remove percent signs (MUSH functions)
-
-    dangerous_control_chars = [
-        '\x00', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07',
-        '\x08', '\x0b', '\x0c', '\x0e', '\x0f', '\x10', '\x11', '\x12', '\x13', '\x14',
-        '\x15', '\x16', '\x17', '\x18', '\x19', '\x1a', '\x1b', '\x1c', '\x1d', '\x1e', '\x1f'
-    ]
-
-    for char in dangerous_control_chars:
-        message = message.replace(char, '')
-
-    message = message.replace('&', 'and')
-    message = message.replace('\\n', ' ')
-    message = message.replace('\\r', ' ')
-    message = message.replace('\n', ' ')
-    message = message.replace('\r', ' ')
-
-    import re
-    message = re.sub(r'\s+', ' ', message)  # Replace multiple whitespace with single space
-
+    # Apply unicode replacements first so all transformations work on normalized text
     unicode_replacements = {
         '\u2013': '-',
         '\u2014': '--',
@@ -227,6 +201,45 @@ def secure_sanitize_message(message, character=None, endpoint=None):
     for unicode_char, ascii_char in unicode_replacements.items():
         message = message.replace(unicode_char, ascii_char)
 
+    # Determine if this endpoint supports line breaks
+    supports_line_breaks = (endpoint == '/cmd')
+
+    message = message.replace('[', '')     # Remove left brackets (MUSH commands)
+    message = message.replace(']', '')     # Remove right brackets (MUSH commands)
+    message = message.replace('%', '')     # Remove percent signs (MUSH functions)
+
+    dangerous_control_chars = [
+        '\x00', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07',
+        '\x08', '\x0b', '\x0c', '\x0e', '\x0f', '\x10', '\x11', '\x12', '\x13', '\x14',
+        '\x15', '\x16', '\x17', '\x18', '\x19', '\x1a', '\x1b', '\x1c', '\x1d', '\x1e', '\x1f'
+    ]
+
+    for char in dangerous_control_chars:
+        message = message.replace(char, '')
+
+    message = message.replace('&', 'and')
+
+    import re
+
+    # Handle line breaks and whitespace based on endpoint capability
+    if supports_line_breaks:
+        # For /cmd endpoint: convert line breaks to %r (like the old MUSH function did)
+        message = message.replace('\\n', '\n')
+        message = message.replace('\\r', '\r')
+        message = message.replace('\r\n', '\n')
+        message = message.replace('\r', '\n')
+        message = re.sub(r'[ \t]+', ' ', message)  # Normalize spaces/tabs
+        message = re.sub(r'\n\s*\n\s*\n+', '\n\n', message)  # Limit consecutive line breaks
+        message = message.replace('\n', '%r')  # Convert to MUSH line breaks
+    else:
+        # For other endpoints: convert all line breaks to spaces, collapse whitespace
+        message = message.replace('\\n', ' ')
+        message = message.replace('\\r', ' ')
+        message = message.replace('\n', ' ')
+        message = message.replace('\r', ' ')
+        message = re.sub(r'\s+', ' ', message)  # Collapse all whitespace
+
+    # Apply length limit and truncation
     max_length = max_input_length
     if len(message) > max_length:
         message = message[:max_length]
