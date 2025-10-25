@@ -201,8 +201,8 @@ def secure_sanitize_message(message, character=None, endpoint=None):
     for unicode_char, ascii_char in unicode_replacements.items():
         message = message.replace(unicode_char, ascii_char)
 
-    # Determine if this endpoint supports line breaks
-    supports_line_breaks = (endpoint == '/cmd')
+    # Determine if this endpoint supports line breaks (all except starlink)
+    supports_line_breaks = (endpoint != '/starlink')
 
     message = message.replace('[', '')     # Remove left brackets (MUSH commands)
     message = message.replace(']', '')     # Remove right brackets (MUSH commands)

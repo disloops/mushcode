@@ -24,5 +24,7 @@
 
 &ON_SPEECH Ptolemy=^<*> * says, "*":th setq(Content-Type,application/json);th setq(0,%1 says\, "%2");th setq(1,json(object, auth, json(string, [get_mushgpt_pw()]), char, json(string, ptolemy), text, json(string, %q0)));@http/post %!/speak=[get_mushgpt_url()]/bot, %q1
 
-&SPEAK Ptolemy=th setq(2,[trim(json_query(%0, get, message),")]);@break strmatch(%q2,Failed:*)={@chat astral=The stars have arrayed into a troubling sign.};@fo me=+astral %q2
+&CMD_HELPER Ptolemy=[edit(%0,\\",",%%r,%r)]
+
+&SPEAK Ptolemy=th setq(2,[trim(json_query(%0, get, message),")]);@break strmatch(%q2,Failed:*)={@chat astral=The stars have arrayed into a troubling sign.};@chat astral=[u(CMD_HELPER,%q2)]
 
