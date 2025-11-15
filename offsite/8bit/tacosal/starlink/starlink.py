@@ -297,6 +297,10 @@ def is_starlink_request(message):
     """Check if message is Starlink request"""
     return message.strip().startswith('*')
 
+def contains_starlink_mention(message):
+    """Check if message contains 'Starlink' (case insensitive)"""
+    return 'starlink' in message.lower()
+
 def is_player_member(game_socket, player_name):
     """Check if player is a member"""
     if not restrict_usage:
@@ -800,19 +804,25 @@ def process_message(game_socket, message):
                     logger.debug(f'Regular Public message from {safe_player_name}: {safe_content}')
                     recent_messages = get_public_context()
 
-                    if is_message_relevant(safe_content, safe_player_name, recent_messages):
-                        logger.info(f'Relevant message detected from {safe_player_name}')
+                    # When restrictions are disabled, treat "Starlink" mentions as direct requests
+                    is_direct_mention = not restrict_usage and contains_starlink_mention(safe_content)
+
+                    if is_direct_mention or is_message_relevant(safe_content, safe_player_name, recent_messages):
+                        if is_direct_mention:
+                            logger.info(f'Direct Starlink mention detected from {safe_player_name} (restrictions disabled)')
+                        else:
+                            logger.info(f'Relevant message detected from {safe_player_name}')
 
                         if not is_master_player_online(game_socket):
-                            logger.info(f'Master player {master_player_dbref} is offline, ignoring relevant message from {safe_player_name}')
+                            logger.info(f'Master player {master_player_dbref} is offline, ignoring message from {safe_player_name}')
                             return
 
                         if not check_rate_limit():
-                            logger.warning("Rate limit exceeded, ignoring relevant message")
+                            logger.warning("Rate limit exceeded, ignoring message")
                             return
 
                         if not check_tos_violation(safe_content, safe_player_name, recent_messages):
-                            logger.warning(f'TOS violation detected in relevant message from {safe_player_name}, dropping')
+                            logger.warning(f'TOS violation detected in message from {safe_player_name}, dropping')
                             return
 
                         response = get_starlink_response(safe_content, safe_player_name)
@@ -820,7 +830,7 @@ def process_message(game_socket, message):
                             send_public_message(game_socket, response)
                             record_response(safe_player_name)
                         else:
-                            logger.error(f'Failed to get Starlink response for relevant message from {safe_player_name}')
+                            logger.error(f'Failed to get Starlink response for message from {safe_player_name}')
                     else:
                         logger.debug(f'Message from {safe_player_name} not relevant to Starlink')
                         send_to_context_buffer(safe_player_name, safe_content)
@@ -860,6 +870,7 @@ def main():
         logger.info(f'Bot will respond to asterisk-prefixed requests from players in locations: {", ".join(target_locations) if target_locations else "None configured"}')
     else:
         logger.info('Bot will respond to asterisk-prefixed requests from all players (restrictions disabled)')
+        logger.info('Bot will also respond to any message containing "Starlink" (case insensitive) when restrictions are disabled')
     logger.info(f'Bot will only respond when master player {master_player_dbref} is online')
     logger.info('Bot will also analyze all Public messages for relevance and respond when appropriate')
 
