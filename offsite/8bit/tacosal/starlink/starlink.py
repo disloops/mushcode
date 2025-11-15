@@ -593,6 +593,8 @@ def get_starlink_response(message, player_name):
                     message_content = message_content[10:]  # Remove "Starlink: " (10 chars)
                 if message_content.startswith('"') and message_content.endswith('"') and len(message_content) > 1:
                     message_content = message_content[1:-1]  # Remove both leading and trailing quotes
+                # Remove leading asterisk if present (AI sometimes includes it)
+                message_content = message_content.lstrip('*').strip()
                 return message_content
             else:
                 logger.error(f"API Error: {response.json()['message']}")
