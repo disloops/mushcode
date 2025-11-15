@@ -53,11 +53,12 @@ max_retries = int(os.getenv('MAX_RETRIES', '3'))
 retry_delay = int(os.getenv('RETRY_DELAY', '5'))
 
 message_delay = float(os.getenv('MESSAGE_DELAY', '0.5'))
-target_locations_str = os.getenv('TARGET_LOCATIONS', "#33255")
-target_locations = [loc.strip() for loc in target_locations_str.split(',') if loc.strip()]
+restrict_usage = os.getenv('RESTRICT_USAGE', 'FALSE').upper() == 'TRUE'
+target_locations_str = os.getenv('TARGET_LOCATIONS', '')
+target_locations = [loc.strip() for loc in target_locations_str.split(',') if loc.strip()] if target_locations_str else []
 
 master_player_dbref = os.getenv('MASTER_PLAYER_DBREF', "#123")
-log_book_dbref = os.getenv('LOG_BOOK_DBREF', "#5555")
+log_book_dbref = os.getenv('LOG_BOOK_DBREF', '')
 
 rate_limit_window = int(os.getenv('RATE_LIMIT_WINDOW', '60'))
 max_responses_per_window = int(os.getenv('MAX_RESPONSES_PER_WINDOW', '25'))
@@ -298,6 +299,14 @@ def is_starlink_request(message):
 
 def is_player_member(game_socket, player_name):
     """Check if player is a member"""
+    if not restrict_usage:
+        logger.debug(f"RESTRICT_USAGE is False, skipping membership check for {player_name}")
+        return True  # Allow all players when restrictions are disabled
+
+    if not log_book_dbref:
+        logger.debug(f"LOG_BOOK_DBREF not set, skipping membership check for {player_name}")
+        return True  # Allow all players when log book is not configured
+
     try:
         safe_player_name = sanitize_string(player_name)
         if not safe_player_name:
@@ -528,6 +537,14 @@ def is_master_player_online(game_socket):
 
 def check_player_location(game_socket, player_name):
     """Check if player is in target location"""
+    if not restrict_usage:
+        logger.debug(f"RESTRICT_USAGE is False, skipping location check for {player_name}")
+        return True  # Allow all players when restrictions are disabled
+
+    if not target_locations:
+        logger.debug(f"TARGET_LOCATIONS not set, skipping location check for {player_name}")
+        return True  # Allow all players when target locations are not configured
+
     try:
         safe_player_name = sanitize_string(player_name)
         if not safe_player_name or len(safe_player_name) > 50:
@@ -751,23 +768,34 @@ def process_message(game_socket, message):
                             else:
                                 logger.error(f'Failed to get Starlink response for {safe_player_name}')
                         else:
-                            logger.info(f'{safe_player_name} is not in target location, sending location message')
-                            formatted_locations = []
-                            for location in target_locations:
-                                try:
-                                    name_result = send_mush_command(game_socket, f"[name({location})]", "name")
-                                    if name_result and not name_result.startswith('#'):
-                                        formatted_locations.append(f"{name_result}({location})")
-                                    else:
+                            if restrict_usage and target_locations:
+                                logger.info(f'{safe_player_name} is not in target location, sending location message')
+                                formatted_locations = []
+                                for location in target_locations:
+                                    try:
+                                        name_result = send_mush_command(game_socket, f"[name({location})]", "name")
+                                        if name_result and not name_result.startswith('#'):
+                                            formatted_locations.append(f"{name_result}({location})")
+                                        else:
+                                            formatted_locations.append(str(location))
+                                    except Exception as e:
+                                        logger.error(f"Error getting name for location {location}: {e}")
                                         formatted_locations.append(str(location))
-                                except Exception as e:
-                                    logger.error(f"Error getting name for location {location}: {e}")
-                                    formatted_locations.append(str(location))
 
-                            location_list = ", ".join(formatted_locations)
-                            clean_location_list = location_list.replace('<Starlink>', '').strip()
-                            location_message = f"Starlink 'On-Demand' is reserved for members of The Crazy 5's Club(#5555). Alternatively, try visiting these Starlink-enabled locations: {clean_location_list}"
-                            send_public_message(game_socket, location_message)
+                                location_list = ", ".join(formatted_locations)
+                                clean_location_list = location_list.replace('<Starlink>', '').strip()
+                                location_message = f"Starlink 'On-Demand' is reserved for members of The Crazy 5's Club(#5555). Alternatively, try visiting these Starlink-enabled locations: {clean_location_list}"
+                                send_public_message(game_socket, location_message)
+                            else:
+                                # This branch handles: restrict_usage=True but target_locations not configured
+                                # In this case, we allow the request since location checking isn't possible
+                                logger.info(f'{safe_player_name} target locations not configured, responding to asterisk request...')
+                                response = get_starlink_response(safe_content, safe_player_name)
+                                if response:
+                                    send_public_message(game_socket, response)
+                                    record_response(safe_player_name)
+                                else:
+                                    logger.error(f'Failed to get Starlink response for {safe_player_name}')
                 else:
                     logger.debug(f'Regular Public message from {safe_player_name}: {safe_content}')
                     recent_messages = get_public_context()
@@ -812,7 +840,12 @@ def main():
         logger.error("Configuration validation failed, exiting")
         return 1
 
-    logger.info(f'Target locations: {", ".join(target_locations)}')
+    logger.info(f'RESTRICT_USAGE: {restrict_usage}')
+    if restrict_usage:
+        logger.info(f'Target locations: {", ".join(target_locations) if target_locations else "None configured"}')
+        logger.info(f'LOG_BOOK_DBREF: {log_book_dbref if log_book_dbref else "Not configured"}')
+    else:
+        logger.info('Restrictions disabled - all players can use Starlink')
     logger.info(f'Master player: {master_player_dbref} (bot only responds when online)')
     logger.info(f'Memory: Handled by API server (50 messages, 1-hour timeout)')
     logger.info(f'Rate limit: {max_responses_per_window} responses per {rate_limit_window}s (more permissive for busy chat)')
@@ -823,7 +856,10 @@ def main():
         return 1
 
     logger.info('Starlink Bot is now listening for Public channel messages...')
-    logger.info(f'Bot will respond to asterisk-prefixed requests from players in locations: {", ".join(target_locations)}')
+    if restrict_usage:
+        logger.info(f'Bot will respond to asterisk-prefixed requests from players in locations: {", ".join(target_locations) if target_locations else "None configured"}')
+    else:
+        logger.info('Bot will respond to asterisk-prefixed requests from all players (restrictions disabled)')
     logger.info(f'Bot will only respond when master player {master_player_dbref} is online')
     logger.info('Bot will also analyze all Public messages for relevance and respond when appropriate')
 
