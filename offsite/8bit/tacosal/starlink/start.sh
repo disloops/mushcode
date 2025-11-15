@@ -60,8 +60,10 @@ check_dependencies() {
 test_config() {
     log_info "Testing configuration..."
 
-    # Source the environment file
+    # Source the environment file and export variables
+    set -a  # Automatically export all variables
     source starlink.env
+    set +a  # Turn off automatic export
 
     # Check required variables
     if [ "$MUSH_HOST" = "[host]" ]; then
@@ -206,7 +208,9 @@ show_logs() {
 # Start the bot manually (without service)
 start_bot() {
     log_info "Starting Starlink bot manually..."
+    set -a  # Automatically export all variables
     source starlink.env
+    set +a  # Turn off automatic export
     python3 starlink.py
 }
 
