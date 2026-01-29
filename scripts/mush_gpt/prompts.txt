@@ -20,5 +20,4 @@
 [TODAY]
 [Your Today Bot character prompt here]
 
-[STARLINK]
-[Your Starlink character prompt here]
+# Note: Starlink manages its own prompt via scripts/starlink/starlink.prompt

@@ -228,26 +228,27 @@ show_help() {
     echo "Usage: $0 [COMMAND]"
     echo ""
     echo "Commands:"
-    echo "  deploy        - Deploy the service (requires sudo)"
-    echo "  start-service - Start the service"
-    echo "  stop          - Stop the service"
-    echo "  disable       - Stop and disable the service (prevents auto-start)"
-    echo "  enable        - Enable the service (allows auto-start)"
-    echo "  restart       - Restart the service"
-    echo "  status        - Show service status"
-    echo "  logs          - Show service logs"
-    echo "  start         - Start manually (for testing)"
-    echo "  help          - Show this help"
+    echo "  deploy   - Deploy the service (requires sudo)"
+    echo "  start    - Start the service"
+    echo "  stop     - Stop the service"
+    echo "  restart  - Restart the service"
+    echo "  status   - Show service status"
+    echo "  logs     - Show service logs"
+    echo "  enable   - Enable the service (allows auto-start)"
+    echo "  disable  - Stop and disable the service (prevents auto-start)"
+    echo "  run      - Run manually in foreground (for testing/debugging)"
+    echo "  help     - Show this help"
     echo ""
     echo "Examples:"
-    echo "  $0 deploy     # Deploy the service"
-    echo "  $0 start      # Start manually for testing"
-    echo "  $0 status     # Check if service is running"
+    echo "  $0 deploy   # Deploy the service (first time)"
+    echo "  $0 start    # Start the service"
+    echo "  $0 run      # Run manually for testing"
+    echo "  $0 status   # Check if service is running"
 }
 
-# Manual start (for testing)
-main() {
-    log_info "Starting MUSH GPT manually..."
+# Manual run (for testing/debugging)
+run_manual() {
+    log_info "Running MUSH GPT manually (Ctrl+C to stop)..."
     python3 mush_gpt.py
 }
 
@@ -261,21 +262,13 @@ case "${1:-help}" in
         test_config
         deploy_service
         ;;
-    "start-service")
+    "start"|"start-service")
         check_systemd
         start_service
         ;;
     "stop")
         check_systemd
         stop_service
-        ;;
-    "disable")
-        check_systemd
-        disable_service
-        ;;
-    "enable")
-        check_systemd
-        enable_service
         ;;
     "restart")
         check_systemd
@@ -289,8 +282,18 @@ case "${1:-help}" in
         check_systemd
         show_logs
         ;;
-    "start")
-        main # Manual start
+    "enable")
+        check_systemd
+        enable_service
+        ;;
+    "disable")
+        check_systemd
+        disable_service
+        ;;
+    "run")
+        check_config
+        check_dependencies
+        run_manual
         ;;
     "help"|"")
         show_help

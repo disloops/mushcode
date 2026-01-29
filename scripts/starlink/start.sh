@@ -214,7 +214,6 @@ start_bot() {
 # Main function for manual bot start
 main() {
     log_info "Starlink Bot Startup Script"
-    log_info "=========================="
 
     check_config
     check_dependencies
@@ -225,37 +224,27 @@ main() {
 # Show help information
 show_help() {
     echo "Starlink Bot Management Script"
-    echo "=================================="
     echo ""
     echo "Usage: $0 [command]"
     echo ""
-    echo "Service Management Commands:"
-    echo "  deploy        Deploy the Starlink service to systemd (requires sudo)"
-    echo "  start-service Start the deployed service"
-    echo "  stop          Stop the service"
-    echo "  disable       Stop and disable the service (prevents auto-start)"
-    echo "  enable        Enable the service (allows auto-start)"
-    echo "  restart       Restart the service"
-    echo "  status        Show service status"
-    echo "  logs          Show service logs (follow mode)"
-    echo ""
-    echo "Manual Commands:"
-    echo "  start         Start the bot manually (without service)"
-    echo "  test          Test configuration without starting"
-    echo ""
-    echo "Other Commands:"
-    echo "  help          Show this help message (default)"
+    echo "Commands:"
+    echo "  deploy   - Deploy the service to systemd (requires sudo)"
+    echo "  start    - Start the service"
+    echo "  stop     - Stop the service"
+    echo "  restart  - Restart the service"
+    echo "  status   - Show service status"
+    echo "  logs     - Show service logs (follow mode)"
+    echo "  enable   - Enable the service (allows auto-start)"
+    echo "  disable  - Stop and disable the service (prevents auto-start)"
+    echo "  run      - Run manually in foreground (for testing/debugging)"
+    echo "  test     - Test configuration without starting"
+    echo "  help     - Show this help message"
     echo ""
     echo "Examples:"
-    echo "  $0                    # Show this help"
-    echo "  $0 deploy             # Deploy service (first time setup)"
-    echo "  $0 start-service      # Start the service"
-    echo "  $0 stop               # Stop the service"
-    echo "  $0 disable            # Stop and disable the service"
-    echo "  $0 enable             # Enable the service"
-    echo "  $0 status             # Check if service is running"
-    echo "  $0 logs               # View real-time logs"
-    echo "  $0 start              # Run bot manually for testing"
+    echo "  $0 deploy   # Deploy service (first time)"
+    echo "  $0 start    # Start the service"
+    echo "  $0 run      # Run manually for testing"
+    echo "  $0 status   # Check if service is running"
 }
 
 # Handle command line arguments
@@ -268,21 +257,13 @@ case "${1:-help}" in
         test_config
         deploy_service
         ;;
-    "start-service")
+    "start"|"start-service")
         check_systemd
         start_service
         ;;
     "stop")
         check_systemd
         stop_service
-        ;;
-    "disable")
-        check_systemd
-        disable_service
-        ;;
-    "enable")
-        check_systemd
-        enable_service
         ;;
     "restart")
         check_systemd
@@ -296,7 +277,15 @@ case "${1:-help}" in
         check_systemd
         show_logs
         ;;
-    "start")
+    "enable")
+        check_systemd
+        enable_service
+        ;;
+    "disable")
+        check_systemd
+        disable_service
+        ;;
+    "run")
         main
         ;;
     "test")

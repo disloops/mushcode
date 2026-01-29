@@ -179,6 +179,14 @@ auth_key = os.getenv("AUTH_KEY")
 max_input_length = int(os.getenv('MAX_INPUT_LENGTH'))
 max_completion_tokens = int(os.getenv('MAX_COMPLETION_TOKENS'))
 
+# Characters that don't maintain conversation history (stateless)
+# Configured via STATELESS_CHARACTERS env var (comma-separated, case-insensitive)
+_stateless_characters = set(
+    x.strip().lower() for x in os.getenv('STATELESS_CHARACTERS', '').split(',') if x.strip()
+)
+if _stateless_characters:
+    logger.info(f"Stateless characters configured: {_stateless_characters}")
+
 character_buffers = {}
 
 def secure_sanitize_message(message):
@@ -395,6 +403,10 @@ def bot():
         if len(text) > max_input_length:
             return jsonify({"message": "Failed: Input exceeds maximum length"}), 400
 
+        # Limit system_prompt size to prevent abuse (50KB max)
+        if direct_system_prompt and len(direct_system_prompt) > 50000:
+            return jsonify({"message": "Failed: System prompt exceeds maximum length"}), 400
+
         if auth != auth_key:
             return jsonify({"message": "Failed: Unauthorized"}), 401
 
@@ -466,6 +478,10 @@ def adhoc():
         if len(text) > max_input_length:
             return jsonify({"message": "Failed: Input exceeds maximum length"}), 400
 
+        # Limit system_prompt size to prevent abuse (50KB max)
+        if direct_system_prompt and len(direct_system_prompt) > 50000:
+            return jsonify({"message": "Failed: System prompt exceeds maximum length"}), 400
+
         if auth != auth_key:
             return jsonify({"message": "Failed: Unauthorized"}), 401
 
@@ -509,7 +525,8 @@ def adhoc():
 def add_message(role, content, character):
     global character_buffers
 
-    if character == "today":
+    # Skip conversation history for stateless characters
+    if character.lower() in _stateless_characters:
         return
 
     if character not in character_buffers:
@@ -530,7 +547,8 @@ def add_message(role, content, character):
     ]
 
 def get_char_messages(character):
-    if character == "today":
+    # Stateless characters have no conversation history
+    if character.lower() in _stateless_characters:
         return []
 
     if character not in character_buffers:
