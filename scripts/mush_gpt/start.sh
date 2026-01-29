@@ -83,8 +83,35 @@ check_dependencies() {
         missing_packages+=("flask")
     fi
 
-    if ! python3 -c "import openai" 2>/dev/null; then
-        missing_packages+=("openai")
+    # Check provider-specific packages based on LLM_PROVIDER in env file
+    local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local llm_provider=""
+
+    if [[ -f "$script_dir/mush_gpt.env" ]]; then
+        llm_provider=$(grep -E "^LLM_PROVIDER=" "$script_dir/mush_gpt.env" 2>/dev/null | cut -d'=' -f2 | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+    fi
+
+    if [[ -z "$llm_provider" ]]; then
+        log_error "LLM_PROVIDER not set in mush_gpt.env"
+        log_info "Set LLM_PROVIDER=openai or LLM_PROVIDER=gemini"
+        exit 1
+    fi
+
+    log_info "Configured LLM provider: $llm_provider"
+
+    if [[ "$llm_provider" == "openai" ]]; then
+        if ! python3 -c "import openai" 2>/dev/null; then
+            missing_packages+=("openai")
+        fi
+    elif [[ "$llm_provider" == "gemini" ]]; then
+        if ! python3 -c "from google import genai" 2>/dev/null; then
+            log_error "google-genai package not found. Install with: pip3 install google-genai"
+            exit 1
+        fi
+    else
+        log_error "Unknown LLM provider: $llm_provider"
+        log_info "Valid options: openai, gemini"
+        exit 1
     fi
 
     if [[ ${#missing_packages[@]} -gt 0 ]]; then

@@ -1,5 +1,5 @@
 # MIT License
-# Copyright (c) 2023 Matt Westfall (@disloops)
+# Copyright (c) 2026 Matt Westfall (@disloops)
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,21 +20,26 @@
 # SOFTWARE.
 
 __author__ = 'Matt Westfall'
-__version__ = '0.3'
+__version__ = '2.0'
 __email__ = 'disloops@gmail.com'
 
 
-from flask import Flask, request, jsonify
-from openai import OpenAI
 import time
 import os
 import sys
-import json
 import re
-import unicodedata
 import logging
 from logging.handlers import RotatingFileHandler
+
+# Check required dependencies before proceeding
+try:
+    from flask import Flask, request, jsonify
+except ImportError:
+    print("ERROR: flask not installed. Run: pip install flask", file=sys.stderr)
+    sys.exit(1)
+
 from prompts import get_prompt, get_valid_prompts, get_character_context_interests
+from providers import get_provider, FinishReason
 
 def load_env_file(filepath):
     """Load environment variables from a .env file"""
@@ -45,32 +50,79 @@ def load_env_file(filepath):
                 line = line.strip()
                 if line and not line.startswith('#') and '=' in line:
                     key, value = line.split('=', 1)
-                    env_vars[key] = value
+                    env_vars[key.strip()] = value.strip()
     return env_vars
 
 env_vars = load_env_file(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'mush_gpt.env'))
 for key, value in env_vars.items():
     os.environ[key] = value
 
+
+def validate_config():
+    """Validate required configuration. Exits with error if missing."""
+    missing = []
+
+    # Core required settings
+    required_core = [
+        'AUTH_KEY',
+        'LLM_PROVIDER',
+        'MAX_COMPLETION_TOKENS',
+        'MAX_INPUT_LENGTH',
+        'LOG_LEVEL',
+        'LOG_MAX_SIZE',
+        'LOG_BACKUP_COUNT',
+        'FLASK_HOST',
+        'FLASK_PORT',
+        'FLASK_DEBUG',
+    ]
+
+    for var in required_core:
+        if not os.getenv(var):
+            missing.append(var)
+
+    # Provider-specific settings
+    provider = os.getenv('LLM_PROVIDER', '').lower()
+    if provider == 'openai':
+        if not os.getenv('OPENAI_API_KEY'):
+            missing.append('OPENAI_API_KEY (required for OpenAI provider)')
+        if not os.getenv('OPENAI_MODEL'):
+            missing.append('OPENAI_MODEL (required for OpenAI provider)')
+    elif provider == 'gemini':
+        if not os.getenv('GOOGLE_API_KEY'):
+            missing.append('GOOGLE_API_KEY (required for Gemini provider)')
+        if not os.getenv('GEMINI_MODEL'):
+            missing.append('GEMINI_MODEL (required for Gemini provider)')
+
+    if missing:
+        print("ERROR: Missing required configuration:", file=sys.stderr)
+        for var in missing:
+            print(f"  - {var}", file=sys.stderr)
+        print("\nCopy mush_gpt.env.example to mush_gpt.env and configure all required values.", file=sys.stderr)
+        sys.exit(1)
+
+
+# Validate config before proceeding
+validate_config()
+
 app = Flask(__name__)
 
 def setup_logging():
     """Setup logging configuration with file size limits"""
     logger = logging.getLogger('mush_gpt')
-    log_level = os.getenv('LOG_LEVEL', 'INFO').upper()
-    logger.setLevel(getattr(logging, log_level, logging.INFO))
+    log_level = os.getenv('LOG_LEVEL').upper()
+    logger.setLevel(getattr(logging, log_level))
 
     logger.handlers.clear()
 
-    max_bytes = int(os.getenv('LOG_MAX_SIZE', '10485760'))
-    backup_count = int(os.getenv('LOG_BACKUP_COUNT', '3'))
+    max_bytes = int(os.getenv('LOG_MAX_SIZE'))
+    backup_count = int(os.getenv('LOG_BACKUP_COUNT'))
 
     file_handler = RotatingFileHandler(
         'mush_gpt.log',
         maxBytes=max_bytes,
         backupCount=backup_count
     )
-    file_handler.setLevel(getattr(logging, log_level, logging.INFO))
+    file_handler.setLevel(getattr(logging, log_level))
 
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
@@ -81,22 +133,57 @@ def setup_logging():
 
 logger = setup_logging()
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Initialize default LLM provider (OpenAI or Gemini based on LLM_PROVIDER env var)
+try:
+    default_provider = get_provider()
+    logger.info(f"Default LLM Provider: {default_provider.provider_name}")
+except Exception as e:
+    logger.error(f"Failed to initialize LLM provider: {e}")
+    default_provider = None
+
+
+def resolve_provider(provider_override=None):
+    """
+    Get the appropriate LLM provider for a request.
+    
+    Args:
+        provider_override: Optional provider name ('openai' or 'gemini') to use
+                          instead of the default.
+    
+    Returns:
+        The provider instance to use, or None if unavailable.
+    """
+    if not provider_override:
+        return default_provider
+    
+    # Validate override value
+    provider_override = provider_override.lower().strip()
+    if provider_override not in ('openai', 'gemini'):
+        logger.warning(f"Invalid provider override '{provider_override}', using default")
+        return default_provider
+    
+    # Return default if it matches the override
+    if default_provider and default_provider.provider_name == provider_override:
+        return default_provider
+    
+    # Get a different provider
+    try:
+        return get_provider(provider_name=provider_override, force_new=True)
+    except Exception as e:
+        logger.error(f"Failed to get provider '{provider_override}': {e}")
+        return default_provider
+
 
 auth_key = os.getenv("AUTH_KEY")
 
-prompts = get_valid_prompts()
-
-model = os.getenv('OPENAI_MODEL', 'gpt-5')
-
-max_input_length = int(os.getenv('MAX_INPUT_LENGTH', '10000'))
-max_completion_tokens = int(os.getenv('MAX_COMPLETION_TOKENS', '10000'))
+max_input_length = int(os.getenv('MAX_INPUT_LENGTH'))
+max_completion_tokens = int(os.getenv('MAX_COMPLETION_TOKENS'))
 
 character_buffers = {}
 
-def secure_sanitize_message(message, character=None, endpoint=None):
+def secure_sanitize_message(message):
     """
-    Centralized secure sanitization function for ChatGPT responses.
+    Centralized secure sanitization function for LLM responses.
     Designed to be safe for MUSH public channels while preserving readability.
     """
     if not isinstance(message, str):
@@ -201,9 +288,6 @@ def secure_sanitize_message(message, character=None, endpoint=None):
     for unicode_char, ascii_char in unicode_replacements.items():
         message = message.replace(unicode_char, ascii_char)
 
-    # Determine if this endpoint supports line breaks (all except starlink)
-    supports_line_breaks = (endpoint != '/starlink')
-
     message = message.replace('[', '')     # Remove left brackets (MUSH commands)
     message = message.replace(']', '')     # Remove right brackets (MUSH commands)
     message = message.replace('%', '')     # Remove percent signs (MUSH functions)
@@ -219,25 +303,14 @@ def secure_sanitize_message(message, character=None, endpoint=None):
 
     message = message.replace('&', 'and')
 
-    import re
-
-    # Handle line breaks and whitespace based on endpoint capability
-    if supports_line_breaks:
-        # For /cmd endpoint: convert line breaks to %r (like the old MUSH function did)
-        message = message.replace('\\n', '\n')
-        message = message.replace('\\r', '\r')
-        message = message.replace('\r\n', '\n')
-        message = message.replace('\r', '\n')
-        message = re.sub(r'[ \t]+', ' ', message)  # Normalize spaces/tabs
-        message = re.sub(r'\n\s*\n\s*\n+', '\n\n', message)  # Limit consecutive line breaks
-        message = message.replace('\n', '%r')  # Convert to MUSH line breaks
-    else:
-        # For other endpoints: convert all line breaks to spaces, collapse whitespace
-        message = message.replace('\\n', ' ')
-        message = message.replace('\\r', ' ')
-        message = message.replace('\n', ' ')
-        message = message.replace('\r', ' ')
-        message = re.sub(r'\s+', ' ', message)  # Collapse all whitespace
+    # Handle line breaks - convert to MUSH %r format
+    message = message.replace('\\n', '\n')
+    message = message.replace('\\r', '\r')
+    message = message.replace('\r\n', '\n')
+    message = message.replace('\r', '\n')
+    message = re.sub(r'[ \t]+', ' ', message)  # Normalize spaces/tabs
+    message = re.sub(r'\n\s*\n\s*\n+', '\n\n', message)  # Limit consecutive line breaks
+    message = message.replace('\n', '%r')  # Convert to MUSH line breaks
 
     # Apply length limit and truncation
     max_length = max_input_length
@@ -249,10 +322,6 @@ def secure_sanitize_message(message, character=None, endpoint=None):
 
     return message
 
-def sanitize_input(text, character=None):
-    """Legacy function - use secure_sanitize_message instead"""
-    return secure_sanitize_message(text, character)
-
 @app.route('/cmd', methods=['POST'])
 def cmd():
     try:
@@ -262,35 +331,42 @@ def cmd():
 
         auth = json_data['auth'].strip()
         char = json_data['char'].strip()
+        prompt_file = json_data.get('prompt_file', '').strip() or None
+        provider_override = json_data.get('provider', '').strip() or None
 
         if len(auth) > 100 or len(char) > 100:
             return jsonify({"message": "Failed: Invalid input length"}), 400
 
-        if len(auth) > 100 or auth != auth_key:
+        if auth != auth_key:
             return jsonify({"message": "Failed: Unauthorized"}), 401
 
-        if len(char) > 100 or char not in prompts:
-            return jsonify({"message": "Failed: Invalid character reference"}), 400
+        # Get the appropriate provider
+        active_provider = resolve_provider(provider_override)
+        if active_provider is None:
+            return jsonify({"message": "Failed: LLM provider not initialized"}), 500
 
-        response = client.chat.completions.create(
-            model=model,
-            max_completion_tokens=max_completion_tokens,
-            temperature=1,
-            top_p=1,
-            messages=[
-                {"role": "system", "content": get_prompt(char)}
-            ]
+        # Validate character exists in the specified (or default) prompt file
+        valid_chars = get_valid_prompts(prompt_file)
+        if char not in valid_chars:
+            return jsonify({"message": f"Failed: Invalid character reference '{char}'. Valid: {valid_chars}"}), 400
+
+        # Use provider abstraction
+        result = active_provider.complete(
+            messages=[],
+            system_prompt=get_prompt(char, prompt_file),
+            temperature=1.0,
+            max_tokens=max_completion_tokens
         )
 
-        finish_reason = response.choices[0].finish_reason
-
-        if finish_reason == 'content_filter':
+        if result.finish_reason == FinishReason.CONTENT_FILTER:
             return jsonify({"message": "Failed: Content filter activated"})
-        elif finish_reason == 'length':
+        elif result.finish_reason == FinishReason.LENGTH:
             return jsonify({"message": "Failed: Output exceeds maximum length"})
+        elif result.finish_reason == FinishReason.ERROR:
+            logger.error(f"Provider error: {result.error}")
+            return jsonify({"message": "Failed: Provider error"}), 500
         else:
-            message_content = response.choices[0].message.content
-            sanitized_content = secure_sanitize_message(message_content, char, '/cmd')
+            sanitized_content = secure_sanitize_message(result.content)
             return jsonify({"message": sanitized_content})
 
     except Exception as e:
@@ -300,7 +376,6 @@ def cmd():
 @app.route('/bot', methods=['POST'])
 def bot():
     try:
-
         json_data = request.get_json()
         if not json_data or 'text' not in json_data or 'auth' not in json_data or 'char' not in json_data:
             return jsonify({"message": "Failed: Invalid request data"}), 400
@@ -309,50 +384,59 @@ def bot():
         auth = json_data['auth'].strip()
         char = json_data['char'].strip()
         context_only = json_data.get('context_only', False)
+        prompt_file = json_data.get('prompt_file', '').strip() or None
+        provider_override = json_data.get('provider', '').strip() or None
+        # Allow passing system_prompt directly (used by bots with their own prompt files)
+        direct_system_prompt = json_data.get('system_prompt', '').strip() or None
 
         if len(auth) > 100 or len(char) > 100:
             return jsonify({"message": "Failed: Invalid input length"}), 400
-        max_length = max_input_length
-        if len(text) > max_length:
+
+        if len(text) > max_input_length:
             return jsonify({"message": "Failed: Input exceeds maximum length"}), 400
 
-        if len(auth) > 100 or auth != auth_key:
+        if auth != auth_key:
             return jsonify({"message": "Failed: Unauthorized"}), 401
 
-        max_length = max_input_length
-        if len(text) > max_length:
-            return jsonify({"message": "Failed: Input exceeds maximum length"}), 400
-
-        if len(char) > 100 or char not in prompts:
-            return jsonify({"message": "Failed: Invalid character reference"}), 400
+        # Determine system prompt: use direct prompt if provided, otherwise lookup by char
+        if direct_system_prompt:
+            system_prompt = direct_system_prompt
+        else:
+            # Validate character exists in the specified (or default) prompt file
+            valid_chars = get_valid_prompts(prompt_file)
+            if char not in valid_chars:
+                return jsonify({"message": f"Failed: Invalid character reference '{char}'. Valid: {valid_chars}"}), 400
+            system_prompt = get_prompt(char, prompt_file)
 
         add_message("user", text, char)
 
         if context_only:
             return jsonify({"message": "Context added"})
 
+        # Get the appropriate provider
+        active_provider = resolve_provider(provider_override)
+        if active_provider is None:
+            return jsonify({"message": "Failed: LLM provider not initialized"}), 500
+
         char_messages = get_char_messages(char)
 
-        response = client.chat.completions.create(
-            model=model,
-            max_completion_tokens=max_completion_tokens,
-            temperature=1,
-            top_p=1,
-            messages=[
-                {"role": "system", "content": get_prompt(char)},
-                *char_messages
-            ]
+        # Use provider abstraction
+        result = active_provider.complete(
+            messages=char_messages,
+            system_prompt=system_prompt,
+            temperature=1.0,
+            max_tokens=max_completion_tokens
         )
 
-        finish_reason = response.choices[0].finish_reason
-
-        if finish_reason == 'content_filter':
+        if result.finish_reason == FinishReason.CONTENT_FILTER:
             return jsonify({"message": "Failed: Content filter activated"})
-        elif finish_reason == 'length':
+        elif result.finish_reason == FinishReason.LENGTH:
             return jsonify({"message": "Failed: Output exceeds maximum length"})
+        elif result.finish_reason == FinishReason.ERROR:
+            logger.error(f"Provider error: {result.error}")
+            return jsonify({"message": "Failed: Provider error"}), 500
         else:
-            message_content = response.choices[0].message.content
-            sanitized_content = secure_sanitize_message(message_content, char, '/bot')
+            sanitized_content = secure_sanitize_message(result.content)
             add_message("assistant", sanitized_content, char)
             return jsonify({"message": sanitized_content})
 
@@ -371,42 +455,52 @@ def adhoc():
         text = json_data['text'].strip()
         auth = json_data['auth'].strip()
         char = json_data['char'].strip()
+        prompt_file = json_data.get('prompt_file', '').strip() or None
+        provider_override = json_data.get('provider', '').strip() or None
+        # Allow passing system_prompt directly (used by bots with their own prompt files)
+        direct_system_prompt = json_data.get('system_prompt', '').strip() or None
 
         if len(auth) > 100 or len(char) > 100:
             return jsonify({"message": "Failed: Invalid input length"}), 400
-        max_length = max_input_length
-        if len(text) > max_length:
+
+        if len(text) > max_input_length:
             return jsonify({"message": "Failed: Input exceeds maximum length"}), 400
 
-        if len(auth) > 100 or auth != auth_key:
+        if auth != auth_key:
             return jsonify({"message": "Failed: Unauthorized"}), 401
 
-        max_length = max_input_length
-        if len(text) > max_length:
-            return jsonify({"message": "Failed: Input exceeds maximum length"}), 400
+        # Get the appropriate provider
+        active_provider = resolve_provider(provider_override)
+        if active_provider is None:
+            return jsonify({"message": "Failed: LLM provider not initialized"}), 500
 
-        system_prompt = get_character_context_interests(char)
+        # Determine system prompt: use direct prompt if provided, otherwise lookup by char
+        if direct_system_prompt:
+            system_prompt = direct_system_prompt
+        else:
+            # Validate character exists in the specified (or default) prompt file
+            valid_chars = get_valid_prompts(prompt_file)
+            if char not in valid_chars:
+                return jsonify({"message": f"Failed: Invalid character reference '{char}'. Valid: {valid_chars}"}), 400
+            system_prompt = get_character_context_interests(char, prompt_file)
 
-        response = client.chat.completions.create(
-            model=model,
-            max_completion_tokens=max_completion_tokens,
-            temperature=1,
-            top_p=1,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": text}
-            ]
+        # Use provider abstraction
+        result = active_provider.complete(
+            messages=[{"role": "user", "content": text}],
+            system_prompt=system_prompt,
+            temperature=1.0,
+            max_tokens=max_completion_tokens
         )
 
-        finish_reason = response.choices[0].finish_reason
-
-        if finish_reason == 'content_filter':
+        if result.finish_reason == FinishReason.CONTENT_FILTER:
             return jsonify({"message": "Failed: Content filter activated"})
-        elif finish_reason == 'length':
+        elif result.finish_reason == FinishReason.LENGTH:
             return jsonify({"message": "Failed: Output exceeds maximum length"})
+        elif result.finish_reason == FinishReason.ERROR:
+            logger.error(f"Provider error: {result.error}")
+            return jsonify({"message": "Failed: Provider error"}), 500
         else:
-            message_content = response.choices[0].message.content
-            return jsonify({"message": secure_sanitize_message(message_content, char, '/adhoc')})
+            return jsonify({"message": secure_sanitize_message(result.content)})
 
     except Exception as e:
         logger.error(f"Error in /adhoc endpoint: {str(e)}")
@@ -450,13 +544,13 @@ def get_char_messages(character):
 
 
 if __name__ == '__main__':
-    host = os.getenv('FLASK_HOST', '127.0.0.1')
-    port = int(os.getenv('FLASK_PORT', '5000'))
-    debug = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
+    host = os.getenv('FLASK_HOST')
+    port = int(os.getenv('FLASK_PORT'))
+    debug = os.getenv('FLASK_DEBUG').lower() == 'true'
 
     print(f"Starting MUSH GPT API server on {host}:{port}")
     print(f"Debug mode: {debug}")
-    print(f"Model: {model}")
-    print(f"Valid characters: {', '.join(prompts)}")
+    print(f"LLM Provider: {default_provider.provider_name if default_provider else 'NOT INITIALIZED'}")
+    print(f"Default characters: {', '.join(get_valid_prompts())}")
 
     app.run(host=host, port=port, debug=debug)

@@ -48,11 +48,6 @@ check_dependencies() {
         exit 1
     fi
 
-    if ! python3 -c "import psutil" 2>/dev/null; then
-        log_error "psutil package not found. Install with: pip install psutil"
-        exit 1
-    fi
-
     log_info "All dependencies found"
 }
 
@@ -65,19 +60,21 @@ test_config() {
     source starlink.env
     set +a  # Turn off automatic export
 
-    # Check required variables
-    if [ "$MUSH_HOST" = "[host]" ]; then
-        log_error "MUSH_HOST not configured in starlink.env"
-        exit 1
-    fi
+    # Check required variables are set (not empty)
+    local missing=()
 
-    if [ "$BOT_NAME" = "[user]" ]; then
-        log_error "BOT_NAME not configured in starlink.env"
-        exit 1
-    fi
+    [ -z "$MUSH_HOST" ] && missing+=("MUSH_HOST")
+    [ -z "$MUSH_PORT" ] && missing+=("MUSH_PORT")
+    [ -z "$BOT_NAME" ] && missing+=("BOT_NAME")
+    [ -z "$BOT_PASSWORD" ] && missing+=("BOT_PASSWORD")
+    [ -z "$API_AUTH_KEY" ] && missing+=("API_AUTH_KEY")
+    [ -z "$CHARACTER_NAME" ] && missing+=("CHARACTER_NAME")
 
-    if [ "$API_AUTH_KEY" = "[auth value here]" ]; then
-        log_error "API_AUTH_KEY not configured in starlink.env"
+    if [ ${#missing[@]} -gt 0 ]; then
+        log_error "Missing required configuration in starlink.env:"
+        for var in "${missing[@]}"; do
+            echo "  - $var"
+        done
         exit 1
     fi
 
