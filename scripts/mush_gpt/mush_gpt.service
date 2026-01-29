@@ -1,5 +1,5 @@
 [Unit]
-Description=MUSH GPT Server
+Description=MUSH GPT API Server
 After=network.target
 
 [Service]
@@ -15,3 +15,6 @@ StandardError=journal
 
 [Install]
 WantedBy=multi-user.target
+
+# Note: Deploy with ./start.sh deploy
+# Default production path: /home/ubuntu/mush_gpt/
