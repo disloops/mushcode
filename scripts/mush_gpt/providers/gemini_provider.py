@@ -155,7 +155,7 @@ class GeminiProvider(BaseLLMProvider):
         This method normalizes these to match OpenAI's cleaner output.
         """
         if not content:
-            return content
+            return ""
         
         # Normalize line endings
         content = content.replace('\r\n', '\n').replace('\r', '\n')
@@ -272,8 +272,8 @@ class GeminiProvider(BaseLLMProvider):
                 # response.text raises ValueError if blocked or no content
                 content = ""
 
-            # Apply Gemini-specific cleanup
-            content = self._clean_response(content)
+            # response.text can be None without raising; normalize before cleanup
+            content = self._clean_response(content or "")
 
             # Get finish reason
             raw_reason = "STOP"  # Default

@@ -249,7 +249,6 @@ def secure_sanitize_message(message):
         '\u00a5': 'Y',
         '\u00a9': '(c)',
         '\u00ae': '(R)',
-        '\u00b0': 'deg',
         '\u2122': '(TM)',
 
         '\u2017': '__',
@@ -281,9 +280,7 @@ def secure_sanitize_message(message):
         '\u00bf': '?',
         '\u00d7': 'x',
         '\u00f7': '/',
-        '\u00b6': 'P',
         '\u00a7': 'S',
-        '\u00b1': '+/-',
         '\u2260': '!=',
         '\u2264': '<=',
         '\u2265': '>=',
@@ -298,7 +295,9 @@ def secure_sanitize_message(message):
 
     message = message.replace('[', '')     # Remove left brackets (MUSH commands)
     message = message.replace(']', '')     # Remove right brackets (MUSH commands)
-    message = message.replace('%', '')     # Remove percent signs (MUSH functions)
+    # Literal %r/%%r (e.g. echoed from conversation history) → newline before stripping other % codes
+    message = re.sub(r'%%r|%r|%R', '\n', message)
+    message = message.replace('%', '')     # Remove remaining percent signs (MUSH functions)
 
     dangerous_control_chars = [
         '\x00', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07',
