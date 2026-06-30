@@ -8,8 +8,9 @@ A centralized API server for MUSH (Multi-User Shared Hallucination) bots that pr
 - **Switchable LLM Providers**: OpenAI (Responses API) or Google Gemini (via `LLM_PROVIDER` env var)
 - **Token Optimization**: Uses condensed prompts for efficiency
 - **Security**: Input validation, character name sanitization, and output cleaning
-- **Memory Management**: Character-specific conversation buffers (configurable per-character)
+- **Memory Management**: Thread-safe character-specific conversation buffers (configurable per-character)
 - **Concurrent Requests**: Flask serves `/bot`, `/cmd`, and `/adhoc` on separate threads (`threaded=True`)
+- **Provider Caching**: LLM clients initialized once per provider name and reused across requests
 - **Rate Limiting**: Prevents abuse and spam
 - **Logging**: Comprehensive logging with rotation
 - **Direct Prompt Support**: Bots can pass their own system prompts directly
@@ -54,13 +55,12 @@ Parameters:
 - `auth` (required): Authentication key
 - `char` (required): Character identifier (prompt lookup from `prompts.txt`)
 - `prompt_file` (optional): Custom prompt file path
-- `provider` (optional): Override LLM provider for this request only
 
-Uses `/cmd`-specific settings from `mush_gpt.env` when present:
+Provider and token limits for `/cmd` come **only** from `mush_gpt.env` (not per-request JSON):
 - `CMD_LLM_PROVIDER`: Provider for all `/cmd` requests (`openai` or `gemini`). If unset, uses `LLM_PROVIDER`.
-- `CMD_MAX_COMPLETION_TOKENS`: Max output tokens for `/cmd`. If unset, uses `MAX_COMPLETION_TOKENS`.
+- `CMD_MAX_COMPLETION_TOKENS`: Max output tokens for `/cmd`. If unset, uses `MAX_COMPLETION_TOKENS`. Cannot exceed `MAX_COMPLETION_TOKENS`.
 
-Does not use conversation buffers (stateless generation from system prompt only).
+Does not use conversation buffers (stateless generation from system prompt only). Provider clients are initialized once at startup and reused.
 
 ### `/adhoc` - Token-efficient endpoint for special requests
 Accepts same parameters as `/bot`, including `system_prompt` for direct prompts.
@@ -87,4 +87,4 @@ Optional character settings in `mush_gpt.env`:
 Optional `/cmd` endpoint settings in `mush_gpt.env`:
 
 - `CMD_LLM_PROVIDER`: LLM provider for `/cmd` requests (`openai` or `gemini`). Falls back to `LLM_PROVIDER` if unset.
-- `CMD_MAX_COMPLETION_TOKENS`: Max output tokens for `/cmd`. Falls back to `MAX_COMPLETION_TOKENS` if unset.
+- `CMD_MAX_COMPLETION_TOKENS`: Max output tokens for `/cmd`. Falls back to `MAX_COMPLETION_TOKENS` if unset. Must not exceed `MAX_COMPLETION_TOKENS`.

@@ -1,6 +1,10 @@
 **/ignore_files
 **/in_progress
 
+# Local env files (secrets; use *.env.example as templates)
+scripts/mush_gpt/mush_gpt.env
+scripts/starlink/starlink.env
+
 # Editor files
 .vscode/
 .editorconfig

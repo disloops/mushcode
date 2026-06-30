@@ -27,14 +27,17 @@ Usage:
 
 import os
 import logging
-from typing import Optional
+from typing import Dict, Optional
 
 from .base import BaseLLMProvider, CompletionResult, FinishReason
 
 logger = logging.getLogger('mush_gpt.providers')
 
-# Cached provider instance
+VALID_LLM_PROVIDERS = ('openai', 'gemini')
+
+# Default provider (LLM_PROVIDER) and named instances for reuse across endpoints
 _provider_instance: Optional[BaseLLMProvider] = None
+_named_instances: Dict[str, BaseLLMProvider] = {}
 
 
 def get_provider(
@@ -57,11 +60,6 @@ def get_provider(
     """
     global _provider_instance
 
-    # Return cached default instance if available and no override requested
-    if _provider_instance is not None and not force_new and provider_name is None:
-        return _provider_instance
-
-    # Determine provider - LLM_PROVIDER is required
     provider = (provider_name or os.getenv('LLM_PROVIDER', '')).lower().strip()
 
     if not provider:
@@ -69,6 +67,19 @@ def get_provider(
             "LLM_PROVIDER environment variable is required. "
             "Set to 'openai' or 'gemini' in your mush_gpt.env file."
         )
+
+    if provider not in VALID_LLM_PROVIDERS:
+        raise ValueError(
+            f"Unknown LLM provider: '{provider}'. "
+            f"Valid options: {', '.join(VALID_LLM_PROVIDERS)}"
+        )
+
+    if not force_new:
+        if provider_name is None and _provider_instance is not None:
+            return _provider_instance
+        cached = _named_instances.get(provider)
+        if cached is not None:
+            return cached
 
     logger.info(f"Initializing LLM provider: {provider}")
 
@@ -80,32 +91,27 @@ def get_provider(
         from .gemini_provider import GeminiProvider
         new_instance = GeminiProvider()
 
-    else:
-        raise ValueError(
-            f"Unknown LLM provider: '{provider}'. "
-            f"Valid options: 'openai', 'gemini'"
-        )
-
-    # Only cache if this is the default provider (no override requested)
-    # This prevents overrides from polluting the default cache
-    if provider_name is None and not force_new:
-        _provider_instance = new_instance
+    if not force_new:
+        _named_instances[provider] = new_instance
+        if provider_name is None:
+            _provider_instance = new_instance
 
     return new_instance
 
 
 def reset_provider():
-    """Reset the cached provider instance. Useful for testing or reconfiguration."""
-    global _provider_instance
+    """Reset cached provider instances. Useful for testing or reconfiguration."""
+    global _provider_instance, _named_instances
     _provider_instance = None
+    _named_instances.clear()
 
 
 # Export commonly used classes
 __all__ = [
     'get_provider',
     'reset_provider',
+    'VALID_LLM_PROVIDERS',
     'BaseLLMProvider',
     'CompletionResult',
     'FinishReason',
 ]
-

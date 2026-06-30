@@ -83,36 +83,48 @@ check_dependencies() {
         missing_packages+=("flask")
     fi
 
-    # Check provider-specific packages based on LLM_PROVIDER in env file
+    # Check provider-specific packages for LLM_PROVIDER and CMD_LLM_PROVIDER
     local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    local llm_provider=""
+    declare -A providers_to_check=()
 
     if [[ -f "$script_dir/mush_gpt.env" ]]; then
+        local llm_provider
+        local cmd_llm_provider
         llm_provider=$(grep -E "^LLM_PROVIDER=" "$script_dir/mush_gpt.env" 2>/dev/null | cut -d'=' -f2 | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+        cmd_llm_provider=$(grep -E "^CMD_LLM_PROVIDER=" "$script_dir/mush_gpt.env" 2>/dev/null | cut -d'=' -f2 | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+
+        if [[ -n "$llm_provider" ]]; then
+            providers_to_check["$llm_provider"]=1
+        fi
+        if [[ -n "$cmd_llm_provider" ]]; then
+            providers_to_check["$cmd_llm_provider"]=1
+        fi
     fi
 
-    if [[ -z "$llm_provider" ]]; then
+    if [[ ${#providers_to_check[@]} -eq 0 ]]; then
         log_error "LLM_PROVIDER not set in mush_gpt.env"
         log_info "Set LLM_PROVIDER=openai or LLM_PROVIDER=gemini"
         exit 1
     fi
 
-    log_info "Configured LLM provider: $llm_provider"
+    log_info "Configured LLM providers: ${!providers_to_check[*]}"
 
-    if [[ "$llm_provider" == "openai" ]]; then
-        if ! python3 -c "import openai" 2>/dev/null; then
-            missing_packages+=("openai")
-        fi
-    elif [[ "$llm_provider" == "gemini" ]]; then
-        if ! python3 -c "from google import genai" 2>/dev/null; then
-            log_error "google-genai package not found. Install with: pip3 install google-genai"
+    for llm_provider in "${!providers_to_check[@]}"; do
+        if [[ "$llm_provider" == "openai" ]]; then
+            if ! python3 -c "import openai" 2>/dev/null; then
+                missing_packages+=("openai")
+            fi
+        elif [[ "$llm_provider" == "gemini" ]]; then
+            if ! python3 -c "from google import genai" 2>/dev/null; then
+                log_error "google-genai package not found. Install with: pip3 install google-genai"
+                exit 1
+            fi
+        else
+            log_error "Unknown LLM provider: $llm_provider"
+            log_info "Valid options: openai, gemini"
             exit 1
         fi
-    else
-        log_error "Unknown LLM provider: $llm_provider"
-        log_info "Valid options: openai, gemini"
-        exit 1
-    fi
+    done
 
     if [[ ${#missing_packages[@]} -gt 0 ]]; then
         log_error "Missing Python packages: ${missing_packages[*]}"

@@ -29,6 +29,7 @@ import os
 import sys
 import re
 import logging
+import threading
 from logging.handlers import RotatingFileHandler
 
 # Check required dependencies before proceeding
@@ -39,7 +40,7 @@ except ImportError:
     sys.exit(1)
 
 from prompts import get_prompt, get_valid_prompts, get_character_context_interests
-from providers import get_provider, FinishReason
+from providers import get_provider, FinishReason, VALID_LLM_PROVIDERS
 
 def load_env_file(filepath):
     """Load environment variables from a .env file"""
@@ -82,14 +83,21 @@ def validate_config():
 
     # Provider-specific settings (default + optional /cmd override)
     providers_needed = set()
-    default_provider_name = os.getenv('LLM_PROVIDER', '').lower()
+    default_provider_name = os.getenv('LLM_PROVIDER', '').strip().lower()
     if default_provider_name:
-        providers_needed.add(default_provider_name)
+        if default_provider_name not in VALID_LLM_PROVIDERS:
+            missing.append(
+                f"LLM_PROVIDER must be one of: {', '.join(VALID_LLM_PROVIDERS)}"
+            )
+        else:
+            providers_needed.add(default_provider_name)
 
     cmd_provider_name = os.getenv('CMD_LLM_PROVIDER', '').strip().lower()
     if cmd_provider_name:
-        if cmd_provider_name not in ('openai', 'gemini'):
-            missing.append("CMD_LLM_PROVIDER must be 'openai' or 'gemini'")
+        if cmd_provider_name not in VALID_LLM_PROVIDERS:
+            missing.append(
+                f"CMD_LLM_PROVIDER must be one of: {', '.join(VALID_LLM_PROVIDERS)}"
+            )
         else:
             providers_needed.add(cmd_provider_name)
 
@@ -105,11 +113,24 @@ def validate_config():
             if not os.getenv('GEMINI_MODEL'):
                 missing.append('GEMINI_MODEL (required for Gemini provider)')
 
+    try:
+        max_completion_tokens = int(os.getenv('MAX_COMPLETION_TOKENS', ''))
+        if max_completion_tokens <= 0:
+            missing.append('MAX_COMPLETION_TOKENS must be a positive integer')
+    except (TypeError, ValueError):
+        missing.append('MAX_COMPLETION_TOKENS must be a positive integer')
+        max_completion_tokens = None
+
     cmd_max_tokens = os.getenv('CMD_MAX_COMPLETION_TOKENS', '').strip()
     if cmd_max_tokens:
         try:
-            if int(cmd_max_tokens) <= 0:
+            cmd_max_int = int(cmd_max_tokens)
+            if cmd_max_int <= 0:
                 missing.append('CMD_MAX_COMPLETION_TOKENS must be a positive integer')
+            elif max_completion_tokens is not None and cmd_max_int > max_completion_tokens:
+                missing.append(
+                    'CMD_MAX_COMPLETION_TOKENS cannot exceed MAX_COMPLETION_TOKENS'
+                )
         except ValueError:
             missing.append('CMD_MAX_COMPLETION_TOKENS must be a positive integer')
 
@@ -164,46 +185,27 @@ except Exception as e:
 
 def resolve_provider(provider_override=None):
     """
-    Get the appropriate LLM provider for a request.
-    
-    Args:
-        provider_override: Optional provider name ('openai' or 'gemini') to use
-                          instead of the default.
-    
-    Returns:
-        The provider instance to use, or None if unavailable.
+    Get the LLM provider for /bot and /adhoc requests.
+
+    Uses the default provider unless a valid per-request override is given.
+    Named providers are cached and reused (see providers.get_provider).
     """
     if not provider_override:
         return default_provider
-    
-    # Validate override value
+
     provider_override = provider_override.lower().strip()
-    if provider_override not in ('openai', 'gemini'):
-        logger.warning(f"Invalid provider override '{provider_override}', using default")
+    if provider_override not in VALID_LLM_PROVIDERS:
+        logger.warning(
+            "Invalid provider override %r, using default",
+            provider_override
+        )
         return default_provider
-    
-    # Return default if it matches the override
-    if default_provider and default_provider.provider_name == provider_override:
-        return default_provider
-    
-    # Get a different provider
+
     try:
-        return get_provider(provider_name=provider_override, force_new=True)
+        return get_provider(provider_name=provider_override)
     except Exception as e:
         logger.error(f"Failed to get provider '{provider_override}': {e}")
         return default_provider
-
-
-def resolve_cmd_provider(json_provider_override=None):
-    """
-    Get the LLM provider for /cmd requests.
-
-    Precedence: JSON provider (if sent) > CMD_LLM_PROVIDER > LLM_PROVIDER default.
-    """
-    override = (json_provider_override or '').strip().lower() or None
-    if not override:
-        override = _cmd_llm_provider
-    return resolve_provider(override)
 
 
 auth_key = os.getenv("AUTH_KEY")
@@ -218,10 +220,20 @@ cmd_max_completion_tokens = (
     int(_cmd_max_env) if _cmd_max_env else max_completion_tokens
 )
 
-if _cmd_llm_provider:
-    logger.info(f"/cmd LLM provider: {_cmd_llm_provider}")
-else:
-    logger.info("/cmd LLM provider: using LLM_PROVIDER default")
+_cmd_provider_name = _cmd_llm_provider or (
+    default_provider.provider_name if default_provider else None
+)
+try:
+    cmd_provider = (
+        get_provider(provider_name=_cmd_provider_name)
+        if _cmd_provider_name else default_provider
+    )
+    if cmd_provider:
+        logger.info(f"/cmd LLM provider: {cmd_provider.provider_name}")
+except Exception as e:
+    logger.error(f"Failed to initialize /cmd LLM provider: {e}")
+    cmd_provider = None
+
 logger.info(f"/cmd max completion tokens: {cmd_max_completion_tokens}")
 
 # Characters that don't maintain conversation history (stateless)
@@ -233,6 +245,7 @@ if _stateless_characters:
     logger.info(f"Stateless characters configured: {_stateless_characters}")
 
 character_buffers = {}
+_buffer_lock = threading.Lock()
 
 def secure_sanitize_message(message):
     """
@@ -384,7 +397,6 @@ def cmd():
         auth = json_data['auth'].strip()
         char = json_data['char'].strip()
         prompt_file = json_data.get('prompt_file', '').strip() or None
-        provider_override = json_data.get('provider', '').strip() or None
 
         if len(auth) > 100 or len(char) > 100:
             return jsonify({"message": "Failed: Invalid input length"}), 400
@@ -397,7 +409,7 @@ def cmd():
         if char not in valid_chars:
             return jsonify({"message": f"Failed: Invalid character reference '{char}'. Valid: {valid_chars}"}), 400
 
-        active_provider = resolve_cmd_provider(provider_override)
+        active_provider = cmd_provider
         if active_provider is None:
             return jsonify({"message": "Failed: LLM provider not initialized"}), 500
 
@@ -584,41 +596,41 @@ def adhoc():
         return jsonify({"message": "Failed: Error"}), 500
 
 def add_message(role, content, character):
-    global character_buffers
-
     # Skip conversation history for stateless characters
     if character.lower() in _stateless_characters:
         return
 
-    if character not in character_buffers:
-        character_buffers[character] = []
+    with _buffer_lock:
+        if character not in character_buffers:
+            character_buffers[character] = []
 
-    character_buffers[character].append({
-        "role": role,
-        "content": content,
-        "timestamp": time.time()
-    })
+        character_buffers[character].append({
+            "role": role,
+            "content": content,
+            "timestamp": time.time()
+        })
 
-    character_buffers[character] = character_buffers[character][-50:]
+        character_buffers[character] = character_buffers[character][-50:]
 
-    current_time = time.time()
-    character_buffers[character] = [
-        msg for msg in character_buffers[character]
-        if current_time - msg["timestamp"] < 3600
-    ]
+        current_time = time.time()
+        character_buffers[character] = [
+            msg for msg in character_buffers[character]
+            if current_time - msg["timestamp"] < 3600
+        ]
 
 def get_char_messages(character):
     # Stateless characters have no conversation history
     if character.lower() in _stateless_characters:
         return []
 
-    if character not in character_buffers:
-        return []
+    with _buffer_lock:
+        if character not in character_buffers:
+            return []
 
-    return [
-        {"role": msg["role"], "content": msg["content"]}
-        for msg in character_buffers[character]
-    ]
+        return [
+            {"role": msg["role"], "content": msg["content"]}
+            for msg in character_buffers[character]
+        ]
 
 
 
@@ -630,10 +642,7 @@ if __name__ == '__main__':
     print(f"Starting MUSH GPT API server on {host}:{port}")
     print(f"Debug mode: {debug}")
     print(f"LLM Provider: {default_provider.provider_name if default_provider else 'NOT INITIALIZED'}")
-    cmd_provider_label = _cmd_llm_provider or (
-        default_provider.provider_name if default_provider else 'NOT INITIALIZED'
-    )
-    print(f"/cmd LLM Provider: {cmd_provider_label}")
+    print(f"/cmd LLM Provider: {cmd_provider.provider_name if cmd_provider else 'NOT INITIALIZED'}")
     print(f"/cmd max completion tokens: {cmd_max_completion_tokens}")
     print(f"Default characters: {', '.join(get_valid_prompts())}")
 
