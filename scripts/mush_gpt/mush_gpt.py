@@ -80,18 +80,38 @@ def validate_config():
         if not os.getenv(var):
             missing.append(var)
 
-    # Provider-specific settings
-    provider = os.getenv('LLM_PROVIDER', '').lower()
-    if provider == 'openai':
-        if not os.getenv('OPENAI_API_KEY'):
-            missing.append('OPENAI_API_KEY (required for OpenAI provider)')
-        if not os.getenv('OPENAI_MODEL'):
-            missing.append('OPENAI_MODEL (required for OpenAI provider)')
-    elif provider == 'gemini':
-        if not os.getenv('GOOGLE_API_KEY'):
-            missing.append('GOOGLE_API_KEY (required for Gemini provider)')
-        if not os.getenv('GEMINI_MODEL'):
-            missing.append('GEMINI_MODEL (required for Gemini provider)')
+    # Provider-specific settings (default + optional /cmd override)
+    providers_needed = set()
+    default_provider_name = os.getenv('LLM_PROVIDER', '').lower()
+    if default_provider_name:
+        providers_needed.add(default_provider_name)
+
+    cmd_provider_name = os.getenv('CMD_LLM_PROVIDER', '').strip().lower()
+    if cmd_provider_name:
+        if cmd_provider_name not in ('openai', 'gemini'):
+            missing.append("CMD_LLM_PROVIDER must be 'openai' or 'gemini'")
+        else:
+            providers_needed.add(cmd_provider_name)
+
+    for provider in providers_needed:
+        if provider == 'openai':
+            if not os.getenv('OPENAI_API_KEY'):
+                missing.append('OPENAI_API_KEY (required for OpenAI provider)')
+            if not os.getenv('OPENAI_MODEL'):
+                missing.append('OPENAI_MODEL (required for OpenAI provider)')
+        elif provider == 'gemini':
+            if not os.getenv('GOOGLE_API_KEY'):
+                missing.append('GOOGLE_API_KEY (required for Gemini provider)')
+            if not os.getenv('GEMINI_MODEL'):
+                missing.append('GEMINI_MODEL (required for Gemini provider)')
+
+    cmd_max_tokens = os.getenv('CMD_MAX_COMPLETION_TOKENS', '').strip()
+    if cmd_max_tokens:
+        try:
+            if int(cmd_max_tokens) <= 0:
+                missing.append('CMD_MAX_COMPLETION_TOKENS must be a positive integer')
+        except ValueError:
+            missing.append('CMD_MAX_COMPLETION_TOKENS must be a positive integer')
 
     if missing:
         print("ERROR: Missing required configuration:", file=sys.stderr)
@@ -174,10 +194,35 @@ def resolve_provider(provider_override=None):
         return default_provider
 
 
+def resolve_cmd_provider(json_provider_override=None):
+    """
+    Get the LLM provider for /cmd requests.
+
+    Precedence: JSON provider (if sent) > CMD_LLM_PROVIDER > LLM_PROVIDER default.
+    """
+    override = (json_provider_override or '').strip().lower() or None
+    if not override:
+        override = _cmd_llm_provider
+    return resolve_provider(override)
+
+
 auth_key = os.getenv("AUTH_KEY")
 
 max_input_length = int(os.getenv('MAX_INPUT_LENGTH'))
 max_completion_tokens = int(os.getenv('MAX_COMPLETION_TOKENS'))
+
+# /cmd endpoint settings (optional; fall back to LLM_PROVIDER / MAX_COMPLETION_TOKENS)
+_cmd_llm_provider = os.getenv('CMD_LLM_PROVIDER', '').strip().lower() or None
+_cmd_max_env = os.getenv('CMD_MAX_COMPLETION_TOKENS', '').strip()
+cmd_max_completion_tokens = (
+    int(_cmd_max_env) if _cmd_max_env else max_completion_tokens
+)
+
+if _cmd_llm_provider:
+    logger.info(f"/cmd LLM provider: {_cmd_llm_provider}")
+else:
+    logger.info("/cmd LLM provider: using LLM_PROVIDER default")
+logger.info(f"/cmd max completion tokens: {cmd_max_completion_tokens}")
 
 # Characters that don't maintain conversation history (stateless)
 # Configured via STATELESS_CHARACTERS env var (comma-separated, case-insensitive)
@@ -347,22 +392,26 @@ def cmd():
         if auth != auth_key:
             return jsonify({"message": "Failed: Unauthorized"}), 401
 
-        # Get the appropriate provider
-        active_provider = resolve_provider(provider_override)
-        if active_provider is None:
-            return jsonify({"message": "Failed: LLM provider not initialized"}), 500
-
         # Validate character exists in the specified (or default) prompt file
         valid_chars = get_valid_prompts(prompt_file)
         if char not in valid_chars:
             return jsonify({"message": f"Failed: Invalid character reference '{char}'. Valid: {valid_chars}"}), 400
+
+        active_provider = resolve_cmd_provider(provider_override)
+        if active_provider is None:
+            return jsonify({"message": "Failed: LLM provider not initialized"}), 500
+
+        logger.debug(
+            "/cmd request char=%s provider=%s max_tokens=%d",
+            char, active_provider.provider_name, cmd_max_completion_tokens
+        )
 
         # Use provider abstraction
         result = active_provider.complete(
             messages=[],
             system_prompt=get_prompt(char, prompt_file),
             temperature=1.0,
-            max_tokens=max_completion_tokens
+            max_tokens=cmd_max_completion_tokens
         )
 
         if result.finish_reason == FinishReason.CONTENT_FILTER:
@@ -374,6 +423,10 @@ def cmd():
             return jsonify({"message": "Failed: Provider error"}), 500
         else:
             sanitized_content = secure_sanitize_message(result.content)
+            logger.debug(
+                "/cmd response char=%s chars=%d",
+                char, len(sanitized_content)
+            )
             return jsonify({"message": sanitized_content})
 
     except Exception as e:
@@ -431,6 +484,11 @@ def bot():
 
         char_messages = get_char_messages(char)
 
+        logger.debug(
+            "/bot request char=%s text=%r history_len=%d",
+            char, text, len(char_messages)
+        )
+
         # Use provider abstraction
         result = active_provider.complete(
             messages=char_messages,
@@ -448,6 +506,10 @@ def bot():
             return jsonify({"message": "Failed: Provider error"}), 500
         else:
             sanitized_content = secure_sanitize_message(result.content)
+            logger.debug(
+                "/bot response char=%s raw=%r sanitized=%r",
+                char, result.content, sanitized_content
+            )
             add_message("assistant", sanitized_content, char)
             return jsonify({"message": sanitized_content})
 
@@ -568,6 +630,11 @@ if __name__ == '__main__':
     print(f"Starting MUSH GPT API server on {host}:{port}")
     print(f"Debug mode: {debug}")
     print(f"LLM Provider: {default_provider.provider_name if default_provider else 'NOT INITIALIZED'}")
+    cmd_provider_label = _cmd_llm_provider or (
+        default_provider.provider_name if default_provider else 'NOT INITIALIZED'
+    )
+    print(f"/cmd LLM Provider: {cmd_provider_label}")
+    print(f"/cmd max completion tokens: {cmd_max_completion_tokens}")
     print(f"Default characters: {', '.join(get_valid_prompts())}")
 
-    app.run(host=host, port=port, debug=debug)
+    app.run(host=host, port=port, debug=debug, threaded=True)

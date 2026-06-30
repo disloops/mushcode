@@ -9,6 +9,7 @@ A centralized API server for MUSH (Multi-User Shared Hallucination) bots that pr
 - **Token Optimization**: Uses condensed prompts for efficiency
 - **Security**: Input validation, character name sanitization, and output cleaning
 - **Memory Management**: Character-specific conversation buffers (configurable per-character)
+- **Concurrent Requests**: Flask serves `/bot`, `/cmd`, and `/adhoc` on separate threads (`threaded=True`)
 - **Rate Limiting**: Prevents abuse and spam
 - **Logging**: Comprehensive logging with rotation
 - **Direct Prompt Support**: Bots can pass their own system prompts directly
@@ -49,6 +50,17 @@ Parameters:
 - `provider` (optional): Override LLM provider ('openai' or 'gemini')
 
 ### `/cmd` - Command-based interactions (like +today)
+Parameters:
+- `auth` (required): Authentication key
+- `char` (required): Character identifier (prompt lookup from `prompts.txt`)
+- `prompt_file` (optional): Custom prompt file path
+- `provider` (optional): Override LLM provider for this request only
+
+Uses `/cmd`-specific settings from `mush_gpt.env` when present:
+- `CMD_LLM_PROVIDER`: Provider for all `/cmd` requests (`openai` or `gemini`). If unset, uses `LLM_PROVIDER`.
+- `CMD_MAX_COMPLETION_TOKENS`: Max output tokens for `/cmd`. If unset, uses `MAX_COMPLETION_TOKENS`.
+
+Does not use conversation buffers (stateless generation from system prompt only).
 
 ### `/adhoc` - Token-efficient endpoint for special requests
 Accepts same parameters as `/bot`, including `system_prompt` for direct prompts.
@@ -71,3 +83,8 @@ Optional character settings in `mush_gpt.env`:
 
 - `ASTRO_CHARACTERS`: Comma-separated list of characters that need astronomical data appended (e.g., `ptolemy,today`)
 - `STATELESS_CHARACTERS`: Comma-separated list of characters that don't maintain conversation history (e.g., `today`)
+
+Optional `/cmd` endpoint settings in `mush_gpt.env`:
+
+- `CMD_LLM_PROVIDER`: LLM provider for `/cmd` requests (`openai` or `gemini`). Falls back to `LLM_PROVIDER` if unset.
+- `CMD_MAX_COMPLETION_TOKENS`: Max output tokens for `/cmd`. Falls back to `MAX_COMPLETION_TOKENS` if unset.
